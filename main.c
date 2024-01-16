@@ -22,11 +22,21 @@ void	handler(int signum)
 	rl_redisplay();
 }
 
+static void	parser(char *str)
+{
+	if (!ft_strncmp(str, "exit\0", 5))
+		exit(EXIT_SUCCESS);
+	printf("output> %s\n", str);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	int		ret;
 	char	*line;
 
+	(void)argc;
+	(void)argv;
+	(void)envp;
 	ret = 1;
 	signal(SIGINT, handler);
 	while (1)
@@ -35,7 +45,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 		{
 			if (ret)
-				printf("output> %s\n", line);
+				parser(line);
 			add_history(line);
 			free(line);
 			line = NULL;
