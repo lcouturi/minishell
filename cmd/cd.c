@@ -18,7 +18,10 @@ void	cmd_cd(char **args, char **envp)
 	char	*home;
 
 	if (args[1])
-		chdir(args[1]);
+	{
+		if (chdir(args[1]) == -1)
+			printf("minishell: cd: %s: No such file or directory\n", args[1]);
+	}
 	else
 	{
 		i = 0;
