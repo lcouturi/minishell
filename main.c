@@ -24,9 +24,25 @@ void	handler(int signum)
 
 static void	parser(char *str)
 {
-	if (!ft_strncmp(str, "exit\0", 5))
+	char	**args;
+	int		i;
+
+	args = ft_split(str, ' ');
+	if (!args)
+		exit(EXIT_FAILURE);
+	i = -1;
+	if (!ft_strncmp(args[0], "exit\0", 5))
+	{
+		while (args[++i])
+			free(args[i]);
+		free(args);
 		exit(EXIT_SUCCESS);
-	printf("output> %s\n", str);
+	}
+	else
+		printf("minishell: %s: command not found\n", args[0]);
+	while (args[++i])
+		free(args[i]);
+	free(args);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -44,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("input> ");
 		if (line)
 		{
-			if (ret)
+			if (ft_strncmp(line, "\0", 1))
 				parser(line);
 			add_history(line);
 			free(line);
