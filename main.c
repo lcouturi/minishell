@@ -16,10 +16,7 @@ void	handler(int signum)
 {
 	if (signum != SIGINT)
 		return ;
-	printf("ctrl + c\n");
-	rl_on_new_line();
-	//rl_replace_line("", 1);
-	rl_redisplay();
+	printf("\n");
 }
 
 static void	cmd_exit(char **args)
@@ -30,10 +27,11 @@ static void	cmd_exit(char **args)
 	while (args[++i])
 		free(args[i]);
 	free(args);
+	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }
 
-static char	*locate_path(char **args, char **envp)
+static char	*get_path(char **args, char **envp)
 {
 	int		i;
 	char	**paths;
@@ -75,7 +73,6 @@ static char	*locate_path(char **args, char **envp)
 			i = -1;
 			while (paths[++i])
 				free(paths[i]);
-			free(single_path);
 			return (single_path);
 		}
 		free(single_path);
@@ -94,7 +91,7 @@ static void	cmd_exec(char **args, char **envp)
 	pid = fork();
 	if (!pid)
 	{
-		path = locate_path(args, envp);
+		path = get_path(args, envp);
 		if (!path)
 		{
 			printf("minishell: %s: command not found\n", args[0]);
@@ -115,6 +112,7 @@ static void	parser(char *str, char **envp)
 	if (!args)
 	{
 		free(str);
+		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
 	if (args[0])
