@@ -42,16 +42,11 @@ static int	get_path(char **args, char **envp)
 {
 	int		i;
 	char	**paths;
-	char	*single_path;
 
 	i = 0;
 	while (ft_strncmp(envp[i], "PATH=", 5))
 		i++;
-	single_path = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
-	if (!single_path)
-		exit(EXIT_FAILURE);
-	paths = ft_split(single_path, ':');
-	free(single_path);
+	paths = ft_split(envp[i] + 5, ':');
 	if (!paths)
 		exit(EXIT_FAILURE);
 	i = -1;

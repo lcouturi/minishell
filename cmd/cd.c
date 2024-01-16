@@ -15,7 +15,6 @@
 void	cmd_cd(char **args, char **envp)
 {
 	int		i;
-	char	*home;
 
 	if (args[1])
 	{
@@ -27,13 +26,6 @@ void	cmd_cd(char **args, char **envp)
 		i = 0;
 		while (ft_strncmp(envp[i], "HOME=", 5))
 			i++;
-		home = ft_substr(envp[i], 5, ft_strlen(envp[i]) - 5);
-		if (!home)
-		{
-			free_string_array(args);
-			exit(EXIT_FAILURE);
-		}
-		chdir(home);
-		free(home);
+		chdir(envp[i] + 5);
 	}
 }
