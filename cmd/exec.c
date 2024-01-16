@@ -68,7 +68,9 @@ void	cmd_exec(char **args, char **envp)
 	pid = fork();
 	if (!pid)
 	{
-		if (!get_path(args, envp))
+		if (!access(args[0], X_OK))
+			execve(args[0], args, envp);
+		else if (!get_path(args, envp))
 		{
 			printf("minishell: %s: command not found\n", args[0]);
 			exit(EXIT_FAILURE);
