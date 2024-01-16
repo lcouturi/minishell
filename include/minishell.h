@@ -20,8 +20,9 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+void	cmd_cd(char **args, char **envp);
 void	cmd_exec(char **args, char **envp);
-void	free_string_array(char **strs);
 void	cmd_exit(char **args);
+void	free_string_array(char **strs);
 
 #endif

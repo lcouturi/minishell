@@ -53,7 +53,9 @@ static void	parser(char *str, char **envp)
 	}
 	if (args[0])
 	{
-		if (!ft_strncmp(args[0], "exit\0", 5))
+		if (!ft_strncmp(args[0], "cd", 3))
+			cmd_cd(args, envp);
+		else if (!ft_strncmp(args[0], "exit", 5))
 			cmd_exit(args);
 		else
 			cmd_exec(args, envp);
