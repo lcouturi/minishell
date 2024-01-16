@@ -7,7 +7,7 @@ CPPFLAGS = -I${HOME}/.brew/opt/readline/include
 
 INCLUDE_DIR	=	./include
 
-SRCS = main.c
+SRCS = main.c cmd/exec.c cmd/exit.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -26,7 +26,7 @@ clean :
 
 debug : fclean $(OBJS)
 	@make debug -s -C libs/Libft
-	$(CC) $(CFLAGS) -g -fsanitize=thread -Wno-unused-parameter $(LDFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) -g -fsanitize=thread $(LDFLAGS) $(OBJS) -o $(NAME)
 
 
 fclean : clean
