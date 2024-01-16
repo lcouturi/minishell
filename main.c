@@ -29,11 +29,22 @@ static void	handler(int signum)
 	printf("\n");
 }
 
+static char	*whitespace_hack(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (++i)
+		if (s[i] == 9 || s[i] == 10 || s[i] == 11 || s[i] == 12 || s[i] == 13)
+			s[i] = ' ';
+	return (s);
+}
+
 static void	parser(char *str, char **envp)
 {
 	char	**args;
 
-	args = ft_split(str, ' ');
+	args = ft_split(whitespace_hack(str), ' ');
 	if (!args)
 	{
 		free(str);
