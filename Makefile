@@ -22,6 +22,10 @@ $(NAME) : $(OBJS)
 clean :
 	rm -rf $(OBJS)
 
+debug : fclean $(OBJS)
+	$(CC) $(CFLAGS) -g -fsanitize=thread -Wno-unused-parameter $(LDFLAGS) $(OBJS) -o $(NAME)
+
+
 fclean : clean
 	rm -rf $(NAME)
 
