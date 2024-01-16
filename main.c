@@ -101,6 +101,7 @@ static void	cmd_exec(char **args, char **envp)
 			exit(EXIT_FAILURE);
 		}
 		execve(path, args, envp);
+		free(path);
 	}
 	waitpid(pid, 0, 0);
 }
