@@ -27,9 +27,6 @@ int	main(int argc, char **argv, char **envp)
 	int		ret;
 	char	*line;
 
-	(void)argc;
-	(void)argv;
-	(void)envp;
 	ret = 1;
 	signal(SIGINT, handler);
 	while (1)
