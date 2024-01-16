@@ -12,20 +12,20 @@
 
 #include "include/minishell.h"
 
-void handler(int signum)
+void	handler(int signum)
 {
 	if (signum != SIGINT)
-		return;
+		return ;
 	printf("ctrl + c\n");
 	rl_on_new_line();
 	//rl_replace_line("", 1);
 	rl_redisplay();
 }
 
-int main(void)
+int	main(void)
 {
-	int ret;
-	char *line;
+	int		ret;
+	char	*line;
 
 	ret = 1;
 	signal(SIGINT, handler);
