@@ -22,27 +22,51 @@ void	handler(int signum)
 	rl_redisplay();
 }
 
-static void	parser(char *str)
+static void	cmd_exit(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+		free(args[i]);
+	free(args);
+	exit(EXIT_SUCCESS);
+}
+
+static void	cmd_exec(char **args, char **envp)
+{
+	int	i;
+	int	pid;
+
+	pid = fork();
+	if (!pid)
+	{
+		execve(args[0], args, envp);
+		printf("minishell: %s: command not found\n", args[0]);
+		i = -1;
+		while (args[++i])
+			free(args[i]);
+		free(args);
+		exit(EXIT_FAILURE);
+	}
+	waitpid(pid, 0, 0);
+	i = -1;
+	while (args[++i])
+		free(args[i]);
+	free(args);
+}
+
+static void	parser(char *str, char **envp)
 {
 	char	**args;
-	int		i;
 
 	args = ft_split(str, ' ');
 	if (!args)
 		exit(EXIT_FAILURE);
-	i = -1;
 	if (!ft_strncmp(args[0], "exit\0", 5))
-	{
-		while (args[++i])
-			free(args[i]);
-		free(args);
-		exit(EXIT_SUCCESS);
-	}
+		cmd_exit(args);
 	else
-		printf("minishell: %s: command not found\n", args[0]);
-	while (args[++i])
-		free(args[i]);
-	free(args);
+		cmd_exec(args, envp);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -52,7 +76,6 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	ret = 1;
 	signal(SIGINT, handler);
 	while (1)
@@ -61,15 +84,13 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 		{
 			if (ft_strncmp(line, "\0", 1))
-				parser(line);
+				parser(line, envp);
 			add_history(line);
 			free(line);
 			line = NULL;
 		}
 		else
-		{
 			printf("ctrl + d\n");
-		}
 	}
 	return (0);
 }
