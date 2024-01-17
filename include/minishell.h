@@ -21,6 +21,7 @@
 # include <stdlib.h>
 
 void	cmd_cd(char **args, char **envp);
+void	cmd_echo(char **args, char **envs);
 void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp);
 void	cmd_exit(char **args);
