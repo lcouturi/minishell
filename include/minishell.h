@@ -27,7 +27,9 @@ void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp);
 void	cmd_exit(char **args);
 void	cmd_pwd(void);
-void	parser(char *str, char **envp);
+char	*expand_envvar(char *str, char **envp);
 void	free_string_array(char **strs);
+void	parser(char *str, char **envp);
+void	quote_check(char const *s, int *i);
 
 #endif

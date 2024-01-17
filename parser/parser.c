@@ -28,11 +28,12 @@ static void	find_command(char **args, char **envp)
 		cmd_exec(args, envp);
 }
 
+
 void	parser(char *str, char **envp)
 {
 	char	**args;
 
-	args = arg_splitter(str);
+	args = arg_splitter(expand_envvar(str, envp));
 	add_history(str);
 	free(str);
 	if (!args)
@@ -43,4 +44,22 @@ void	parser(char *str, char **envp)
 	if (args[0])
 		find_command(args, envp);
 	free_string_array(args);
+}
+
+void	quote_check(char const *s, int *i)
+{
+	if (!i[4] && s[i[0]] == '\"')
+	{
+		if (!i[3])
+			i[3] = 1;
+		else
+			i[3] = 0;
+	}
+	if (!i[3] && s[i[0]] == '\'')
+	{
+		if (!i[4])
+			i[4] = 1;
+		else
+			i[4] = 0;
+	}
 }

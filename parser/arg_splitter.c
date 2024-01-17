@@ -21,25 +21,7 @@ static int	sep(char s, int *i)
 	return (0);
 }
 
-static void	quote_check(char const *s, int *i)
-{
-	if (!i[4] && s[i[0]] == '\"')
-	{
-		if (!i[3])
-			i[3] = 1;
-		else
-			i[3] = 0;
-	}
-	if (!i[3] && s[i[0]] == '\'')
-	{
-		if (!i[4])
-			i[4] = 1;
-		else
-			i[4] = 0;
-	}
-}
-
-static char	**loop(char const *s, char **returned, int *i)
+static char	**loop(char *s, char **returned, int *i)
 {
 	while (i[0]--)
 	{
@@ -63,6 +45,7 @@ static char	**loop(char const *s, char **returned, int *i)
 			i[0] = i[1];
 		}
 	}
+	free(s);
 	return (returned);
 }
 
