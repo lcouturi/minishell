@@ -24,6 +24,7 @@ void	cmd_cd(char **args, char **envp);
 void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp);
 void	cmd_exit(char **args);
+void	cmd_pwd(void);
 void	free_string_array(char **strs);
 
 #endif

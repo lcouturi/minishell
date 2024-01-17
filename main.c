@@ -59,6 +59,8 @@ static void	parser(char *str, char **envp)
 			cmd_exit(args);
 		else if (!ft_strncmp(args[0], "env", 4))
 			cmd_env(envp);
+		else if (!ft_strncmp(args[0], "pwd", 4))
+			cmd_pwd();
 		else
 			cmd_exec(args, envp);
 	}
