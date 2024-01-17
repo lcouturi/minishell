@@ -14,12 +14,7 @@
 
 void	cmd_exit(char **args)
 {
-	int	i;
-
-	i = -1;
-	while (args[++i])
-		free(args[i]);
-	free(args);
+	free_string_array(args);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }
