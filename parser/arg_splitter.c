@@ -12,13 +12,18 @@
 
 #include "../include/minishell.h"
 
+static int	ft_isspace(char c)
+{
+	return (c == 9 || c == 10 || c == 11 || c == 12 || c == 13 || c == 32);
+}
+
 static int	sep(char s, int *i)
 {
 	if (!i[4] && s == '\"')
 		return (1);
 	if (!i[3] && s == '\'')
 		return (1);
-	if (!i[3] && !i[4] && (!s || s == ' '))
+	if (!i[3] && !i[4] && (!s || ft_isspace(s)))
 		return (1);
 	return (0);
 }
@@ -68,43 +73,29 @@ static char	**loop(char const *s, char **returned, int *i)
 	return (returned);
 }
 
-static int	wordcount(char const *s)
+char	**arg_splitter(char *s)
 {
-	int	i[5];
-	int	wc;
+	int		i[5];
+	char	**returned;
 
 	i[0] = 0;
+	i[1] = 0;
+	i[2] = 0;
 	i[3] = 0;
 	i[4] = 0;
-	wc = 0;
 	while (s && s[i[0]])
 	{
 		quote_check(s, i);
 		if ((sep(s[i[0]], i) == 0) && sep(s[i[0] + 1], i) == 1)
-			wc++;
+			i[2]++;
 		i[0]++;
 	}
-	return (wc);
-}
-
-char	**arg_splitter(char *s)
-{
-	int		i[5];
-	int		j;
-	char	**returned;
-
-	j = -1;
-	while (++j)
-		if (s[j] == 9 || s[j] == 10 || s[j] == 11 || s[j] == 12 || s[j] == 13)
-			s[j] = ' ';
-	i[1] = 0;
-	i[2] = wordcount(s);
+	i[0] = ft_strlen(s) + 1;
 	i[3] = 0;
 	i[4] = 0;
 	returned = malloc((i[2] + 1) * 8);
 	if (!s || !returned)
 		return (0);
-	i[0] = ft_strlen(s) + 1;
 	returned[i[2]] = 0;
 	return (loop(s, returned, i));
 }
