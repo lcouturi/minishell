@@ -98,6 +98,5 @@ char	*expand_envvar(char *str, char **envp)
 			str2[i[1]++] = str[i[0]++];
 	}
 	str2[i[1]] = '\0';
-	printf("%s\n", str2);
 	return (str2);
 }
