@@ -7,7 +7,7 @@ CPPFLAGS = -I${HOME}/.brew/opt/readline/include
 
 INCLUDE_DIR	=	./include
 
-SRCS = main.c cmd/cd.c cmd/exec.c cmd/exit.c
+SRCS = main.c cmd/cd.c cmd/exec.c cmd/exit.c cmd/env.c cmd/pwd.c cmd/echo.c
 
 OBJS = $(SRCS:.c=.o)
 

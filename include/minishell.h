@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: kyung-ki <lcouturi@student.42.fr>          +#+  +:+       +#+        */
+//*                                                    +:+ +:+         +:+     */
+/*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 1970/01/01 00:00:00 by kyung-ki          #+#    #+#             */
-/*   Updated: 2024/01/16 18:31:20 by kyung-ki         ###   ########.fr       */
+/*   Created: 1970/01/01 00:00:00 by lcouturi          #+#    #+#             */
+/*   Updated: 2024/01/16 22:27:22 by lcouturi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@
 # include <stdlib.h>
 
 void	cmd_cd(char **args, char **envp);
+void	cmd_echo(char **args, char **envs);
+void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp);
 void	cmd_exit(char **args);
+void	cmd_pwd(void);
 void	free_string_array(char **strs);
 
 #endif
