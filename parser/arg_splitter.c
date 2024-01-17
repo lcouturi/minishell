@@ -14,21 +14,30 @@
 
 static int	sep(char s, int *i)
 {
-	if (s == '\"')
+	if (!i[4] && s == '\"')
 		return (1);
-	if (!i[3] && (!s || s == ' '))
+	if (!i[3] && s == '\'')
+		return (1);
+	if (!i[3] && !i[4] && (!s || s == ' '))
 		return (1);
 	return (0);
 }
 
 static void	quote_check(char const *s, int *i)
 {
-	if (s[i[0]] == '\"')
+	if (!i[4] && s[i[0]] == '\"')
 	{
 		if (!i[3])
 			i[3] = 1;
 		else
 			i[3] = 0;
+	}
+	if (!i[3] && s[i[0]] == '\'')
+	{
+		if (!i[4])
+			i[4] = 1;
+		else
+			i[4] = 0;
 	}
 }
 
@@ -61,11 +70,12 @@ static char	**loop(char const *s, char **returned, int *i)
 
 static int	wordcount(char const *s)
 {
-	int	i[4];
+	int	i[5];
 	int	wc;
 
 	i[0] = 0;
 	i[3] = 0;
+	i[4] = 0;
 	wc = 0;
 	while (s && s[i[0]])
 	{
@@ -79,7 +89,7 @@ static int	wordcount(char const *s)
 
 char	**arg_splitter(char *s)
 {
-	int		i[4];
+	int		i[5];
 	int		j;
 	char	**returned;
 
@@ -90,6 +100,7 @@ char	**arg_splitter(char *s)
 	i[1] = 0;
 	i[2] = wordcount(s);
 	i[3] = 0;
+	i[4] = 0;
 	returned = malloc((i[2] + 1) * 8);
 	if (!s || !returned)
 		return (0);
