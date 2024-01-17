@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kay <kay@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 1970/01/01 00:00:00 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/01/17 14:14:19 by kay              ###   ########.fr       */
+/*   Updated: 2024/01/16 22:27:22 by lcouturi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ static void	parser(char *str, char **envp)
 			cmd_cd(args, envp);
 		else if (!ft_strncmp(args[0], "exit", 5))
 			cmd_exit(args);
+		else if (!ft_strncmp(args[0], "env", 4))
+			cmd_env(envp);
 		else
 			cmd_exec(args, envp);
 	}
@@ -74,7 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, handler);
 	while (1)
 	{
-		line = readline("input> ");
+		line = readline("minishell> ");
 		if (line)
 		{
 			if (ft_strncmp(line, "\0", 1))
