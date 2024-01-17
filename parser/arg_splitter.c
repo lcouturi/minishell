@@ -12,18 +12,11 @@
 
 #include "../include/minishell.h"
 
-static int	ft_isspace(char c)
-{
-	return (c == 9 || c == 10 || c == 11 || c == 12 || c == 13 || c == 32);
-}
-
 static int	sep(char s, int *i)
 {
-	if (!i[4] && s == '\"')
+	if ((!i[4] && s == '\"') || (!i[3] && s == '\''))
 		return (1);
-	if (!i[3] && s == '\'')
-		return (1);
-	if (!i[3] && !i[4] && (!s || ft_isspace(s)))
+	else if (!i[3] && !i[4] && (!s || (s >= 9 && s <= 13) || s == 32))
 		return (1);
 	return (0);
 }
