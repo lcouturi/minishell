@@ -68,6 +68,7 @@ void	cmd_exec(char **args, char **envp)
 		else if (!get_path(args, envp))
 		{
 			printf("minishell: %s: command not found\n", args[0]);
+			free_string_array(args);
 			exit(EXIT_FAILURE);
 		}
 	}

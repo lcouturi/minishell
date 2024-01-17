@@ -28,7 +28,6 @@ static void	find_command(char **args, char **envp)
 		cmd_exec(args, envp);
 }
 
-
 void	parser(char *str, char **envp)
 {
 	char	**args;
