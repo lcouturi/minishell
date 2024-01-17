@@ -1,37 +1,87 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kay <kay@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 1970/01/01 00:00:00 by lcouturi          #+#    #+#             */
+/*   Updated: 2024/01/17 14:14:19 by kay              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void handler(int signum)
+#include "include/minishell.h"
+
+void	free_string_array(char **strs)
 {
-	if (signum != SIGINT)
-		return;
-	printf("ctrl + c\n");
-	rl_on_new_line();
-	//rl_replace_line("", 1);
-	rl_redisplay();
+	int	i;
+
+	i = -1;
+	while (strs[++i])
+		free(strs[i]);
+	free(strs);
 }
 
-int main(void)
+static void	handler(int signum)
 {
-	int ret;
-	char *line;
+	if (signum != SIGINT)
+		return ;
+	printf("\n");
+}
 
-	ret = 1;
+static char	*whitespace_hack(char *s)
+{
+	int	i;
+
+	i = -1;
+	while (++i)
+		if (s[i] == 9 || s[i] == 10 || s[i] == 11 || s[i] == 12 || s[i] == 13)
+			s[i] = ' ';
+	return (s);
+}
+
+static void	parser(char *str, char **envp)
+{
+	char	**args;
+
+	args = ft_split(whitespace_hack(str), ' ');
+	if (!args)
+	{
+		free(str);
+		rl_clear_history();
+		exit(EXIT_FAILURE);
+	}
+	if (args[0])
+	{
+		if (!ft_strncmp(args[0], "cd", 3))
+			cmd_cd(args, envp);
+		else if (!ft_strncmp(args[0], "exit", 5))
+			cmd_exit(args);
+		else
+			cmd_exec(args, envp);
+	}
+	add_history(str);
+	free(str);
+	free_string_array(args);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	char	*line;
+
+	(void)argc;
+	(void)argv;
 	signal(SIGINT, handler);
 	while (1)
 	{
 		line = readline("input> ");
 		if (line)
 		{
-			if (ret)
-				printf("output> %s\n", line);
-			add_history(line);
-			free(line);
-			line = NULL;
+			if (ft_strncmp(line, "\0", 1))
+				parser(line, envp);
 		}
 		else
-		{
 			printf("ctrl + d\n");
-		}
 	}
 	return (0);
 }
