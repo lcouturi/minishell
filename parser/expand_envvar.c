@@ -43,12 +43,12 @@ static int	get_length(char *str, char **envp)
 			if (envp[i[2]])
 				l += ft_strlen(envp[i[2]]) - ft_strlen(name);
 			free(name);
-			l += i[3] * 2;
+			i[0]--;
 		}
 		else
 			l++;
 	}
-	return (l);
+	return (l + 1);
 }
 
 char	*expand_envvar(char *str, char **envp)
@@ -69,8 +69,6 @@ char	*expand_envvar(char *str, char **envp)
 		quote_check(str, i);
 		if (!i[4] && str[i[0]] == '$')
 		{
-			if (!i[3])
-				str2[i[1]++] = '\"';
 			i[2] = i[0] + 1;
 			while (ft_isalnum(str[i[2]]))
 				i[2]++;
@@ -90,8 +88,6 @@ char	*expand_envvar(char *str, char **envp)
 				while (envp[i[2]][i2])
 					str2[i[1]++] = envp[i[2]][i2++];
 			}
-			if (!i[3])
-				str2[i[1]++] = '\"';
 			free(name);
 		}
 		else
