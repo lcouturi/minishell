@@ -48,19 +48,25 @@ static char	*lowest(t_list *lst)
 
 static char	**get_file_list(void)
 {
-	DIR*			dir;
-	struct dirent*	dr;
+	DIR				*dir;
+	struct dirent	*dr;
 	char			**files;
 	int				i;
 	t_list			*lst;
 
 	dir = opendir(".");
 	dr = readdir(dir);
-	if (dr->d_name[0] != '.')
-		lst = ft_lstnew(ft_strdup(dr->d_name));
-	while ((dr = readdir(dir)))
+	while (dr->d_name[0] == '.')
+		dr = readdir(dir);
+	lst = ft_lstnew(ft_strdup(dr->d_name));
+	while (1)
+	{
+		dr = readdir(dir);
+		if (!dr)
+			break ;
 		if (dr->d_name[0] != '.')
 			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(dr->d_name)));
+	}
 	files = malloc(8 * ft_lstsize(lst) + 1);
 	i = -1;
 	while (++i < ft_lstsize(lst))

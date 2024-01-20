@@ -32,7 +32,7 @@ void	parser(char *str, char **envp)
 {
 	char	**args;
 
-	args = arg_splitter(expand_wildcard(expand_envvar(str, envp)));
+	args = arg_splitter(expand_envvar(str, envp));
 	add_history(str);
 	free(str);
 	if (!args)
