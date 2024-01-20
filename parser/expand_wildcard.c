@@ -29,20 +29,20 @@ static char	*lowest(t_list *lst)
 {
 	char	*ret;
 	t_list	*tmp;
-	t_list	*tmplow;
+	t_list	*low;
 
-	tmplow = lst;
-	while (!tmplow->content)
-		tmplow = tmplow->next;
-	tmp = tmplow->next;
+	low = lst;
+	while (!low->content)
+		low = low->next;
+	tmp = low->next;
 	while (tmp)
 	{
-		if (ft_strncmp(tmplow->content, tmp->content, ft_strlen(tmplow->content)) > 0)
-			tmplow = tmp;
+		if (ft_strncmp(low->content, tmp->content, ft_strlen(low->content)) > 0)
+			low = tmp;
 		tmp = tmp->next;
 	}
-	ret = tmplow->content;
-	tmplow->content = 0;
+	ret = low->content;
+	low->content = 0;
 	return (ret);
 }
 
