@@ -30,7 +30,7 @@ static void	find_command(char **args, char **envp)
 
 void	parser(char *str, char **envp)
 {
-	char			**args;
+	char	**args;
 
 	args = arg_splitter(expand_envvar(str, envp));
 	add_history(str);
