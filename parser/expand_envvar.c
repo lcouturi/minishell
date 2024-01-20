@@ -22,7 +22,8 @@ static void	get_length_loop(char *str, char **envp, int *i)
 		while (ft_isalnum(str[i[1]]))
 			i[1]++;
 		i[2] = 0;
-		while (envp[i[2]] && ft_strncmp(envp[i[2]], str + i[0], i[1] - i[0]))
+		while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[1] - i[0])
+				|| envp[i[2]][i[1] - i[0]] != '='))
 			i[2]++;
 		if (envp[i[2]])
 			i[5] += ft_strlen(envp[i[2]]) - (i[1] - i[0] + 1);
@@ -55,7 +56,8 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp, int *i)
 		while (ft_isalnum(str[i[5]]))
 			i[5]++;
 		i[2] = 0;
-		while (envp[i[2]] && ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0]))
+		while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0])
+				|| envp[i[2]][i[5] - i[0]] != '='))
 			i[2]++;
 		if (envp[i[2]])
 		{
