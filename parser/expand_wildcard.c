@@ -41,13 +41,12 @@ static char	*lowest(t_list *lst)
 			tmplow = tmp;
 		tmp = tmp->next;
 	}
-	ret = ft_strdup(tmplow->content);
-	free(tmplow->content);
+	ret = tmplow->content;
 	tmplow->content = 0;
 	return (ret);
 }
 
-void	expand_wildcard(void)
+static char	**get_file_list(void)
 {
 	DIR*			dir;
 	struct dirent*	dr;
@@ -58,10 +57,10 @@ void	expand_wildcard(void)
 	dir = opendir(".");
 	dr = readdir(dir);
 	if (dr->d_name[0] != '.')
-		lst = ft_lstnew(dr->d_name);
+		lst = ft_lstnew(ft_strdup(dr->d_name));
 	while ((dr = readdir(dir)))
 		if (dr->d_name[0] != '.')
-			ft_lstadd_back(&lst, ft_lstnew(dr->d_name));
+			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(dr->d_name)));
 	files = malloc(8 * ft_lstsize(lst) + 1);
 	i = -1;
 	while (++i < ft_lstsize(lst))
@@ -73,5 +72,14 @@ void	expand_wildcard(void)
 		lst = lst->next;
 	}
 	closedir(dir);
+	return (files);
+}
+
+char	*expand_wildcard(char *str)
+{
+	char	**files;
+
+	files = get_file_list();
 	free_string_array(files);
+	return (str);
 }
