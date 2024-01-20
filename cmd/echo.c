@@ -27,31 +27,53 @@ int	is_n_option(char *str)
 	return (1);
 }
 
-char	*change_args(char *args)
+void	change_args(char *args, char c)
 {
-	(void)args; // to_do_list
-	return NULL;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (args[i])
+	{
+		if (args[i] != c)
+			args[j++] = args[i];
+		i++;
+	}
+	args[j] = '\0';
+}
+
+char	*find_value(char *key, char **envp)
+{
+	int	i;
+
+	i = -1;
+	while (envp[++i])
+	{
+		if (!ft_strncmp(envp[i], key, ft_strlen(key)))
+			return (envp[i] + ft_strlen(key) + 1);
+	}
+	return ("");
 }
 
 void	cmd_echo_envv(char **args, char **envp, int i)
 {
-	if (args[i][0] == '$' && args[1][1] == '?') // but also need to care any other idx too..
-		printf("0\n"); // to_do_list
-	else
-		printf("1\n");
-	// to_ do_liset
-	(void)envp;
+	char	*str;
+
+	if (args[i][0] == '$' && args[1][1] == '?')
+		ft_putstr_fd(ft_itoa(g_exit_status), 1);
+	str = find_value(&(args[i][1]), envp);
+	ft_putstr_fd(str, 1);
 }
 
 void	cmd_echo(char **args, char **envp)
 {
 	int		i;
 	int		new_line;
-	char	cha;
 
 	i = 1;
 	new_line = 1;
-	cha = '\'';
+
 	while (is_n_option(args[i]))
 	{
 		new_line = 0;
@@ -59,9 +81,9 @@ void	cmd_echo(char **args, char **envp)
 	}
 	while (args[i])
 	{
-		if (ft_strchr(args[i], cha))
-			args[i] = change_args(args[i]);
-		if (args[i][0] == '$')
+		if (args[i][0] == '\'')
+			change_args(args[i], '\'');
+		if (args[i][0] == '$' && new_line == 1)
 			cmd_echo_envv(args, envp, i);
 		else
 			ft_putstr_fd(args[i], 1);
@@ -70,5 +92,5 @@ void	cmd_echo(char **args, char **envp)
 		i++;
 	}
 	if (new_line)
-		printf("\n");
+		ft_putchar_fd('\n', 1);
 }

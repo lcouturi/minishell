@@ -34,4 +34,6 @@ void	free_string_array(char **strs);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
 
+extern int		g_exit_status;
+
 #endif

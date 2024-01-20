@@ -12,6 +12,8 @@
 
 #include "include/minishell.h"
 
+int	g_exit_status = 0;
+
 void	free_string_array(char **strs)
 {
 	int	i;
