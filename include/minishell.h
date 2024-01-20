@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# include <dirent.h>
 # include "../libs/Libft/libft.h"
 # include <signal.h>
 # include <stdio.h>
@@ -28,6 +29,7 @@ void	cmd_exec(char **args, char **envp);
 void	cmd_exit(char **args);
 void	cmd_pwd(void);
 char	*expand_envvar(char *str, char **envp);
+void	expand_wildcard(void);
 void	free_string_array(char **strs);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
