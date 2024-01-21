@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 				parser(line, envp);
 		}
 		else
-			printf("ctrl + d\n");
+			cmd_exit_no_arg();
 	}
 	return (0);
 }

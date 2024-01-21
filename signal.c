@@ -6,31 +6,33 @@
 	signal(SIGQUIT, handle_signal); -> ctrl + '\'
 */
 
-void	handle_signal(int signum)
+void	handle_signal(int signo)
 {
-	pid_t	pid;
-	int		status;
-	char	*line;
+	int	pid;
+	int	status;
 
 	pid = waitpid(-1, &status, WNOHANG);
-	(void)line;
-	if (signum == SIGINT)
-	{
-		printf("SIGINT\n");
+	if (signo == SIGINT){
 		if (pid == -1)
 		{
-			ft_putstr_fd("\b\b  \b\b\n", STDOUT);
-			line = readline("minishell> ");
-			g_exit_status = 1;
+			rl_on_new_line();
+			rl_redisplay();
+			ft_putstr_fd("  \n",STDOUT);
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			rl_redisplay();
 		}
 		else
-			ft_putchar_fd('\n', STDOUT);
+			ft_putstr_fd("\n", STDOUT);
 	}
-	else if (signum == SIGQUIT)
+	else if(signo == SIGQUIT)
 	{
-		printf("SIGOUT\n");
 		if (pid == -1)
-			ft_putstr_fd("\b\b  \b\b", STDOUT);
+		{
+			rl_on_new_line();
+			rl_redisplay();
+			ft_putstr_fd("  \b\b", STDOUT);
+		}
 		else
 			ft_putstr_fd("Quit: \n", STDOUT);
 	}
@@ -38,6 +40,6 @@ void	handle_signal(int signum)
 
 void	set_signal(void)
 {
-	signal(SIGINT, handle_signal);//ctrl + c
-	signal(SIGQUIT, handle_signal);//ctrl + '\'
+	signal(SIGINT, handle_signal);
+	signal(SIGQUIT, handle_signal);
 }

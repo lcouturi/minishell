@@ -2,8 +2,8 @@ NAME = minishell
 CC = gcc
 CFLAGS = -Werror -Wall -Wextra 
 
-LDFLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib -Llibs/Libft -lft
-CPPFLAGS = -I${HOME}/.brew/opt/readline/include
+LDFLAGS = -lreadline -L/opt/homebrew/opt/readline/lib -L${HOME}/.brew/opt/readline/lib -Llibs/Libft -lft
+CPPFLAGS = -I${HOME}/.brew/opt/readline/include -I/opt/homebrew/opt/readline/include
 
 INCLUDE_DIR	=	./include
 

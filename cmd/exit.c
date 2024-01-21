@@ -18,3 +18,9 @@ void	cmd_exit(char **args)
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }
+
+void	cmd_exit_no_arg()
+{
+	rl_clear_history();
+	exit(EXIT_SUCCESS);
+}
