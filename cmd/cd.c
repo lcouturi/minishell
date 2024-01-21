@@ -16,14 +16,18 @@ void	cmd_cd(char **args, char **envp)
 {
 	int		i;
 
+	g_exit_status = EXIT_SUCCESS * 256;
+	i = 0;
 	if (args[1])
 	{
 		if (chdir(args[1]) == -1)
+		{
+			g_exit_status = EXIT_FAILURE * 256;
 			printf("minishell: cd: %s: No such file or directory\n", args[1]);
+		}
 	}
 	else
 	{
-		i = 0;
 		while (ft_strncmp(envp[i], "HOME=", 5))
 			i++;
 		chdir(envp[i] + 5);

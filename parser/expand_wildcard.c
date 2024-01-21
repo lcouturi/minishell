@@ -86,12 +86,61 @@ static char	**get_file_list(void)
 	return (files);
 }
 
+int	ft_isspace(char c)
+{
+	return ((c >= 9 && c <= 13) || c == 32);
+}
+
 char	*expand_wildcard(char *str)
 {
 	char	**files;
+	int		i[6];
 
-	files = get_file_list();
-	if (files)
-		free_string_array(files);
+	i[0] = 0;
+	i[3] = 0;
+	i[4] = 0;
+	while (str[i[0]])
+	{
+		quote_check(str, i);
+		if (!i[3] && !i[4] && str[i[0]] == '*')
+		{
+			files = get_file_list();
+			while (!ft_isspace(str[i[0]]))
+				i[0]--;
+			i[0]++;
+			i[1] = -1;
+			while (files[++i[1]])
+			{
+				i[5] = i[0];
+				i[2] = 0;
+				while (1)
+				{
+					if (str[i[5]] != '*')
+					{
+						if (str[i[5]] != files[i[1]][i[2]])
+						{
+							files[i[1]][0] = '\0';
+							break ;
+						}
+						i[5]++;
+						i[2]++;
+					}
+					else if (str[i[5]] == '*' && (ft_isspace(str[i[5] + 1]) || !str[i[5] + 1]))
+						break ;
+					else
+						break ;
+				}
+			}
+			i[1] = -1;
+			while (files[++i[1]])
+				if (files[i[1]][0])
+					printf("%s\n", files[i[1]]);
+			free_string_array(files);
+			while (str[i[0]] && !ft_isspace(str[i[0]]))
+				i[0]++;
+		}
+		else
+			i[0]++;
+	}
 	return (str);
 }
