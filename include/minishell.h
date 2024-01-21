@@ -33,6 +33,11 @@ char	*expand_wildcard(char *str);
 void	free_string_array(char **strs);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
+void	set_signal(void);
+
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
 
 extern int		g_exit_status;
 

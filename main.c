@@ -24,20 +24,13 @@ void	free_string_array(char **strs)
 	free(strs);
 }
 
-static void	handler(int signum)
-{
-	if (signum != SIGINT)
-		return ;
-	printf("\n");
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
 
 	(void)argc;
 	(void)argv;
-	signal(SIGINT, handler);
+	set_signal();
 	while (1)
 	{
 		line = readline("minishell> ");
