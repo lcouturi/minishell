@@ -2,12 +2,12 @@ NAME = minishell
 CC = gcc
 CFLAGS = -Werror -Wall -Wextra 
 
-LDFLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib -Llibs/Libft -lft
-CPPFLAGS = -I${HOME}/.brew/opt/readline/include
+LDFLAGS = -lreadline -L/opt/homebrew/opt/readline/lib -L${HOME}/.brew/opt/readline/lib -Llibs/Libft -lft
+CPPFLAGS = -I${HOME}/.brew/opt/readline/include -I/opt/homebrew/opt/readline/include
 
 INCLUDE_DIR	=	./include
 
-SRCS = main.c cmd/cd.c cmd/exec.c cmd/exit.c cmd/env.c cmd/pwd.c cmd/echo.c parser/arg_splitter.c parser/expand_envvar.c parser/expand_wildcard.c parser/parser.c
+SRCS = main.c signal.c cmd/cd.c cmd/exec.c cmd/exit.c cmd/env.c cmd/pwd.c cmd/echo.c parser/arg_splitter.c parser/expand_envvar.c parser/expand_wildcard.c parser/parser.c
 
 OBJS = $(SRCS:.c=.o)
 
