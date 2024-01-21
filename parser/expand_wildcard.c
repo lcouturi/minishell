@@ -56,8 +56,13 @@ static char	**get_file_list(void)
 
 	dir = opendir(".");
 	dr = readdir(dir);
-	while (dr->d_name[0] == '.')
+	while (dr && dr->d_name[0] == '.')
 		dr = readdir(dir);
+	if (!dr)
+	{
+		closedir(dir);
+		return (0);
+	}
 	lst = ft_lstnew(ft_strdup(dr->d_name));
 	while (1)
 	{
@@ -86,6 +91,7 @@ char	*expand_wildcard(char *str)
 	char	**files;
 
 	files = get_file_list();
-	free_string_array(files);
+	if (files)
+		free_string_array(files);
 	return (str);
 }

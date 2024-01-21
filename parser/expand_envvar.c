@@ -67,7 +67,7 @@ static void	get_length_loop(char *str, char **envp, int *i)
 
 static int	get_length(char *str, char **envp)
 {
-	int		i[6];
+	int	i[6];
 
 	i[0] = -1;
 	i[3] = 0;
