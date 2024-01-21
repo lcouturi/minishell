@@ -12,12 +12,44 @@
 
 #include "../include/minishell.h"
 
+static int	getsize(long n)
+{
+	int	s;
+
+	s = 1;
+	if (!n)
+		s++;
+	while (n && s++)
+		n /= 10;
+	return (s);
+}
+
+static void	insert_int(char *str, int *i)
+{
+	int	j;
+
+	j = 1000000000;
+	while (j)
+	{
+		if (g_exit_status / 256 / j)
+			str[i[1]++] = g_exit_status / 256 / j % 10 + '0';
+		j /= 10;
+	}
+	if (!(g_exit_status / 256))
+		str[i[1]++] = '0';
+	i[0]++;
+}
+
 static void	get_length_loop(char *str, char **envp, int *i)
 {
 	quote_check(str, i);
 	if (!i[4] && str[i[0]] == '$')
 	{
-		i[0]++;
+		if (str[++i[0]] == '?')
+		{
+			i[5] += getsize(g_exit_status / 256);
+			return ;
+		}
 		i[1] = i[0];
 		while (ft_isalnum(str[i[1]]))
 			i[1]++;
@@ -51,7 +83,11 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp, int *i)
 	quote_check(str, i);
 	if (!i[4] && str[i[0]] == '$')
 	{
-		i[0]++;
+		if (str[++i[0]] == '?')
+		{
+			insert_int(str2, i);
+			return ;
+		}
 		i[5] = i[0];
 		while (ft_isalnum(str[i[5]]))
 			i[5]++;

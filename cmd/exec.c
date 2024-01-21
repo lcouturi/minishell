@@ -60,5 +60,5 @@ void	cmd_exec(char **args, char **envp)
 		free_string_array(args);
 		exit(EXIT_FAILURE);
 	}
-	waitpid(pid, 0, 0);
+	waitpid(pid, &g_exit_status, 0);
 }
