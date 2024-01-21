@@ -19,7 +19,7 @@ void	cmd_exit(char **args)
 	exit(EXIT_SUCCESS);
 }
 
-void	cmd_exit_no_arg()
+void	cmd_exit_no_arg(void)
 {
 	rl_clear_history();
 	exit(EXIT_SUCCESS);

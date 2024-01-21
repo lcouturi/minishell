@@ -73,7 +73,6 @@ void	cmd_echo(char **args, char **envp)
 
 	i = 1;
 	new_line = 1;
-
 	while (is_n_option(args[i]))
 	{
 		new_line = 0;
