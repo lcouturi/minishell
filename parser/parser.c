@@ -17,7 +17,10 @@ static void	find_command(char **args, char **envp)
 	if (!ft_strncmp(args[0], "cd", 3))
 		cmd_cd(args, envp);
 	else if (!ft_strncmp(args[0], "exit", 5))
+	{
+		free_string_array(envp);
 		cmd_exit(args);
+	}
 	else if (!ft_strncmp(args[0], "env", 4))
 		cmd_env(envp);
 	else if (!ft_strncmp(args[0], "pwd", 4))

@@ -14,6 +14,22 @@
 
 int	g_exit_status = 0;
 
+char	**copy_string_array(char **strs)
+{
+	int		i;
+	char	**newstrs;
+
+	i = 0;
+	while (strs[i])
+		i++;
+	newstrs = malloc((i + 1) * 8);
+	i = -1;
+	while (strs[++i])
+		newstrs[i] = ft_strdup(strs[i]);
+	newstrs[i] = 0;
+	return (newstrs);
+}
+
 void	free_string_array(char **strs)
 {
 	int	i;
@@ -26,10 +42,12 @@ void	free_string_array(char **strs)
 
 int	main(int argc, char **argv, char **envp)
 {
+	char	**envp_copy;
 	char	*line;
 
 	(void)argc;
 	(void)argv;
+	envp_copy = copy_string_array(envp);
 	set_signal();
 	while (1)
 	{
@@ -37,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 		{
 			if (ft_strncmp(line, "\0", 1))
-				parser(line, envp);
+				parser(line, envp_copy);
 		}
 		else
 			cmd_exit_no_arg();

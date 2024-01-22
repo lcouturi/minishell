@@ -21,6 +21,7 @@ static void	cmd_exec_loop(int i, char **paths, char **args, char **envp)
 	path = malloc(n);
 	if (!path)
 	{
+		free_string_array(envp);
 		free_string_array(paths);
 		exit(EXIT_FAILURE);
 	}
@@ -51,12 +52,15 @@ void	cmd_exec(char **args, char **envp)
 			i++;
 		paths = ft_split(envp[i] + 5, ':');
 		if (!paths)
+		{
+			free_string_array(envp);
 			exit(EXIT_FAILURE);
+		}
 		i = -1;
 		while (paths[++i])
 			cmd_exec_loop(i, paths, args, envp);
+		free_string_array(envp);
 		free_string_array(paths);
-		printf("minishell: %s: command not found\n", args[0]);
 		free_string_array(args);
 		exit(EXIT_FAILURE);
 	}
