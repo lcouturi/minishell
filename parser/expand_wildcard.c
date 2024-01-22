@@ -86,15 +86,27 @@ static char	**get_file_list(void)
 	return (files);
 }
 
-int	ft_isspace(char c)
+void	match(char *str, char **files, int *i)
 {
-	return ((c >= 9 && c <= 13) || c == 32);
+	char	**split;
+
+	split = ft_split(str + i[5], '*');
+	if (str[i[5]] != '*')
+	{
+		printf("%s, %s\n", split[0], files[i[1]]);
+		if (ft_strncmp(split[0], files[i[1]], ft_strlen(split[0])))
+		{
+			free_string_array(split);
+			files[i[1]][0] = '\0';
+			return ;
+		}
+	}
 }
 
 char	*expand_wildcard(char *str)
 {
 	char	**files;
-	int		i[6];
+	int		i[7];
 
 	i[0] = 0;
 	i[3] = 0;
@@ -113,23 +125,7 @@ char	*expand_wildcard(char *str)
 			{
 				i[5] = i[0];
 				i[2] = 0;
-				while (1)
-				{
-					if (str[i[5]] != '*')
-					{
-						if (str[i[5]] != files[i[1]][i[2]])
-						{
-							files[i[1]][0] = '\0';
-							break ;
-						}
-						i[5]++;
-						i[2]++;
-					}
-					else if (str[i[5]] == '*' && (ft_isspace(str[i[5] + 1]) || !str[i[5] + 1]))
-						break ;
-					else
-						break ;
-				}
+				match(str, files, i);
 			}
 			i[1] = -1;
 			while (files[++i[1]])

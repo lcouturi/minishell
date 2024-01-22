@@ -28,6 +28,11 @@ static void	find_command(char **args, char **envp)
 		cmd_exec(args, envp);
 }
 
+int	ft_isspace(char c)
+{
+	return ((c >= 9 && c <= 13) || c == 32);
+}
+
 void	parser(char *str, char **envp)
 {
 	char	**args;
@@ -47,18 +52,27 @@ void	parser(char *str, char **envp)
 
 void	quote_check(char const *s, int *i)
 {
-	if (!i[4] && s[i[0]] == '\"')
+	int	j;
+
+	i[3] = 0;
+	i[4] = 0;
+	j = 0;
+	while (j <= i[0])
 	{
-		if (!i[3])
-			i[3] = 1;
-		else
-			i[3] = 0;
-	}
-	if (!i[3] && s[i[0]] == '\'')
-	{
-		if (!i[4])
-			i[4] = 1;
-		else
-			i[4] = 0;
+		if (!i[4] && s[j] == '\"')
+		{
+			if (!i[3])
+				i[3] = 1;
+			else
+				i[3] = 0;
+		}
+		if (!i[3] && s[j] == '\'')
+		{
+			if (!i[4])
+				i[4] = 1;
+			else
+				i[4] = 0;
+		}
+		j++;
 	}
 }

@@ -32,6 +32,7 @@ void	cmd_pwd(void);
 char	*expand_envvar(char *str, char **envp);
 char	*expand_wildcard(char *str);
 void	free_string_array(char **strs);
+int		ft_isspace(char c);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
 void	set_signal(void);

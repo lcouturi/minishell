@@ -65,19 +65,6 @@ static void	get_length_loop(char *str, char **envp, int *i)
 		i[5]++;
 }
 
-static int	get_length(char *str, char **envp)
-{
-	int	i[6];
-
-	i[0] = -1;
-	i[3] = 0;
-	i[4] = 0;
-	i[5] = 0;
-	while (str[++i[0]])
-		get_length_loop(str, envp, i);
-	return (i[5] + 1);
-}
-
 static void	expand_envvar_loop(char *str, char *str2, char **envp, int *i)
 {
 	quote_check(str, i);
@@ -112,11 +99,13 @@ char	*expand_envvar(char *str, char **envp)
 	int		i[7];
 	char	*str2;
 
+	i[0] = -1;
+	i[5] = 0;
+	while (str[++i[0]])
+		get_length_loop(str, envp, i);
+	str2 = malloc((i[5] + 1) * sizeof(char));
 	i[0] = 0;
 	i[1] = 0;
-	i[3] = 0;
-	i[4] = 0;
-	str2 = malloc(get_length(str, envp));
 	while (str[i[0]])
 		expand_envvar_loop(str, str2, envp, i);
 	str2[i[1]] = '\0';
