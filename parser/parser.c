@@ -29,6 +29,8 @@ static void	find_command(char **args, char **envp, int pipe_check)
 		cmd_pwd();
 	else if (!ft_strncmp(args[0], "echo", 5))
 		cmd_echo(args, envp);
+	else if (!ft_strncmp(args[0], "unset", 6))
+		cmd_unset(args, envp);
 	else
 		cmd_exec(args, envp, pipe_check);
 }
