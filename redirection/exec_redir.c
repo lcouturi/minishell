@@ -5,7 +5,8 @@ void	exec_redir_cmd(char **args, char **envp)
 	pid_t	pid;
 	int		status;
 
-	if ((pid = fork()) == 0)
+	pid = fork();
+	if (pid == 0)
 	{
 		execve(args[0], args, envp);
 		exit(EXIT_FAILURE);
@@ -19,42 +20,24 @@ void	exec_redir_cmd(char **args, char **envp)
 void	exec_redir(char **args, int pipe_check)
 {
 	int	i;
-	int	fd;
+	int	saved_stdout;
+	int	saved_stdin;
 
 	(void)pipe_check;
 	i = -1;
-	int saved_stdout = dup(STDOUT_FILENO);
-	int saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	saved_stdin = dup(STDIN_FILENO);
 	while (args[++i] != NULL)
 	{
 		if (strcmp(args[i], "<") == 0)
-		{
-			args[i] = NULL;
-			fd = open(args[i + 1], O_RDONLY);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-		}
+			left_redir(args, i);
 		else if (strcmp(args[i], ">") == 0)
-		{
-			args[i] = NULL;
-			fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
+			right_redir(args, i);
 		else if (strcmp(args[i], ">>") == 0)
-		{
-			args[i] = NULL;
-			fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-			dup2(fd, STDOUT_FILENO);
-			close(fd);
-		}
+			right_double_redir(args, i);
 		else if (strcmp(args[i], "<<") == 0)
-		{
-			// [To-do-list] need to handle pipe
-			(void)i;
-		}
+			left_dobule_redir(args, i);
 	}
-	// Restore file descriptors
 	dup2(saved_stdout, STDOUT_FILENO);
 	dup2(saved_stdin, STDIN_FILENO);
 }

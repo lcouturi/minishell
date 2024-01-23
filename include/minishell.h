@@ -36,10 +36,16 @@ void	free_string_array(char **strs);
 int		ft_isspace(char c);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
+// signal
 void	set_signal(void);
+// redirection
 int		redir_chk(char **args);
 void	exec_redir(char **args, int pipe_check);
 void	exec_redir_cmd(char **args, char **envp);
+void	left_redir(char **args, int i);
+void	left_dobule_redir(char **args, int i);
+void	right_redir(char **args, int i);
+void	right_double_redir(char **args, int i);
 
 extern int		g_exit_status;
 

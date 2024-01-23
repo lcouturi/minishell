@@ -64,7 +64,7 @@ static void	exec_proc(char **args, char **envp)
 
 void	exec_child(char **args, char **envp, int fds[])
 {
-	int pipe_check;
+	int	pipe_check;
 
 	(void)pipe_check;
 	dup2(fds[0], 0);

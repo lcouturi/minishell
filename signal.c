@@ -17,6 +17,23 @@
 	signal(SIGQUIT, handle_signal); -> ctrl + '\'
 */
 
+void	sigint(void)
+{
+	rl_on_new_line();
+	rl_redisplay();
+	ft_putstr_fd("  \n", STDOUT_FILENO);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
+void	sigquit(void)
+{
+	rl_on_new_line();
+	rl_redisplay();
+	ft_putstr_fd("  \b\b", STDOUT_FILENO);
+}
+
 void	handle_signal(int signo)
 {
 	int	pid;
@@ -26,25 +43,14 @@ void	handle_signal(int signo)
 	if (signo == SIGINT)
 	{
 		if (pid == -1)
-		{
-			rl_on_new_line();
-			rl_redisplay();
-			ft_putstr_fd("  \n", STDOUT_FILENO);
-			rl_on_new_line();
-			rl_replace_line("", 0);
-			rl_redisplay();
-		}
+			sigint();
 		else
 			ft_putstr_fd("\n", STDOUT_FILENO);
 	}
 	else if (signo == SIGQUIT)
 	{
 		if (pid == -1)
-		{
-			rl_on_new_line();
-			rl_redisplay();
-			ft_putstr_fd("  \b\b", STDOUT_FILENO);
-		}
+			sigquit();
 		else
 			ft_putstr_fd("Quit: \n", STDOUT_FILENO);
 	}

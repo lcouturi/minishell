@@ -8,7 +8,7 @@ CPPFLAGS = -I${HOME}/.brew/opt/readline/include -I/opt/homebrew/opt/readline/inc
 INCLUDE_DIR	=	./include
 
 SRCS = main.c signal.c cmd/cd.c cmd/exec.c cmd/exit.c cmd/env.c cmd/pwd.c cmd/echo.c parser/arg_splitter.c parser/expand_envvar.c parser/expand_wildcard.c parser/parser.c \
-		redirection/exec_redir.c redirection/utils_redir.c
+		redirection/exec_redir.c redirection/utils_redir.c redirection/cmd_redir.c
 
 OBJS = $(SRCS:.c=.o)
 
