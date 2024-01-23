@@ -68,8 +68,8 @@ void	cmd_echo_envv(char **args, char **envp, int i)
 
 void	cmd_echo(char **args, char **envp)
 {
-	int		i;
-	int		new_line;
+	int	i;
+	int	new_line;
 
 	i = 1;
 	new_line = 1;

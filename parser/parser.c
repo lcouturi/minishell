@@ -12,9 +12,14 @@
 
 #include "../include/minishell.h"
 
-static void	find_command(char **args, char **envp)
+static void	find_command(char **args, char **envp, int pipe_check)
 {
-	if (!ft_strncmp(args[0], "cd", 3))
+	if (redir_chk(args))
+	{
+		exec_redir(args, pipe_check);
+		exec_redir_cmd(args, envp);
+	}
+	else if (!ft_strncmp(args[0], "cd", 3))
 		cmd_cd(args, envp);
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp);
@@ -24,8 +29,10 @@ static void	find_command(char **args, char **envp)
 		cmd_pwd();
 	else if (!ft_strncmp(args[0], "echo", 5))
 		cmd_echo(args, envp);
+	else if (!ft_strncmp(args[0], "unset", 6))
+		cmd_unset(args, envp);
 	else
-		cmd_exec(args, envp);
+		cmd_exec(args, envp, pipe_check);
 }
 
 int	ft_isspace(char c)
@@ -36,7 +43,9 @@ int	ft_isspace(char c)
 void	parser(char *str, char **envp)
 {
 	char	**args;
+	int		pipe_check;
 
+	pipe_check = 0;
 	args = arg_splitter(expand_envvar(str, envp));
 	add_history(str);
 	free(str);
@@ -46,7 +55,7 @@ void	parser(char *str, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	if (args[0])
-		find_command(args, envp);
+		find_command(args, envp, pipe_check);
 	free_string_array(args);
 }
 

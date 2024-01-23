@@ -20,22 +20,33 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 
 char	**arg_splitter(char *s);
 void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, char **envs);
 void	cmd_env(char **envs);
-void	cmd_exec(char **args, char **envp);
+void	cmd_exec(char **args, char **envp, int pipe_check);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
 void	cmd_pwd(void);
+void	cmd_unset(char **args, char **envp);
 char	*expand_envvar(char *str, char **envp);
 char	*expand_wildcard(char *str);
 void	free_string_array(char **strs);
 int		ft_isspace(char c);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
+// signal
 void	set_signal(void);
+// redirection
+int		redir_chk(char **args);
+void	exec_redir(char **args, int pipe_check);
+void	exec_redir_cmd(char **args, char **envp);
+void	left_redir(char **args, int i);
+void	left_dobule_redir(char **args, int i);
+void	right_redir(char **args, int i);
+void	right_double_redir(char **args, int i);
 
 extern int		g_exit_status;
 

@@ -62,12 +62,50 @@ static void	exec_proc(char **args, char **envp)
 	exit(EXIT_FAILURE);
 }
 
-void	cmd_exec(char **args, char **envp)
+void	exec_child(char **args, char **envp, int fds[])
+{
+	int	pipe_check;
+
+	(void)pipe_check;
+	dup2(fds[0], 0);
+	close(fds[0]);
+	close(fds[1]);
+	(void)fds;
+	exec_proc(args, envp);
+	exit(g_exit_status);
+}
+
+void	exec_parents(int pid, int fds[])
+{
+	close(fds[1]);
+	close(fds[0]);
+	printf("hi\n");
+	waitpid(pid, &g_exit_status, 0);
+	g_exit_status = g_exit_status >> 8;
+}
+
+void	cmd_exec(char **args, char **envp, int pipe_check)
 {
 	int	pid;
+	int	fds[2];
 
 	pid = fork();
-	if (!pid)
-		exec_proc(args, envp);
-	waitpid(pid, &g_exit_status, 0);
+	pipe(fds);
+	if (pipe_check == 0)
+	{
+		if (!pid)
+			exec_proc(args, envp);
+		waitpid(pid, &g_exit_status, 0);
+	}
+	else
+	{
+		if (!pid)
+			exec_proc(args, envp);
+		else
+			exit(EXIT_FAILURE);
+		if (pid == 0)
+			exec_child(args, envp, fds);
+		else
+			exec_parents(pid, fds);
+	}
 }
