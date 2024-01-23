@@ -96,7 +96,7 @@ void	match(char *str, char **files, int *i)
 		printf("%s, %s\n", split[0], files[i[1]]);
 		if (ft_strncmp(split[0], files[i[1]], ft_strlen(split[0])))
 		{
-			free_string_array(split);
+			strarrfree(split);
 			files[i[1]][0] = '\0';
 			return ;
 		}
@@ -131,7 +131,7 @@ char	*expand_wildcard(char *str)
 			while (files[++i[1]])
 				if (files[i[1]][0])
 					printf("%s\n", files[i[1]]);
-			free_string_array(files);
+			strarrfree(files);
 			while (str[i[0]] && !ft_isspace(str[i[0]]))
 				i[0]++;
 		}

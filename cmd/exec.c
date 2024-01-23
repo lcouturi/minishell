@@ -21,8 +21,8 @@ static void	exec_proc_loop(int i, char **paths, char **args, char **envp)
 	path = malloc(n);
 	if (!path)
 	{
-		free_string_array(envp);
-		free_string_array(paths);
+		strarrfree(envp);
+		strarrfree(paths);
 		exit(EXIT_FAILURE);
 	}
 	ft_strlcpy(path, paths[i], n);
@@ -30,7 +30,7 @@ static void	exec_proc_loop(int i, char **paths, char **args, char **envp)
 	ft_strlcat(path, args[0], n);
 	if (!access(path, X_OK))
 	{
-		free_string_array(paths);
+		strarrfree(paths);
 		execve(path, args, envp);
 	}
 	free(path);
@@ -49,16 +49,16 @@ static void	exec_proc(char **args, char **envp)
 	paths = ft_split(envp[i] + 5, ':');
 	if (!paths)
 	{
-		free_string_array(envp);
+		strarrfree(envp);
 		exit(EXIT_FAILURE);
 	}
 	i = -1;
 	while (paths[++i])
 		exec_proc_loop(i, paths, args, envp);
 	printf("minishell: %s: command not found\n", args[0]);
-	free_string_array(envp);
-	free_string_array(paths);
-	free_string_array(args);
+	strarrfree(envp);
+	strarrfree(paths);
+	strarrfree(args);
 	exit(EXIT_FAILURE);
 }
 

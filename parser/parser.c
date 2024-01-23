@@ -58,7 +58,7 @@ void	parser(char *str, char **envp)
 	}
 	if (args[0])
 		find_command(args, envp, pipe_check);
-	free_string_array(args);
+	strarrfree(args);
 }
 
 void	quote_check(char const *s, int *i)

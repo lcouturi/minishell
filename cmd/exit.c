@@ -14,8 +14,8 @@
 
 void	cmd_exit(char **args, char **envp)
 {
-	free_string_array(args);
-	free_string_array(envp);
+	strarrfree(args);
+	strarrfree(envp);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }

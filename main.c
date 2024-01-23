@@ -14,7 +14,26 @@
 
 int	g_exit_status = 0;
 
-char	**copy_string_array(char **strs)
+char	**strarradd(char **strs, char *str)
+{
+	int		i;
+	char	**newstrs;
+
+	i = 0;
+	while (strs[i])
+		i++;
+	newstrs = malloc((i + 2) * 8);
+	i = -1;
+	while (strs[++i])
+		newstrs[i] = strs[i];
+	newstrs[i++] = ft_strdup(str);
+	newstrs[i] = 0;
+	free(strs);
+	strs = newstrs;
+	return (strs);
+}
+
+char	**strarrcpy(char **strs)
 {
 	int		i;
 	char	**newstrs;
@@ -30,7 +49,7 @@ char	**copy_string_array(char **strs)
 	return (newstrs);
 }
 
-void	free_string_array(char **strs)
+void	strarrfree(char **strs)
 {
 	int	i;
 
@@ -47,7 +66,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	envp_copy = copy_string_array(envp);
+	envp_copy = strarrcpy(envp);
 	set_signal();
 	while (1)
 	{

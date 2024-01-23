@@ -34,7 +34,6 @@ void	cmd_pwd(void);
 void	cmd_unset(char **args, char **envp);
 char	*expand_envvar(char *str, char **envp);
 char	*expand_wildcard(char *str);
-void	free_string_array(char **strs);
 int		ft_isspace(char c);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
@@ -48,6 +47,9 @@ void	left_redir(char **args, int i);
 void	left_dobule_redir(char **args, int i);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
+char	**strarradd(char **strs, char *str);
+char	**strarrcpy(char **strs);
+void	strarrfree(char **strs);
 
 extern int		g_exit_status;
 
