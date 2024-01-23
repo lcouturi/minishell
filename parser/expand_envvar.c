@@ -65,38 +65,46 @@ static void	get_length_loop(char *str, char **envp, int *i)
 		i[5]++;
 }
 
-static void	expand_envvar_loop(char *str, char *str2, char **envp, int *i)
+static void	expand_envvar_loop(char *str, char *str2, char **envp)
 {
-	quote_check(str, i);
-	if (!i[4] && str[i[0]] == '$')
+	int	i[7];
+
+	i[0] = 0;
+	i[1] = 0;
+	while (str[i[0]])
 	{
-		if (str[++i[0]] == '?')
+		quote_check(str, i);
+		if (!i[4] && str[i[0]] == '$')
 		{
-			insert_int(str2, i);
-			return ;
+			if (str[++i[0]] == '?')
+			{
+				insert_int(str2, i);
+				return ;
+			}
+			i[5] = i[0];
+			while (ft_isalnum(str[i[5]]))
+				i[5]++;
+			i[2] = 0;
+			while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0])
+					|| envp[i[2]][i[5] - i[0]] != '='))
+				i[2]++;
+			if (envp[i[2]])
+			{
+				i[6] = i[5] - i[0] + 1;
+				while (envp[i[2]][i[6]])
+					str2[i[1]++] = envp[i[2]][i[6]++];
+			}
+			i[0] = i[5];
 		}
-		i[5] = i[0];
-		while (ft_isalnum(str[i[5]]))
-			i[5]++;
-		i[2] = 0;
-		while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0])
-				|| envp[i[2]][i[5] - i[0]] != '='))
-			i[2]++;
-		if (envp[i[2]])
-		{
-			i[6] = i[5] - i[0] + 1;
-			while (envp[i[2]][i[6]])
-				str2[i[1]++] = envp[i[2]][i[6]++];
-		}
-		i[0] = i[5];
+		else
+			str2[i[1]++] = str[i[0]++];
 	}
-	else
-		str2[i[1]++] = str[i[0]++];
+	str2[i[1]] = '\0';
 }
 
 char	*expand_envvar(char *str, char **envp)
 {
-	int		i[7];
+	int		i[6];
 	char	*str2;
 
 	i[0] = -1;
@@ -104,10 +112,6 @@ char	*expand_envvar(char *str, char **envp)
 	while (str[++i[0]])
 		get_length_loop(str, envp, i);
 	str2 = malloc((i[5] + 1) * sizeof(char));
-	i[0] = 0;
-	i[1] = 0;
-	while (str[i[0]])
-		expand_envvar_loop(str, str2, envp, i);
-	str2[i[1]] = '\0';
+	expand_envvar_loop(str, str2, envp);
 	return (str2);
 }
