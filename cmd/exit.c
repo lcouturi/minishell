@@ -12,9 +12,10 @@
 
 #include "../include/minishell.h"
 
-void	cmd_exit(char **args)
+void	cmd_exit(char **args, char **envp)
 {
 	free_string_array(args);
+	free_string_array(envp);
 	rl_clear_history();
 	exit(EXIT_SUCCESS);
 }
