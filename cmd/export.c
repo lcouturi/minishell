@@ -36,7 +36,6 @@ void	cmd_export(char **args, char **envp)
 	if (!envp[i2])
 	{
 		strarradd(envp, args[1]);
-		strarradd(envp, args[1]);
 		return ;
 	}
 	free(envp[i2]);
