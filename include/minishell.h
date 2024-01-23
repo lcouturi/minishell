@@ -25,7 +25,7 @@ char	**arg_splitter(char *s);
 void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, char **envs);
 void	cmd_env(char **envs);
-void	cmd_exec(char **args, char **envp);
+void	cmd_exec(char **args, char **envp, int pipe_check);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
 void	cmd_pwd(void);
