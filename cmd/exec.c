@@ -59,6 +59,7 @@ void	cmd_exec(char **args, char **envp)
 		i = -1;
 		while (paths[++i])
 			cmd_exec_loop(i, paths, args, envp);
+		printf("minishell: %s: command not found\n", args[0]);
 		free_string_array(envp);
 		free_string_array(paths);
 		free_string_array(args);
