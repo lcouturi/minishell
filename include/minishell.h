@@ -20,6 +20,7 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <fcntl.h>
 
 char	**arg_splitter(char *s);
 void	cmd_cd(char **args, char **envp);
@@ -36,6 +37,9 @@ int		ft_isspace(char c);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
 void	set_signal(void);
+int		redir_chk(char **args);
+void	exec_redir(char **args, int pipe_check);
+void	exec_redir_cmd(char **args, char **envp);
 
 extern int		g_exit_status;
 

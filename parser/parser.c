@@ -14,7 +14,12 @@
 
 static void	find_command(char **args, char **envp, int pipe_check)
 {
-	if (!ft_strncmp(args[0], "cd", 3))
+	if (redir_chk(args))
+	{
+		exec_redir(args, pipe_check);
+		exec_redir_cmd(args, envp);
+	}
+	else if (!ft_strncmp(args[0], "cd", 3))
 		cmd_cd(args, envp);
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp);
