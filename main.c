@@ -23,11 +23,10 @@ char	**strarradd(char **strs, char *str)
 	while (strs[i])
 		i++;
 	newstrs = malloc((i + 2) * 8);
-	i = -1;
-	while (strs[++i])
+	newstrs[i] = ft_strdup(str);
+	newstrs[i + 1] = 0;
+	while (i--)
 		newstrs[i] = strs[i];
-	newstrs[i++] = ft_strdup(str);
-	newstrs[i] = 0;
 	free(strs);
 	strs = newstrs;
 	return (strs);
