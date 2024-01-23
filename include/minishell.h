@@ -29,6 +29,7 @@ void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, int pipe_check);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
+void	cmd_export(char **args, char **envp);
 void	cmd_pwd(void);
 void	cmd_unset(char **args, char **envp);
 char	*expand_envvar(char *str, char **envp);

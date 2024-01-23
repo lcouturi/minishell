@@ -25,6 +25,8 @@ static void	find_command(char **args, char **envp, int pipe_check)
 		cmd_exit(args, envp);
 	else if (!ft_strncmp(args[0], "env", 4))
 		cmd_env(envp);
+	else if (!ft_strncmp(args[0], "export", 7))
+		cmd_export(args, envp);
 	else if (!ft_strncmp(args[0], "pwd", 4))
 		cmd_pwd();
 	else if (!ft_strncmp(args[0], "echo", 5))

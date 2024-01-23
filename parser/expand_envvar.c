@@ -82,7 +82,7 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp)
 				return ;
 			}
 			i[5] = i[0];
-			while (ft_isalnum(str[i[5]]))
+			while (ft_isalnum(str[i[5]]) || str[i[5]] == '_')
 				i[5]++;
 			i[2] = 0;
 			while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0])
