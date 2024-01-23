@@ -51,8 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# macOS trash
+# more trash
 .nfs.*
+.vscode
 
 # json
 *.json
