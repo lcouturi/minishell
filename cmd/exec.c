@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static void	cmd_exec_loop(int i, char **paths, char **args, char **envp)
+static void	exec_proc_loop(int i, char **paths, char **args, char **envp)
 {
 	int		n;
 	char	*path;
@@ -36,34 +36,38 @@ static void	cmd_exec_loop(int i, char **paths, char **args, char **envp)
 	free(path);
 }
 
-void	cmd_exec(char **args, char **envp)
+static void	exec_proc(char **args, char **envp)
 {
 	int		i;
-	int		pid;
 	char	**paths;
+
+	if (!access(args[0], X_OK))
+		execve(args[0], args, envp);
+	i = 0;
+	while (ft_strncmp(envp[i], "PATH=", 5))
+		i++;
+	paths = ft_split(envp[i] + 5, ':');
+	if (!paths)
+	{
+		free_string_array(envp);
+		exit(EXIT_FAILURE);
+	}
+	i = -1;
+	while (paths[++i])
+		exec_proc_loop(i, paths, args, envp);
+	printf("minishell: %s: command not found\n", args[0]);
+	free_string_array(envp);
+	free_string_array(paths);
+	free_string_array(args);
+	exit(EXIT_FAILURE);
+}
+
+void	cmd_exec(char **args, char **envp)
+{
+	int	pid;
 
 	pid = fork();
 	if (!pid)
-	{
-		if (!access(args[0], X_OK))
-			execve(args[0], args, envp);
-		i = 0;
-		while (ft_strncmp(envp[i], "PATH=", 5))
-			i++;
-		paths = ft_split(envp[i] + 5, ':');
-		if (!paths)
-		{
-			free_string_array(envp);
-			exit(EXIT_FAILURE);
-		}
-		i = -1;
-		while (paths[++i])
-			cmd_exec_loop(i, paths, args, envp);
-		printf("minishell: %s: command not found\n", args[0]);
-		free_string_array(envp);
-		free_string_array(paths);
-		free_string_array(args);
-		exit(EXIT_FAILURE);
-	}
+		exec_proc(args, envp);
 	waitpid(pid, &g_exit_status, 0);
 }
