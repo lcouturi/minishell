@@ -101,6 +101,7 @@ char	**arg_splitter(char *s)
 	j = -1;
 	while (returned[++j])
 		returned[j] = rm_quotes(returned[j], i);
+	j = -1;
 	free(s);
 	return (returned);
 }

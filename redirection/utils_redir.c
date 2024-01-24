@@ -21,10 +21,10 @@ int	redir_chk(char **args)
 	while (args[++i])
 	{
 		str_len = ft_strlen(args[i]);
-		if (!ft_strncmp("<<", args[i], str_len)
-			|| !ft_strncmp(">>", args[i], str_len)
-			|| !ft_strncmp("<", args[i], str_len)
-			||!ft_strncmp(">", args[i], str_len))
+		if (ft_strnstr(args[i], "<<", str_len)
+			|| ft_strnstr(args[i], ">>", str_len)
+			|| ft_strnstr(args[i], "<", str_len)
+			|| ft_strnstr(args[i], ">", str_len))
 			return (1);
 	}
 	return (0);
