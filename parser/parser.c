@@ -48,7 +48,7 @@ void	parser(char *str, char **envp)
 	int		pipe_check;
 
 	pipe_check = 0;
-	args = arg_splitter(expand_envvar(str, envp));
+	args = rm_quotes(arg_splitter(expand_envvar(str, envp)));
 	add_history(str);
 	free(str);
 	if (!args)

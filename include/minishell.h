@@ -38,6 +38,7 @@ char	*expand_wildcard(char *str);
 int		ft_isspace(char c);
 void	parser(char *str, char **envp);
 void	quote_check(char const *s, int *i);
+char	**rm_quotes(char **args);
 // signal
 void	set_signal(void);
 // redirection

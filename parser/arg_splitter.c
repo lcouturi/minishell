@@ -48,38 +48,9 @@ static void	loop(char *s, char **returned, int *i)
 	}
 }
 
-static char	*rm_quotes(char *str, int *i)
-{
-	int		j;
-	int		l;
-	char	*newstr;
-
-	i[0] = -1;
-	j = 0;
-	l = 0;
-	while (str[++i[0]])
-	{
-		quote_check(str, i);
-		if (!(!i[4] && str[i[0]] == '\"') && !(!i[3] && str[i[0]] == '\''))
-			l++;
-	}
-	newstr = malloc((l + 1) * sizeof(char));
-	i[0] = -1;
-	while (str[++i[0]])
-	{
-		quote_check(str, i);
-		if (!(!i[4] && str[i[0]] == '\"') && !(!i[3] && str[i[0]] == '\''))
-			newstr[j++] = str[i[0]];
-	}
-	newstr[j] = '\0';
-	free(str);
-	return (newstr);
-}
-
 char	**arg_splitter(char *s)
 {
 	int		i[5];
-	int		j;
 	char	**returned;
 
 	i[0] = -1;
@@ -98,10 +69,6 @@ char	**arg_splitter(char *s)
 	returned[i[2]] = 0;
 	while (i[0]--)
 		loop(s, returned, i);
-	j = -1;
-	while (returned[++j])
-		returned[j] = rm_quotes(returned[j], i);
-	j = -1;
 	free(s);
 	return (returned);
 }
