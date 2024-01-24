@@ -29,27 +29,21 @@ void	exec_redir_cmd(char **args, char **envp)
 		waitpid(pid, &status, WUNTRACED);
 }
 
-void	exec_redir(char **args, int pipe_check)
+void	exec_redir(char **args, char **envp, int fds[])
 {
 	int	i;
-	int	saved_stdout;
-	int	saved_stdin;
 
-	(void)pipe_check;
 	i = -1;
-	saved_stdout = dup(STDOUT_FILENO);
-	saved_stdin = dup(STDIN_FILENO);
+	(void)envp;
 	while (args[++i] != NULL)
 	{
-		if (strcmp(args[i], "<") == 0)
+		if (ft_strncmp(args[i], "<", 2) == 0)
 			left_redir(args, i);
-		else if (strcmp(args[i], ">") == 0)
+		else if (ft_strncmp(args[i], ">", 2) == 0)
 			right_redir(args, i);
-		else if (strcmp(args[i], ">>") == 0)
+		else if (ft_strncmp(args[i], ">>", 3) == 0)
 			right_double_redir(args, i);
-		else if (strcmp(args[i], "<<") == 0)
-			left_dobule_redir(args, i);
+		else if (ft_strncmp(args[i], "<<", 3) == 0)
+			left_dobule_redir(args, i, &fds);
 	}
-	dup2(saved_stdout, STDOUT_FILENO);
-	dup2(saved_stdin, STDIN_FILENO);
 }

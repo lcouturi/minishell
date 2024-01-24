@@ -5,10 +5,17 @@ CFLAGS = -Werror -Wall -Wextra
 LDFLAGS = -lreadline -L/opt/homebrew/opt/readline/lib -L${HOME}/.brew/opt/readline/lib -Llibs/Libft -lft
 CPPFLAGS = -I${HOME}/.brew/opt/readline/include -I/opt/homebrew/opt/readline/include
 
-INCLUDE_DIR	=	./include
+INCLUDE_DIR = ./include
 
-SRCS = main.c signal.c cmd/cd.c cmd/echo.c cmd/env.c cmd/exec.c cmd/exit.c cmd/export.c cmd/pwd.c cmd/unset.c parser/arg_splitter.c parser/expand_envvar.c parser/expand_wildcard.c parser/parser.c parser/rm_quotes.c \
-		redirection/exec_redir.c redirection/utils_redir.c redirection/cmd_redir.c
+CMD = cd echo env exec exit export pwd unset
+PARSER =  arg_splitter expand_envvar expand_wildcard parser rm_quotes
+REDIR = cmd_redir exec_redir utils_redir
+MAIN = main signal
+
+SRCS = $(addsuffix .c, $(MAIN)) \
+	  $(addsuffix .c, $(addprefix cmd/, $(CMD))) \
+	  $(addsuffix .c, $(addprefix parser/, $(PARSER))) \
+	  $(addsuffix .c, $(addprefix redirection/, $(REDIR)))
 
 OBJS = $(SRCS:.c=.o)
 

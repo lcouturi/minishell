@@ -12,14 +12,9 @@
 
 #include "../include/minishell.h"
 
-static void	find_command(char **args, char **envp, int pipe_check)
+static void	find_command(char **args, char **envp)
 {
-	if (redir_chk(args))
-	{
-		exec_redir(args, pipe_check);
-		exec_redir_cmd(args, envp);
-	}
-	else if (!ft_strncmp(args[0], "cd", 3))
+	if (!ft_strncmp(args[0], "cd", 3))
 		cmd_cd(args, envp);
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp);
@@ -34,7 +29,7 @@ static void	find_command(char **args, char **envp, int pipe_check)
 	else if (!ft_strncmp(args[0], "unset", 6))
 		cmd_unset(args, envp);
 	else
-		cmd_exec(args, envp, pipe_check);
+		cmd_exec(args, envp);
 }
 
 int	ft_isspace(char c)
@@ -45,9 +40,10 @@ int	ft_isspace(char c)
 void	parser(char *str, char **envp)
 {
 	char	**args;
-	int		pipe_check;
+	int		fds[2];
+	int		backup_stdout;
+	int		backup_stdin;
 
-	pipe_check = 0;
 	args = rm_quotes(arg_splitter(expand_envvar(str, envp)));
 	add_history(str);
 	free(str);
@@ -56,8 +52,17 @@ void	parser(char *str, char **envp)
 		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
+	// pipe(fds);
+	backup_stdout = dup(STDOUT_FILENO);
+	backup_stdin = dup(STDIN_FILENO);
+	if (redir_chk(args))
+		exec_redir(args, envp, fds);
 	if (args[0])
-		find_command(args, envp, pipe_check);
+		find_command(args, envp);
+	dup2(backup_stdout, STDOUT_FILENO);
+	dup2(backup_stdin, STDIN_FILENO);
+	close(backup_stdout);
+	close(backup_stdin);
 	strarrfree(args);
 }
 
