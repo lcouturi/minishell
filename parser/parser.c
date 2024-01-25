@@ -12,10 +12,10 @@
 
 #include "../include/minishell.h"
 
-static void	find_command(char **args, char **envp)
+static void	find_command(char **args, char **envp, int *exit_status)
 {
 	if (!ft_strncmp(args[0], "cd", 3))
-		cmd_cd(args, envp);
+		cmd_cd(args, envp, exit_status);
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp);
 	else if (!ft_strncmp(args[0], "env", 4))
@@ -25,11 +25,11 @@ static void	find_command(char **args, char **envp)
 	else if (!ft_strncmp(args[0], "pwd", 4))
 		cmd_pwd();
 	else if (!ft_strncmp(args[0], "echo", 5))
-		cmd_echo(args, envp);
+		cmd_echo(args, envp, exit_status);
 	else if (!ft_strncmp(args[0], "unset", 6))
-		cmd_unset(args, envp);
+		cmd_unset(args, envp, exit_status);
 	else
-		cmd_exec(args, envp);
+		cmd_exec(args, envp, exit_status);
 }
 
 int	ft_isspace(char c)
@@ -37,14 +37,33 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-void	parser(char *str, char **envp)
+void	execute(char **args, char **envp, int flag, int *exit_status)
+{
+	int	fds[2];
+	int	backup_stdout;
+	int	backup_stdin;
+
+	// pipe(fds);
+	backup_stdout = dup(STDOUT_FILENO);
+	backup_stdin = dup(STDIN_FILENO);
+	if (flag)
+		exec_redir(args, envp, fds);
+	if (args[0])
+		find_command(args, envp, exit_status);
+	dup2(backup_stdout, STDOUT_FILENO);
+	dup2(backup_stdin, STDIN_FILENO);
+	close(backup_stdout);
+	close(backup_stdin);
+}
+
+void	parser(char *str, char **envp, int *exit_status)
 {
 	char	**args;
-	int		fds[2];
-	int		backup_stdout;
-	int		backup_stdin;
+	int		flag;
 
-	args = rm_quotes(arg_splitter(expand_envvar(str, envp)));
+	args = arg_splitter(expand_envvar(str, envp, exit_status));
+	flag = redir_chk(args);
+	args = rm_quotes(args);
 	add_history(str);
 	free(str);
 	if (!args)
@@ -52,17 +71,7 @@ void	parser(char *str, char **envp)
 		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
-	// pipe(fds);
-	backup_stdout = dup(STDOUT_FILENO);
-	backup_stdin = dup(STDIN_FILENO);
-	if (redir_chk(args))
-		exec_redir(args, envp, fds);
-	if (args[0])
-		find_command(args, envp);
-	dup2(backup_stdout, STDOUT_FILENO);
-	dup2(backup_stdin, STDIN_FILENO);
-	close(backup_stdout);
-	close(backup_stdin);
+	execute(args, envp, flag, exit_status);
 	strarrfree(args);
 }
 

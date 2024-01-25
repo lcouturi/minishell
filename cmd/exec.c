@@ -59,15 +59,17 @@ static void	exec_proc(char **args, char **envp)
 	strarrfree(envp);
 	strarrfree(paths);
 	strarrfree(args);
-	exit(EXIT_FAILURE);
+	exit(127);
 }
 
-void	cmd_exec(char **args, char **envp)
+void	cmd_exec(char **args, char **envp, int *exit_status)
 {
 	int	pid;
+	int	status;
 
 	pid = fork();
 	if (!pid)
 		exec_proc(args, envp);
-	waitpid(pid, &g_exit_status, 0);
+	waitpid(pid, &status, 0);
+	*exit_status = status;
 }

@@ -56,17 +56,17 @@ char	*find_value(char *key, char **envp)
 	return ("");
 }
 
-void	cmd_echo_envv(char **args, char **envp, int i)
+void	cmd_echo_envv(char **args, char **envp, int i, int *exit_status)
 {
 	char	*str;
 
 	if (args[i][0] == '$' && args[1][1] == '?')
-		ft_putstr_fd(ft_itoa(g_exit_status), 1);
+		ft_putstr_fd(ft_itoa(*exit_status), 1);
 	str = find_value(&(args[i][1]), envp);
 	ft_putstr_fd(str, 1);
 }
 
-void	cmd_echo(char **args, char **envp)
+void	cmd_echo(char **args, char **envp, int *exit_status)
 {
 	int	i;
 	int	new_line;
@@ -83,7 +83,7 @@ void	cmd_echo(char **args, char **envp)
 		if (args[i][0] == '\'')
 			change_args(args[i], '\'');
 		if (args[i][0] == '$' && new_line == 1)
-			cmd_echo_envv(args, envp, i);
+			cmd_echo_envv(args, envp, i, exit_status);
 		else
 			ft_putstr_fd(args[i], 1);
 		if (args[i + 1] != NULL)
