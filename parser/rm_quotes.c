@@ -43,10 +43,10 @@ static char	*rm_quotes_loop(char *str)
 
 char	**rm_quotes(char **args)
 {
-	int	j;
+	int	i;
 
-	j = -1;
-	while (args[++j])
-		args[j] = rm_quotes_loop(args[j]);
+	i = -1;
+	while (args[++i])
+		args[i] = rm_quotes_loop(args[i]);
 	return (args);
 }

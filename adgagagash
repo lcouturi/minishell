@@ -1,0 +1,16 @@
+LICENSE
+Makefile
+README.MD
+adgagagash
+cmd
+exit_status_tester
+exit_status_tester.c
+include
+libs
+main.c
+main.o
+minishell
+parser
+redirection
+signal.c
+signal.o
