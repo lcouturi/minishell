@@ -55,15 +55,6 @@ void	strarrfree(char **strs)
 	free(strs);
 }
 
-void	strarrprint(char **strs)
-{
-	int	i;
-
-	i = -1;
-	while (strs[++i])
-		printf("%s\n", strs[i]);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;
