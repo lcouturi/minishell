@@ -12,8 +12,6 @@
 
 #include "include/minishell.h"
 
-int	g_exit_status = 0;
-
 char	**strarradd(char **strs, char *str)
 {
 	int		i;
@@ -62,9 +60,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;
 	char	*line;
+	int		exit_status;
 
 	(void)argc;
 	(void)argv;
+	exit_status = 0;
 	envp_copy = strarrcpy(envp);
 	set_signal();
 	while (1)
@@ -73,7 +73,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 		{
 			if (ft_strncmp(line, "\0", 1))
-				parser(line, envp_copy);
+				parser(line, envp_copy, &exit_status);
 		}
 		else
 			cmd_exit_no_arg();
