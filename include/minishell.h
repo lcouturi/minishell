@@ -30,15 +30,19 @@ void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, int *exit_status);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
-void	cmd_export(char **args, char **envp);
+char	**cmd_export(char **args, char **envp);
 void	cmd_pwd(void);
 void	cmd_unset(char **args, char **envp, int *exit_status);
 char	*expand_envvar(char *str, char **envp, int *exit_status);
 char	*expand_wildcard(char *str);
 int		ft_isspace(char c);
-void	parser(char *str, char **envp, int *exit_status);
+char	**parser(char *str, char **envp, int *exit_status);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args);
+char	**strarradd(char **strs, char *str);
+char	**strarrcpy(char **strs);
+void	strarrfree(char **strs);
+void	strarrprint(char **strs);
 // signal
 void	set_signal(void);
 // redirection
@@ -49,8 +53,5 @@ void	left_redir(char **args, int i);
 void	left_dobule_redir(char **args, int i, int **fds);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
-char	**strarradd(char **strs, char *str);
-char	**strarrcpy(char **strs);
-void	strarrfree(char **strs);
 
 #endif

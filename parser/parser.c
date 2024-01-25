@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static void	find_command(char **args, char **envp, int *exit_status)
+static char	**find_command(char **args, char **envp, int *exit_status)
 {
 	if (!ft_strncmp(args[0], "cd", 3))
 		cmd_cd(args, envp, exit_status);
@@ -21,7 +21,7 @@ static void	find_command(char **args, char **envp, int *exit_status)
 	else if (!ft_strncmp(args[0], "env", 4))
 		cmd_env(envp);
 	else if (!ft_strncmp(args[0], "export", 7))
-		cmd_export(args, envp);
+		envp = cmd_export(args, envp);
 	else if (!ft_strncmp(args[0], "pwd", 4))
 		cmd_pwd();
 	else if (!ft_strncmp(args[0], "echo", 5))
@@ -30,6 +30,7 @@ static void	find_command(char **args, char **envp, int *exit_status)
 		cmd_unset(args, envp, exit_status);
 	else
 		cmd_exec(args, envp, exit_status);
+	return (envp);
 }
 
 int	ft_isspace(char c)
@@ -37,7 +38,7 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-void	execute(char **args, char **envp, int flag, int *exit_status)
+static char	**execute(char **args, char **envp, int flag, int *exit_status)
 {
 	int	fds[2];
 	int	backup_stdout;
@@ -49,20 +50,22 @@ void	execute(char **args, char **envp, int flag, int *exit_status)
 	if (flag)
 		exec_redir(args, envp, fds);
 	if (args[0])
-		find_command(args, envp, exit_status);
+		envp = find_command(args, envp, exit_status);
 	dup2(backup_stdout, STDOUT_FILENO);
 	dup2(backup_stdin, STDIN_FILENO);
 	close(backup_stdout);
 	close(backup_stdin);
+	return (envp);
 }
 
-void	parser(char *str, char **envp, int *exit_status)
+char	**parser(char *str, char **envp, int *exit_status)
 {
 	char	**args;
 	int		flag;
 
 	args = arg_splitter(expand_envvar(str, envp, exit_status));
 	flag = redir_chk(args);
+	flag = 0;
 	args = rm_quotes(args);
 	add_history(str);
 	free(str);
@@ -71,8 +74,9 @@ void	parser(char *str, char **envp, int *exit_status)
 		rl_clear_history();
 		exit(EXIT_FAILURE);
 	}
-	execute(args, envp, flag, exit_status);
+	envp = execute(args, envp, flag, exit_status);
 	strarrfree(args);
+	return (envp);
 }
 
 void	quote_check(char const *s, int *i)

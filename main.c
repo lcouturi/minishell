@@ -26,8 +26,7 @@ char	**strarradd(char **strs, char *str)
 	while (i--)
 		newstrs[i] = strs[i];
 	free(strs);
-	strs = newstrs;
-	return (strs);
+	return (newstrs);
 }
 
 char	**strarrcpy(char **strs)
@@ -56,6 +55,15 @@ void	strarrfree(char **strs)
 	free(strs);
 }
 
+void	strarrprint(char **strs)
+{
+	int	i;
+
+	i = -1;
+	while (strs[++i])
+		printf("%s\n", strs[i]);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;
@@ -73,7 +81,7 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 		{
 			if (ft_strncmp(line, "\0", 1))
-				parser(line, envp_copy, &exit_status);
+				envp_copy = parser(line, envp_copy, &exit_status);
 		}
 		else
 			cmd_exit_no_arg();
