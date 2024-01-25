@@ -24,19 +24,19 @@
 # include <fcntl.h>
 
 char	**arg_splitter(char *s);
-void	cmd_cd(char **args, char **envp);
-void	cmd_echo(char **args, char **envs);
+void	cmd_cd(char **args, char **envp, int *exit_status);
+void	cmd_echo(char **args, char **envs, int *exit_status);
 void	cmd_env(char **envs);
-void	cmd_exec(char **args, char **envp);
+void	cmd_exec(char **args, char **envp, int *exit_status);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
 void	cmd_export(char **args, char **envp);
 void	cmd_pwd(void);
-void	cmd_unset(char **args, char **envp);
-char	*expand_envvar(char *str, char **envp);
+void	cmd_unset(char **args, char **envp, int *exit_status);
+char	*expand_envvar(char *str, char **envp, int *exit_status);
 char	*expand_wildcard(char *str);
 int		ft_isspace(char c);
-void	parser(char *str, char **envp);
+void	parser(char *str, char **envp, int *exit_status);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args);
 // signal
@@ -52,7 +52,5 @@ void	right_double_redir(char **args, int i);
 char	**strarradd(char **strs, char *str);
 char	**strarrcpy(char **strs);
 void	strarrfree(char **strs);
-
-extern int		g_exit_status;
 
 #endif
