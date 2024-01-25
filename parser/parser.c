@@ -37,14 +37,32 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
+void	execute(char **args, char **envp, int fds[], int flag)
+{
+	int	backup_stdout;
+	int	backup_stdin;
+
+	backup_stdout = dup(STDOUT_FILENO);
+	backup_stdin = dup(STDIN_FILENO);
+	if (flag)
+		exec_redir(args, envp, fds);
+	if (args[0])
+		find_command(args, envp);
+	dup2(backup_stdout, STDOUT_FILENO);
+	dup2(backup_stdin, STDIN_FILENO);
+	close(backup_stdout);
+	close(backup_stdin);
+}
+
 void	parser(char *str, char **envp)
 {
 	char	**args;
 	int		fds[2];
-	int		backup_stdout;
-	int		backup_stdin;
+	int		flag;
 
-	args = rm_quotes(arg_splitter(expand_envvar(str, envp)));
+	args = arg_splitter(expand_envvar(str, envp));
+	flag = redir_chk(args);
+	args = rm_quotes(args);
 	add_history(str);
 	free(str);
 	if (!args)
@@ -53,16 +71,7 @@ void	parser(char *str, char **envp)
 		exit(EXIT_FAILURE);
 	}
 	// pipe(fds);
-	backup_stdout = dup(STDOUT_FILENO);
-	backup_stdin = dup(STDIN_FILENO);
-	if (redir_chk(args))
-		exec_redir(args, envp, fds);
-	if (args[0])
-		find_command(args, envp);
-	dup2(backup_stdout, STDOUT_FILENO);
-	dup2(backup_stdin, STDIN_FILENO);
-	close(backup_stdout);
-	close(backup_stdin);
+	execute(args, envp, fds, flag);
 	strarrfree(args);
 }
 
