@@ -43,6 +43,7 @@ char	**rm_quotes(char **args);
 char	**strarradd(char **strs, char *str);
 char	**strarrcpy(char **strs);
 void	strarrfree(char **strs);
+size_t	strarrlen(char **strs);
 void	strarrprint(char **strs);
 // signal
 void	set_signal(void);

@@ -55,6 +55,16 @@ void	strarrfree(char **strs)
 	free(strs);
 }
 
+size_t	strarrlen(char **strs)
+{
+	size_t	i;
+
+	i = 0;
+	while (strs[i])
+		i++;
+	return (i);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;
