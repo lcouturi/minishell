@@ -70,19 +70,21 @@ int	main(int argc, char **argv, char **envp)
 	char	**envp_copy;
 	char	*line;
 	int		exit_status;
+	t_node	node;
 
 	(void)argc;
 	(void)argv;
 	exit_status = 0;
 	envp_copy = strarrcpy(envp);
 	set_signal();
+	init_node(&node);
 	while (1)
 	{
 		line = readline("minishell> ");
 		if (line)
 		{
 			if (ft_strncmp(line, "\0", 1))
-				envp_copy = parser(line, envp_copy, &exit_status);
+				envp_copy = parser(line, envp_copy, &exit_status, &node);
 		}
 		else
 			cmd_exit_no_arg();

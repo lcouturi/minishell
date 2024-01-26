@@ -21,9 +21,28 @@ void	exec_parents(int pid, int fds[], int *exit_status)
 	*exit_status = status >> 8;
 }
 
-char	**close_backup_return_envp(int backup_stdout, int backup_stdin, char **envp)
+char	**cloturn(int backup_stdout, int backup_stdin, char **envp)
 {
 	close(backup_stdout);
 	close(backup_stdin);
 	return (envp);
+}
+
+int	pipe_check(char **args, t_node *node)
+{
+	int	i;
+
+	i = node->pipe_idx;
+	while (args[i])
+	{
+		if (ft_strncmp(args[i], "|", 2) == 0)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	init_node(t_node *node)
+{
+	node->pipe_idx = 0;
 }

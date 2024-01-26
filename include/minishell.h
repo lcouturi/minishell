@@ -23,6 +23,15 @@
 # include <unistd.h>
 # include <fcntl.h>
 
+typedef struct s_node
+{
+	int	redir_flag;
+	int	pipe_flag;
+	int	backup_stdout;
+	int	backup_stdin;
+	int	pipe_idx;
+}	t_node;
+
 char	**arg_splitter(char *s);
 void	cmd_cd(char **args, char **envp, int *exit_status);
 void	cmd_echo(char **args, char **envs, int *exit_status);
@@ -38,7 +47,7 @@ char	**expand_wildcard(char **args);
 int		ft_isspace(char c);
 char	**get_file_list(void);
 void	match(char *str, char **split, char **files, int i);
-char	**parser(char *str, char **envp, int *exit_status);
+char	**parser(char *str, char **envp, int *exit_status, t_node *node);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args);
 char	**strarradd(char **strs, char *str);
@@ -59,5 +68,8 @@ void	right_double_redir(char **args, int i);
 // pipe
 void	exec_child(char **args, char **envp, int fds[], int *exit_status);
 void	exec_parents(int pid, int fds[], int *exit_status);
-char	**close_backup_return_envp(int backup_stdout, int backup_stdin, char **envp);
+char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
+int		pipe_check(char **args, t_node *node);
+void	init_node(t_node *node);
+
 #endif

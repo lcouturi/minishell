@@ -38,41 +38,38 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-char	**execute(char **args, char **envp, int flag, int *exit_status)
+char	**execute(char **args, char **envp, t_node *node, int *exit_status)
 {
 	int	fds[2];
-	int	backup_stdout;
-	int	backup_stdin;
 	int	pid;
 
 	pipe(fds);
-	backup_stdout = dup(STDOUT_FILENO);
-	backup_stdin = dup(STDIN_FILENO);
-	if (flag)
+	node->backup_stdout = dup(STDOUT_FILENO);
+	node->backup_stdin = dup(STDIN_FILENO);
+	if (node->redir_flag)
 	{
 		if (exec_redir(args, envp, fds))
-			return (close_backup_return_envp(backup_stdout, backup_stdin, envp));
+			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 	}
-	if (0)
+	if (pipe_check(args, node))
 	{
 		pid = fork();
 		if (pid < 0)
-			return (close_backup_return_envp(backup_stdout, backup_stdin, envp));
+			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 	}
 	if (args[0])
 		envp = find_command(args, envp, exit_status);
-	dup2(backup_stdout, STDOUT_FILENO);
-	dup2(backup_stdin, STDIN_FILENO);
-	return (close_backup_return_envp(backup_stdout, backup_stdin, envp));
+	dup2(node->backup_stdout, STDOUT_FILENO);
+	dup2(node->backup_stdin, STDIN_FILENO);
+	return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 }
 
-char	**parser(char *str, char **envp, int *exit_status)
+char	**parser(char *str, char **envp, int *exit_status, t_node *node)
 {
 	char	**args;
-	int		flag;
 
 	args = expand_wildcard(arg_splitter(expand_envvar(str, envp, exit_status)));
-	flag = redir_chk(args);
+	node->redir_flag = redir_chk(args);
 	args = rm_quotes(args);
 	add_history(str);
 	free(str);
@@ -82,7 +79,7 @@ char	**parser(char *str, char **envp, int *exit_status)
 		strarrfree(envp);
 		exit(EXIT_FAILURE);
 	}
-	envp = execute(args, envp, flag, exit_status);
+	envp = execute(args, envp, node, exit_status);
 	strarrfree(args);
 	return (envp);
 }

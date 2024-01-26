@@ -30,4 +30,3 @@ int	redir_chk(char **args)
 	}
 	return (0);
 }
-
