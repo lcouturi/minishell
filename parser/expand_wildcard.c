@@ -89,36 +89,38 @@ static char	**get_file_list(void)
 static void	match(char *str, char **files, int *i)
 {
 	int		j;
+	size_t	last;
 	char	**split;
 
+	last = 0;
 	split = ft_split(str, '*');
-	if (str[0] != '*')
+	if (str[0] != '*' && ft_strncmp(split[0], files[i[1]], ft_strlen(split[0])))
 	{
-		if (ft_strncmp(split[0], files[i[1]], ft_strlen(split[0])))
-		{
-			strarrfree(split);
-			files[i[1]][0] = '\0';
-			return ;
-		}
+		strarrfree(split);
+		files[i[1]][0] = '\0';
+		return ;
 	}
 	j = -1;
 	while (split[++j])
 	{
-		if (!ft_strnstr(files[i[1]], split[j], ft_strlen(files[i[1]])))
+		if (!ft_strnstr(files[i[1]], split[j], ft_strlen(files[i[1]])) || (last
+				&& last > (size_t)ft_strnstr(files[i[1]], split[j],
+					ft_strlen(files[i[1]]))))
 		{
 			strarrfree(split);
 			files[i[1]][0] = '\0';
 			return ;
 		}
+		last = (size_t)ft_strnstr(files[i[1]], split[j],
+				ft_strlen(files[i[1]]));
 	}
-	if (str[ft_strlen(str) - 1] != '*')
+	if (str[ft_strlen(str) - 1] != '*' && ft_strncmp(split[j - 1], files[i[1]]
+			+ ft_strlen(files[i[1]]) - ft_strlen(split[j - 1]),
+			ft_strlen(split[j - 1])))
 	{
-		if (ft_strncmp(split[j - 1], files[i[1]] + ft_strlen(files[i[1]]) - ft_strlen(split[j - 1]), ft_strlen(split[j - 1])))
-		{
-			strarrfree(split);
-			files[i[1]][0] = '\0';
-			return ;
-		}
+		strarrfree(split);
+		files[i[1]][0] = '\0';
+		return ;
 	}
 }
 
