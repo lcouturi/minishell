@@ -12,114 +12,30 @@
 
 #include "../include/minishell.h"
 
-// THE PLAN:
-// 1.	Use opendir and readdir to get the names of all files in the current
-//		working directory and create a linked list from it. Exclude all files
-//		which start with a period.
-// 2.	Turn the linked list into ASCII-ordered string array.
-// 3.	For every argument in the command with a non-quoted asterisk, replace
-//		the argument with every file in the linked list which matches the
-//		wildcard, surounding each with single quotes to account for the
-//		potential use of special characters in file names. ASCII order must be
-//		maintained. For instance, ls expand_*.c turns into ls 'expand_envvar.c'
-//		'expand_wildcard.c'. If no matching files are found, the argument is
-//		left as-is.
-
-static char	*lowest(t_list *lst)
-{
-	char	*ret;
-	t_list	*tmp;
-	t_list	*low;
-
-	low = lst;
-	while (!low->content)
-		low = low->next;
-	tmp = low->next;
-	while (tmp)
-	{
-		if (ft_strncmp(low->content, tmp->content, ft_strlen(low->content)) > 0)
-			low = tmp;
-		tmp = tmp->next;
-	}
-	ret = low->content;
-	low->content = 0;
-	return (ret);
-}
-
-static char	**get_file_list(void)
-{
-	DIR				*dir;
-	struct dirent	*dr;
-	char			**files;
-	int				i;
-	t_list			*lst;
-
-	dir = opendir(".");
-	dr = readdir(dir);
-	while (dr && dr->d_name[0] == '.')
-		dr = readdir(dir);
-	if (!dr)
-	{
-		closedir(dir);
-		return (0);
-	}
-	lst = ft_lstnew(ft_strdup(dr->d_name));
-	while (1)
-	{
-		dr = readdir(dir);
-		if (!dr)
-			break ;
-		if (dr->d_name[0] != '.')
-			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(dr->d_name)));
-	}
-	files = malloc(8 * ft_lstsize(lst) + 1);
-	i = -1;
-	while (++i < ft_lstsize(lst))
-		files[i] = lowest(lst);
-	files[i] = 0;
-	while (lst)
-	{
-		free(lst);
-		lst = lst->next;
-	}
-	closedir(dir);
-	return (files);
-}
-
-static void	match(char *str, char **files, int *i)
+static void	match(char *str, char **split, char **files, int i)
 {
 	int		j;
 	size_t	last;
-	char	**split;
 
 	last = 0;
-	split = ft_split(str, '*');
-	if (str[0] != '*' && ft_strncmp(split[0], files[i[1]], ft_strlen(split[0])))
-	{
-		strarrfree(split);
-		files[i[1]][0] = '\0';
-		return ;
-	}
 	j = -1;
 	while (split[++j])
 	{
-		if (!ft_strnstr(files[i[1]], split[j], ft_strlen(files[i[1]])) || (last
-				&& last > (size_t)ft_strnstr(files[i[1]], split[j],
-					ft_strlen(files[i[1]]))))
+		if (!ft_strnstr(files[i], split[j], ft_strlen(files[i]))
+			|| (last > (size_t)ft_strnstr(files[i], split[j],
+					ft_strlen(files[i]))))
 		{
-			strarrfree(split);
-			files[i[1]][0] = '\0';
+			files[i][0] = '\0';
 			return ;
 		}
-		last = (size_t)ft_strnstr(files[i[1]], split[j],
-				ft_strlen(files[i[1]]));
+		last = (size_t)ft_strnstr(files[i], split[j], ft_strlen(files[i]));
 	}
-	if (str[ft_strlen(str) - 1] != '*' && ft_strncmp(split[j - 1], files[i[1]]
-			+ ft_strlen(files[i[1]]) - ft_strlen(split[j - 1]),
-			ft_strlen(split[j - 1])))
+	if ((str[0] != '*' && ft_strncmp(split[0], files[i], ft_strlen(split[0])))
+		|| (str[ft_strlen(str) - 1] != '*' && ft_strncmp(split[j - 1], files[i]
+				+ ft_strlen(files[i]) - ft_strlen(split[j - 1]),
+				ft_strlen(split[j - 1]))))
 	{
-		strarrfree(split);
-		files[i[1]][0] = '\0';
+		files[i][0] = '\0';
 		return ;
 	}
 }
@@ -127,22 +43,24 @@ static void	match(char *str, char **files, int *i)
 char	**expand_wildcard(char **args)
 {
 	char	**files;
-	int		i[7];
-	int		j;
+	int		i[5];
+	char	**split;
 
-	j = -1;
-	while (args[++j])
+	i[2] = -1;
+	while (args[++i[2]])
 	{
 		i[0] = -1;
-		while (args[j][++i[0]])
+		while (args[i[2]][++i[0]])
 		{
-			quote_check(args[j], i);
-			if (!i[3] && !i[4] && args[j][i[0]] == '*')
+			quote_check(args[i[2]], i);
+			if (!i[3] && !i[4] && args[i[2]][i[0]] == '*')
 			{
 				files = get_file_list();
 				i[1] = -1;
+				split = ft_split(args[i[2]], '*');
 				while (files[++i[1]])
-					match(args[j], files, i);
+					match(args[i[2]], split, files, i[1]);
+				strarrfree(split);
 				cmd_env(files);
 				strarrfree(files);
 				break ;

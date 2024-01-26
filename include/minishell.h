@@ -36,6 +36,7 @@ void	cmd_unset(char **args, char **envp, int *exit_status);
 char	*expand_envvar(char *str, char **envp, int *exit_status);
 char	**expand_wildcard(char **args);
 int		ft_isspace(char c);
+char	**get_file_list(void);
 char	**parser(char *str, char **envp, int *exit_status);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args);

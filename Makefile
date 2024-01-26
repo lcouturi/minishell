@@ -8,7 +8,7 @@ CPPFLAGS = -I${HOME}/.brew/opt/readline/include -I/opt/homebrew/opt/readline/inc
 INCLUDE_DIR = ./include
 
 CMD = cd echo env exec exit export pwd unset
-PARSER =  arg_splitter expand_envvar expand_wildcard parser rm_quotes
+PARSER =  arg_splitter expand_envvar expand_wildcard get_file_list parser rm_quotes
 REDIR = cmd_redir exec_redir utils_redir
 MAIN = main signal
 
