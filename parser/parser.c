@@ -66,7 +66,6 @@ char	**parser(char *str, char **envp, int *exit_status)
 
 	args = arg_splitter(expand_envvar(str, envp, exit_status));
 	flag = redir_chk(args);
-	flag = 0;
 	args = rm_quotes(args);
 	add_history(str);
 	free(str);
