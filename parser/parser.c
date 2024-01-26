@@ -48,8 +48,14 @@ static char	**execute(char **args, char **envp, int flag, int *exit_status)
 	backup_stdout = dup(STDOUT_FILENO);
 	backup_stdin = dup(STDIN_FILENO);
 	if (flag)
+	{
 		if (exec_redir(args, envp, fds))
+		{
+			close(backup_stdout);
+			close(backup_stdin);
 			return (envp);
+		}
+	}
 	if (args[0])
 		envp = find_command(args, envp, exit_status);
 	dup2(backup_stdout, STDOUT_FILENO);
