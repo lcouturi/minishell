@@ -65,7 +65,8 @@ static void	get_length_loop(char *str, char **envp, int *i, int *exit_status)
 		i[5]++;
 }
 
-static void	expand_envvar_loop(char *str, char *str2, char **envp, int *exit_status)
+static void	expand_envvar_loop(char *str, char *str2, char **envp,
+		int *exit_status)
 {
 	int	i[7];
 
@@ -85,8 +86,8 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp, int *exit_sta
 			while (ft_isalnum(str[i[5]]) || str[i[5]] == '_')
 				i[5]++;
 			i[2] = 0;
-			while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0])
-					|| envp[i[2]][i[5] - i[0]] != '='))
+			while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5]
+						- i[0]) || envp[i[2]][i[5] - i[0]] != '='))
 				i[2]++;
 			if (envp[i[2]])
 			{

@@ -12,89 +12,76 @@
 
 #include "../include/minishell.h"
 
-static void	match(char *str, char **split, char **files, int i)
+static void	get_arg_num_loop(char **args, int *i, int *n)
 {
-	int		j;
-	size_t	last;
+	char	**files;
+	char	**split;
 
-	last = 0;
-	j = -1;
-	while (split[++j])
+	i[0] = -1;
+	while (args[i[2]][++i[0]])
 	{
-		if (!ft_strnstr(files[i], split[j], ft_strlen(files[i]))
-			|| (last > (size_t)ft_strnstr(files[i], split[j],
-					ft_strlen(files[i]))))
+		quote_check(args[i[2]], i);
+		if (!i[3] && !i[4] && args[i[2]][i[0]] == '*')
 		{
-			files[i][0] = '\0';
-			return ;
+			files = get_file_list();
+			i[1] = -1;
+			split = ft_split(args[i[2]], '*');
+			while (files[++i[1]])
+				match(args[i[2]], split, files, i[1]);
+			strarrfree(split);
+			i[1] = -1;
+			while (files[++i[1]])
+				if (files[i[1]][0])
+					*n += 1;
+			strarrfree(files);
+			break ;
 		}
-		last = (size_t)ft_strnstr(files[i], split[j], ft_strlen(files[i]));
-	}
-	if ((str[0] != '*' && ft_strncmp(split[0], files[i], ft_strlen(split[0])))
-		|| (str[ft_strlen(str) - 1] != '*' && ft_strncmp(split[j - 1], files[i]
-				+ ft_strlen(files[i]) - ft_strlen(split[j - 1]),
-				ft_strlen(split[j - 1]))))
-	{
-		files[i][0] = '\0';
-		return ;
 	}
 }
 
 static int	get_arg_num(char **args)
 {
-	char	**files;
 	int		i[5];
 	int		n;
-	char	**split;
 
 	i[2] = -1;
 	n = 0;
 	while (args[++i[2]])
-	{
-		i[0] = -1;
-		while (args[i[2]][++i[0]])
-		{
-			quote_check(args[i[2]], i);
-			if (!i[3] && !i[4] && args[i[2]][i[0]] == '*')
-			{
-				files = get_file_list();
-				i[1] = -1;
-				split = ft_split(args[i[2]], '*');
-				while (files[++i[1]])
-					match(args[i[2]], split, files, i[1]);
-				strarrfree(split);
-				i[1] = -1;
-				while (files[++i[1]])
-					if (files[i[1]][0])
-						n++;
-				strarrfree(files);
-				break ;
-			}
-		}
-	}
+		get_arg_num_loop(args, i, &n);
 	return (n);
 }
 
-static char	*filecpy(char *str)
+static void	wildcard_handler(char **args, char **newargs, int *i, int *i2)
 {
-	int		len;
-	char	*newstr;
+	char	**files;
+	char	**split;
 
-	len = ft_strlen(str) + 3;
-	newstr = malloc(len);
-	ft_strlcpy(newstr, "\'", len);
-	ft_strlcat(newstr, str, len);
-	ft_strlcat(newstr, "\'", len);
-	return (newstr);
+	files = get_file_list();
+	i[1] = -1;
+	split = ft_split(args[i[2]], '*');
+	while (files[++i[1]])
+		match(args[i[2]], split, files, i[1]);
+	strarrfree(split);
+	i[1] = -1;
+	while (files[++i[1]])
+	{
+		if (files[i[1]][0])
+		{
+			newargs[*i2] = malloc(ft_strlen(files[i[1]]) + 3);
+			ft_strlcpy(newargs[*i2], "\'", ft_strlen(files[i[1]]) + 3);
+			ft_strlcat(newargs[*i2], files[i[1]], ft_strlen(files[i[1]]) + 3);
+			ft_strlcat(newargs[*i2], "\'", ft_strlen(files[i[1]]) + 3);
+			*i2 += 1;
+		}
+	}
+	strarrfree(files);
 }
 
 char	**expand_wildcard(char **args)
 {
 	int		i[5];
 	int		i2;
-	char	**files;
 	char	**newargs;
-	char	**split;
 
 	newargs = malloc((strarrlen(args) + get_arg_num(args) + 1) * 8);
 	i[2] = -1;
@@ -107,17 +94,7 @@ char	**expand_wildcard(char **args)
 			quote_check(args[i[2]], i);
 			if (!i[3] && !i[4] && args[i[2]][i[0]] == '*')
 			{
-				files = get_file_list();
-				i[1] = -1;
-				split = ft_split(args[i[2]], '*');
-				while (files[++i[1]])
-					match(args[i[2]], split, files, i[1]);
-				strarrfree(split);
-				i[1] = -1;
-				while (files[++i[1]])
-					if (files[i[1]][0])
-						newargs[i2++] = filecpy(files[i[1]]);
-				strarrfree(files);
+				wildcard_handler(args, newargs, i, &i2);
 				break ;
 			}
 		}

@@ -80,3 +80,31 @@ char	**get_file_list(void)
 	closedir(dir);
 	return (files);
 }
+
+void	match(char *str, char **split, char **files, int i)
+{
+	int		j;
+	size_t	last;
+
+	last = 0;
+	j = -1;
+	while (split[++j])
+	{
+		if (!ft_strnstr(files[i], split[j], ft_strlen(files[i]))
+			|| (last > (size_t)ft_strnstr(files[i], split[j],
+					ft_strlen(files[i]))))
+		{
+			files[i][0] = '\0';
+			return ;
+		}
+		last = (size_t)ft_strnstr(files[i], split[j], ft_strlen(files[i]));
+	}
+	if ((str[0] != '*' && ft_strncmp(split[0], files[i], ft_strlen(split[0])))
+		|| (str[ft_strlen(str) - 1] != '*' && ft_strncmp(split[j - 1], files[i]
+				+ ft_strlen(files[i]) - ft_strlen(split[j - 1]),
+				ft_strlen(split[j - 1]))))
+	{
+		files[i][0] = '\0';
+		return ;
+	}
+}
