@@ -23,6 +23,8 @@ int	left_redir(char **args, int i)
 		return (1);
 	}
 	fd = open(args[i + 1], O_RDONLY, 0744);
+	if (fd <= 0)
+		return (1);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (0);
