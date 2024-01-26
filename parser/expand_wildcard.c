@@ -93,7 +93,6 @@ void	match(char *str, char **files, int *i)
 	split = ft_split(str + i[5], '*');
 	if (str[i[5]] != '*')
 	{
-		printf("%s, %s\n", split[0], files[i[1]]);
 		if (ft_strncmp(split[0], files[i[1]], ft_strlen(split[0])))
 		{
 			strarrfree(split);
@@ -103,40 +102,34 @@ void	match(char *str, char **files, int *i)
 	}
 }
 
-char	*expand_wildcard(char *str)
+char	**expand_wildcard(char **args)
 {
 	char	**files;
 	int		i[7];
+	int		j;
 
-	i[0] = 0;
-	i[3] = 0;
-	i[4] = 0;
-	while (str[i[0]])
+	j = -1;
+	while (args[++j])
 	{
-		quote_check(str, i);
-		if (!i[3] && !i[4] && str[i[0]] == '*')
+		i[0] = -1;
+		while (args[j][++i[0]])
 		{
-			files = get_file_list();
-			while (!ft_isspace(str[i[0]]))
-				i[0]--;
-			i[0]++;
-			i[1] = -1;
-			while (files[++i[1]])
+			quote_check(args[j], i);
+			if (!i[3] && !i[4] && args[j][i[0]] == '*')
 			{
-				i[5] = i[0];
-				i[2] = 0;
-				match(str, files, i);
+				files = get_file_list();
+				i[1] = -1;
+				while (files[++i[1]])
+				{
+					i[5] = 0;
+					i[2] = 0;
+					match(args[j], files, i);
+				}
+				cmd_env(files);
+				strarrfree(files);
+				break ;
 			}
-			i[1] = -1;
-			while (files[++i[1]])
-				if (files[i[1]][0])
-					printf("%s\n", files[i[1]]);
-			strarrfree(files);
-			while (str[i[0]] && !ft_isspace(str[i[0]]))
-				i[0]++;
 		}
-		else
-			i[0]++;
 	}
-	return (str);
+	return (args);
 }

@@ -70,7 +70,7 @@ char	**parser(char *str, char **envp, int *exit_status)
 	char	**args;
 	int		flag;
 
-	args = arg_splitter(expand_envvar(str, envp, exit_status));
+	args = expand_wildcard(arg_splitter(expand_envvar(str, envp, exit_status)));
 	flag = redir_chk(args);
 	args = rm_quotes(args);
 	add_history(str);

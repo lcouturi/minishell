@@ -34,7 +34,7 @@ char	**cmd_export(char **args, char **envp);
 void	cmd_pwd(void);
 void	cmd_unset(char **args, char **envp, int *exit_status);
 char	*expand_envvar(char *str, char **envp, int *exit_status);
-char	*expand_wildcard(char *str);
+char	**expand_wildcard(char **args);
 int		ft_isspace(char c);
 char	**parser(char *str, char **envp, int *exit_status);
 void	quote_check(char const *s, int *i);
