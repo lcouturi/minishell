@@ -75,6 +75,19 @@ static int	get_arg_num(char **args)
 	return (n);
 }
 
+static char	*filecpy(char *str)
+{
+	int		len;
+	char	*newstr;
+
+	len = ft_strlen(str) + 3;
+	newstr = malloc(len);
+	ft_strlcpy(newstr, "\'", len);
+	ft_strlcat(newstr, str, len);
+	ft_strlcat(newstr, "\'", len);
+	return (newstr);
+}
+
 char	**expand_wildcard(char **args)
 {
 	int		i[5];
@@ -103,7 +116,7 @@ char	**expand_wildcard(char **args)
 				i[1] = -1;
 				while (files[++i[1]])
 					if (files[i[1]][0])
-						newargs[i2++] = ft_strdup(files[i[1]]);
+						newargs[i2++] = filecpy(files[i[1]]);
 				strarrfree(files);
 				break ;
 			}
