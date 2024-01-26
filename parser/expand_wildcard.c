@@ -86,14 +86,34 @@ static char	**get_file_list(void)
 	return (files);
 }
 
-void	match(char *str, char **files, int *i)
+static void	match(char *str, char **files, int *i)
 {
+	int		j;
 	char	**split;
 
-	split = ft_split(str + i[5], '*');
-	if (str[i[5]] != '*')
+	split = ft_split(str, '*');
+	if (str[0] != '*')
 	{
 		if (ft_strncmp(split[0], files[i[1]], ft_strlen(split[0])))
+		{
+			strarrfree(split);
+			files[i[1]][0] = '\0';
+			return ;
+		}
+	}
+	j = -1;
+	while (split[++j])
+	{
+		if (!ft_strnstr(files[i[1]], split[j], ft_strlen(files[i[1]])))
+		{
+			strarrfree(split);
+			files[i[1]][0] = '\0';
+			return ;
+		}
+	}
+	if (str[ft_strlen(str) - 1] != '*')
+	{
+		if (ft_strncmp(split[j - 1], files[i[1]] + ft_strlen(files[i[1]]) - ft_strlen(split[j - 1]), ft_strlen(split[j - 1])))
 		{
 			strarrfree(split);
 			files[i[1]][0] = '\0';
@@ -120,11 +140,7 @@ char	**expand_wildcard(char **args)
 				files = get_file_list();
 				i[1] = -1;
 				while (files[++i[1]])
-				{
-					i[5] = 0;
-					i[2] = 0;
 					match(args[j], files, i);
-				}
 				cmd_env(files);
 				strarrfree(files);
 				break ;
