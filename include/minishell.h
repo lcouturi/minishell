@@ -56,5 +56,8 @@ int		left_redir(char **args, int i);
 void	left_double_redir(char **args, int i, int **fds);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
-
+// pipe
+void	exec_child(char **args, char **envp, int fds[], int *exit_status);
+void	exec_parents(int pid, int fds[], int *exit_status);
+char	**close_backup_return_envp(int backup_stdout, int backup_stdin, char **envp);
 #endif

@@ -38,31 +38,32 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-static char	**execute(char **args, char **envp, int flag, int *exit_status)
+char	**execute(char **args, char **envp, int flag, int *exit_status)
 {
 	int	fds[2];
 	int	backup_stdout;
 	int	backup_stdin;
+	int	pid;
 
-	// pipe(fds);
+	pipe(fds);
 	backup_stdout = dup(STDOUT_FILENO);
 	backup_stdin = dup(STDIN_FILENO);
 	if (flag)
 	{
 		if (exec_redir(args, envp, fds))
-		{
-			close(backup_stdout);
-			close(backup_stdin);
-			return (envp);
-		}
+			return (close_backup_return_envp(backup_stdout, backup_stdin, envp));
+	}
+	if (0)
+	{
+		pid = fork();
+		if (pid < 0)
+			return (close_backup_return_envp(backup_stdout, backup_stdin, envp));
 	}
 	if (args[0])
 		envp = find_command(args, envp, exit_status);
 	dup2(backup_stdout, STDOUT_FILENO);
 	dup2(backup_stdin, STDIN_FILENO);
-	close(backup_stdout);
-	close(backup_stdin);
-	return (envp);
+	return (close_backup_return_envp(backup_stdout, backup_stdin, envp));
 }
 
 char	**parser(char *str, char **envp, int *exit_status)
