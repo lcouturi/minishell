@@ -48,7 +48,8 @@ static char	**execute(char **args, char **envp, int flag, int *exit_status)
 	backup_stdout = dup(STDOUT_FILENO);
 	backup_stdin = dup(STDIN_FILENO);
 	if (flag)
-		exec_redir(args, envp, fds);
+		if (exec_redir(args, envp, fds))
+			return (envp);
 	if (args[0])
 		envp = find_command(args, envp, exit_status);
 	dup2(backup_stdout, STDOUT_FILENO);
@@ -72,6 +73,7 @@ char	**parser(char *str, char **envp, int *exit_status)
 	if (!args)
 	{
 		rl_clear_history();
+		strarrfree(envp);
 		exit(EXIT_FAILURE);
 	}
 	envp = execute(args, envp, flag, exit_status);

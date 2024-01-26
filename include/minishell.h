@@ -47,10 +47,10 @@ void	strarrprint(char **strs);
 void	set_signal(void);
 // redirection
 int		redir_chk(char **args);
-void	exec_redir(char **args, char **envp, int fds[]);
+int		exec_redir(char **args, char **envp, int fds[]);
 void	exec_redir_cmd(char **args, char **envp);
-void	left_redir(char **args, int i);
-void	left_dobule_redir(char **args, int i, int **fds);
+int		left_redir(char **args, int i);
+void	left_double_redir(char **args, int i, int **fds);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
 

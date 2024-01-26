@@ -29,7 +29,7 @@ void	exec_redir_cmd(char **args, char **envp)
 		waitpid(pid, &status, WUNTRACED);
 }
 
-void	exec_redir(char **args, char **envp, int fds[])
+int	exec_redir(char **args, char **envp, int fds[])
 {
 	int	i;
 
@@ -38,12 +38,16 @@ void	exec_redir(char **args, char **envp, int fds[])
 	while (args[++i] != NULL)
 	{
 		if (ft_strncmp(args[i], "<", 2) == 0)
-			left_redir(args, i);
+		{
+			if (left_redir(args, i))
+				return (1);
+		}
 		else if (ft_strncmp(args[i], ">", 2) == 0)
 			right_redir(args, i);
 		else if (ft_strncmp(args[i], ">>", 3) == 0)
 			right_double_redir(args, i);
 		else if (ft_strncmp(args[i], "<<", 3) == 0)
-			left_dobule_redir(args, i, &fds);
+			left_double_redir(args, i, &fds);
 	}
+	return (0);
 }

@@ -12,27 +12,29 @@
 
 #include "../include/minishell.h"
 
-void	left_redir(char **args, int i)
+int	left_redir(char **args, int i)
 {
 	int	fd;
 
 	args[i] = NULL;
+	if (access(args[i + 1], R_OK))
+	{
+		printf("minishell: %s: No such file or directory\n", args[i + 1]);
+		return (1);
+	}
 	fd = open(args[i + 1], O_RDONLY, 0744);
-	if (fd <= 0)
-		exit(EXIT_FAILURE);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
+	return (0);
 }
 
-void	left_dobule_redir(char **args, int i, int **fds)
+void	left_double_redir(char **args, int i, int **fds)
 {
 	char	*line;
 
 	line = readline("minishell> ");
 	while (ft_strncmp((line), args[i + 1], 5))
-	{
 		ft_putendl_fd(line, (*fds)[1]);
-	}
 	close((*fds)[1]);
 	dup2((*fds)[0], 0);
 	close((*fds)[0]);
