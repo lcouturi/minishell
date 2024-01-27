@@ -63,7 +63,6 @@ char	**execute(char **args, char **envp, t_node *node)
 	else
 	{
 		envp = find_command(args, envp, node);
-		
 		if (node->redir_flag == 0)
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 		else

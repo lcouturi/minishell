@@ -71,17 +71,14 @@ void	cmd_echo(char **args, char **envp, t_node *node)
 	int	i;
 	int	new_line;
 
-	i = 1;
+	i = 0;
 	new_line = 1;
-	while (is_n_option(args[i]))
-	{
+	while (is_n_option(args[++i]))
 		new_line = 0;
-		i++;
-	}
 	while (args[i])
 	{
 		if (node->pipe_flag && node->pipe_idx <= i + 1)
-			break;
+			break ;
 		if (args[i][0] == '\'')
 			change_args(args[i], '\'');
 		if (args[i][0] == '$' && new_line == 1)

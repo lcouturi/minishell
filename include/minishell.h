@@ -31,12 +31,12 @@ typedef struct s_node
 	int	backup_stdin;
 	int	pipe_idx;
 	int	fds[2];
-	int exit_status;
+	int	exit_status;
 }	t_node;
 
 char	**arg_splitter(char *s);
 void	cmd_cd(char **args, char **envp, t_node *node);
-void	cmd_echo(char **args, char **envs,  t_node *node);
+void	cmd_echo(char **args, char **envs, t_node *node);
 void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, t_node *node);
 void	cmd_exit(char **args, char **envp);
@@ -70,7 +70,7 @@ void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
-void	exec_parents(int pid,  t_node *node);
+void	exec_parents(int pid, t_node *node);
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
 int		pipe_check(char **args, t_node *node);
 void	init_node(t_node *node);
