@@ -47,7 +47,7 @@ void	cmd_unset(char **args, char **envp, t_node *node);
 char	*expand_envvar(char *str, char **envp, t_node *node);
 char	**expand_wildcard(char **args);
 int		ft_isspace(char c);
-char	**get_file_list(void);
+char	**get_file_list(bool hidden);
 void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);
 char	**parser(char *str, char **envp, t_node *node);

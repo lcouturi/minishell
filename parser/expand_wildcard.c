@@ -23,7 +23,7 @@ static void	get_arg_num_loop(char **args, int *i, int *n)
 		quote_check(args[i[2]], i);
 		if (!i[3] && !i[4] && args[i[2]][i[0]] == '*')
 		{
-			files = get_file_list();
+			files = get_file_list(args[i[2]][0] == '.');
 			i[1] = -1;
 			split = ft_split(args[i[2]], '*');
 			while (files[++i[1]])
@@ -56,7 +56,7 @@ static void	wildcard_handler(char **args, char **newargs, int *i, int *i2)
 	char	**files;
 	char	**split;
 
-	files = get_file_list();
+	files = get_file_list(args[i[2]][0] == '.');
 	i[1] = -1;
 	split = ft_split(args[i[2]], '*');
 	while (files[++i[1]])

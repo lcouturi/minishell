@@ -33,7 +33,7 @@ static char	*lowest(t_list *lst)
 	return (ret);
 }
 
-static char	**load_lst(struct dirent *dr, DIR *dir)
+static char	**load_lst(struct dirent *dr, DIR *dir, bool hidden)
 {
 	char	**files;
 	int		i;
@@ -45,7 +45,9 @@ static char	**load_lst(struct dirent *dr, DIR *dir)
 		dr = readdir(dir);
 		if (!dr)
 			break ;
-		if (dr->d_name[0] != '.')
+		if (!hidden && dr->d_name[0] != '.')
+			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(dr->d_name)));
+		if (hidden && dr->d_name[0] == '.')
 			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(dr->d_name)));
 	}
 	files = malloc(8 * ft_lstsize(lst) + 1);
@@ -61,7 +63,7 @@ static char	**load_lst(struct dirent *dr, DIR *dir)
 	return (files);
 }
 
-char	**get_file_list(void)
+char	**get_file_list(bool hidden)
 {
 	DIR				*dir;
 	struct dirent	*dr;
@@ -69,14 +71,16 @@ char	**get_file_list(void)
 
 	dir = opendir(".");
 	dr = readdir(dir);
-	while (dr && dr->d_name[0] == '.')
+	while (hidden && dr && dr->d_name[0] != '.')
+		dr = readdir(dir);
+	while (!hidden && dr && dr->d_name[0] == '.')
 		dr = readdir(dir);
 	if (!dr)
 	{
 		closedir(dir);
 		return (0);
 	}
-	files = load_lst(dr, dir);
+	files = load_lst(dr, dir, hidden);
 	closedir(dir);
 	return (files);
 }
