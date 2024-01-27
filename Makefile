@@ -7,15 +7,17 @@ CPPFLAGS = -I${HOME}/.brew/opt/readline/include -I/opt/homebrew/opt/readline/inc
 
 INCLUDE_DIR = ./include
 
+MAIN = main signal
 CMD = cd echo env exec exit export pwd unset
 PARSER =  arg_splitter expand_envvar expand_wildcard get_file_list parser rm_quotes
 REDIR = cmd_redir exec_redir utils_redir
-MAIN = main signal
+PIPE = utils_pipe
 
-SRCS = $(addsuffix .c, $(MAIN)) \
-	  $(addsuffix .c, $(addprefix cmd/, $(CMD))) \
-	  $(addsuffix .c, $(addprefix parser/, $(PARSER))) \
-	  $(addsuffix .c, $(addprefix redirection/, $(REDIR)))
+SRCS =	$(addsuffix .c, $(MAIN)) \
+		$(addsuffix .c, $(addprefix cmd/, $(CMD))) \
+		$(addsuffix .c, $(addprefix parser/, $(PARSER))) \
+		$(addsuffix .c, $(addprefix redirection/, $(REDIR))) \
+		$(addsuffix .c, $(addprefix pipe/, $(PIPE))) 
 
 OBJS = $(SRCS:.c=.o)
 

@@ -24,30 +24,30 @@ static int	getsize(long n)
 	return (s);
 }
 
-static void	insert_int(char *str, int *i, int *exit_status)
+static void	insert_int(char *str, int *i, t_node *node)
 {
 	int	j;
 
 	j = 1000000000;
 	while (j)
 	{
-		if (*exit_status / 256 / j)
-			str[i[1]++] = *exit_status / 256 / j % 10 + '0';
+		if (node->exit_status / 256 / j)
+			str[i[1]++] = node->exit_status / 256 / j % 10 + '0';
 		j /= 10;
 	}
-	if (!(*exit_status / 256))
+	if (!(node->exit_status / 256))
 		str[i[1]++] = '0';
 	i[0]++;
 }
 
-static void	get_length_loop(char *str, char **envp, int *i, int *exit_status)
+static void	get_length_loop(char *str, char **envp, int *i, t_node *node)
 {
 	quote_check(str, i);
 	if (!i[4] && str[i[0]] == '$')
 	{
 		if (str[++i[0]] == '?')
 		{
-			i[5] += getsize(*exit_status / 256);
+			i[5] += getsize(node->exit_status / 256);
 			return ;
 		}
 		i[1] = i[0];
@@ -66,7 +66,7 @@ static void	get_length_loop(char *str, char **envp, int *i, int *exit_status)
 }
 
 static void	expand_envvar_loop(char *str, char *str2, char **envp,
-		int *exit_status)
+		t_node *node)
 {
 	int	i[7];
 
@@ -79,7 +79,7 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp,
 		{
 			if (str[++i[0]] == '?')
 			{
-				insert_int(str2, i, exit_status);
+				insert_int(str2, i, node);
 				return ;
 			}
 			i[5] = i[0];
@@ -103,7 +103,7 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp,
 	str2[i[1]] = '\0';
 }
 
-char	*expand_envvar(char *str, char **envp, int *exit_status)
+char	*expand_envvar(char *str, char **envp, t_node *node)
 {
 	int		i[6];
 	char	*str2;
@@ -111,8 +111,8 @@ char	*expand_envvar(char *str, char **envp, int *exit_status)
 	i[0] = -1;
 	i[5] = 0;
 	while (str[++i[0]])
-		get_length_loop(str, envp, i, exit_status);
+		get_length_loop(str, envp, i, node);
 	str2 = malloc((i[5] + 1) * sizeof(char));
-	expand_envvar_loop(str, str2, envp, exit_status);
+	expand_envvar_loop(str, str2, envp, node);
 	return (str2);
 }

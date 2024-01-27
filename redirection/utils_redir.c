@@ -25,29 +25,8 @@ int	redir_chk(char **args)
 		if (!ft_strncmp("<<", args[i], 3)
 			|| !ft_strncmp(">>", args[i], 3)
 			|| !ft_strncmp("<", args[i], 2)
-			||!ft_strncmp(">", args[i], 2))
+			|| !ft_strncmp(">", args[i], 2))
 			return (1);
 	}
 	return (0);
-}
-
-void	exec_child(char **args, char **envp, int fds[], int *exit_status)
-{
-	(void)envp;
-	(void)args;
-	dup2(fds[0], 0);
-	close(fds[0]);
-	close(fds[1]);
-	// execute
-	exit(*exit_status);
-}
-
-void	exec_parents(int pid, int fds[], int *exit_status)
-{
-	int	status;
-
-	close(fds[1]);
-	close(fds[0]);
-	waitpid(pid, &status, 0);
-	*exit_status = status >> 8;
 }

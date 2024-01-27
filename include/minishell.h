@@ -23,22 +23,34 @@
 # include <unistd.h>
 # include <fcntl.h>
 
+typedef struct s_node
+{
+	int	redir_flag;
+	int	pipe_flag;
+	int	backup_stdout;
+	int	backup_stdin;
+	int	pipe_idx;
+	int	fds[2];
+	int	exit_status;
+}	t_node;
+
 char	**arg_splitter(char *s);
-void	cmd_cd(char **args, char **envp, int *exit_status);
-void	cmd_echo(char **args, char **envs, int *exit_status);
+void	cmd_cd(char **args, char **envp, t_node *node);
+void	cmd_echo(char **args, char **envs, t_node *node);
 void	cmd_env(char **envs);
-void	cmd_exec(char **args, char **envp, int *exit_status);
+void	cmd_exec(char **args, char **envp, t_node *node);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
 char	**cmd_export(char **args, char **envp);
 void	cmd_pwd(void);
-void	cmd_unset(char **args, char **envp, int *exit_status);
-char	*expand_envvar(char *str, char **envp, int *exit_status);
+void	cmd_unset(char **args, char **envp, t_node *node);
+char	*expand_envvar(char *str, char **envp, t_node *node);
 char	**expand_wildcard(char **args);
 int		ft_isspace(char c);
 char	**get_file_list(void);
 void	match(char *str, char **split, char **files, int i);
-char	**parser(char *str, char **envp, int *exit_status);
+char	**execute(char **args, char **envp, t_node *node);
+char	**parser(char *str, char **envp, t_node *node);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args);
 char	**strarradd(char **strs, char *str);
@@ -56,5 +68,11 @@ int		left_redir(char **args, int i);
 void	left_double_redir(char **args, int i, int **fds);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
+// pipe
+void	exec_child(char **args, char **envp, t_node *node);
+void	exec_parents(int pid, t_node *node);
+char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
+int		pipe_check(char **args, t_node *node);
+void	init_node(t_node *node);
 
 #endif
