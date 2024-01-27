@@ -12,11 +12,11 @@
 
 #include "../include/minishell.h"
 
-static char	**find_command(char **args, char **envp, int *exit_status)
+static char	**find_command(char **args, char **envp, t_node *node)
 {
 	//printf("find_command실행 : %s\n", args[0]);
 	if (!ft_strncmp(args[0], "cd", 3))
-		cmd_cd(args, envp, exit_status);
+		cmd_cd(args, envp, node);
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp);
 	else if (!ft_strncmp(args[0], "env", 4))
@@ -26,11 +26,11 @@ static char	**find_command(char **args, char **envp, int *exit_status)
 	else if (!ft_strncmp(args[0], "pwd", 4))
 		cmd_pwd();
 	else if (!ft_strncmp(args[0], "echo", 5))
-		cmd_echo(args, envp, exit_status);
+		cmd_echo(args, envp, node);
 	else if (!ft_strncmp(args[0], "unset", 6))
-		cmd_unset(args, envp, exit_status);
+		cmd_unset(args, envp, node);
 	else
-		cmd_exec(args, envp, exit_status);
+		cmd_exec(args, envp, node);
 	return (envp);
 }
 
@@ -39,7 +39,7 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-char	**execute(char **args, char **envp, t_node *node, int *exit_status)
+char	**execute(char **args, char **envp, t_node *node)
 {
 	int	pid;
 
@@ -62,7 +62,7 @@ char	**execute(char **args, char **envp, t_node *node, int *exit_status)
 	}
 	else
 	{
-		envp = find_command(args, envp, exit_status);
+		envp = find_command(args, envp, node);
 		
 		if (node->redir_flag == 0)
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
@@ -75,23 +75,23 @@ char	**execute(char **args, char **envp, t_node *node, int *exit_status)
 	}
 	if (pid == 0 && args[0])
 	{
-		envp = find_command(args, envp, exit_status);
-		exec_child(args, envp, node, exit_status);
+		envp = find_command(args, envp, node);
+		exec_child(args, envp, node);
 	}
 	else
 	{
-		exec_parents(pid, node, exit_status);
+		exec_parents(pid, node);
 	}
 	dup2(node->backup_stdout, STDOUT_FILENO);
 	dup2(node->backup_stdin, STDIN_FILENO);
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 }
 
-char	**parser(char *str, char **envp, int *exit_status, t_node *node)
+char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
 
-	args = expand_wildcard(arg_splitter(expand_envvar(str, envp, exit_status)));
+	args = expand_wildcard(arg_splitter(expand_envvar(str, envp, node)));
 	node->redir_flag = redir_chk(args);
 	args = rm_quotes(args);
 	add_history(str);
@@ -102,7 +102,7 @@ char	**parser(char *str, char **envp, int *exit_status, t_node *node)
 		strarrfree(envp);
 		exit(EXIT_FAILURE);
 	}
-	envp = execute(args, envp, node, exit_status);
+	envp = execute(args, envp, node);
 	strarrfree(args);
 	return (envp);
 }

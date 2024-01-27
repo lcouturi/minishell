@@ -12,16 +12,16 @@
 
 #include "../include/minishell.h"
 
-void	cmd_cd(char **args, char **envp, int *exit_status)
+void	cmd_cd(char **args, char **envp, t_node *node)
 {
 	int		i;
 	char	*cwd;
 
-	*exit_status = EXIT_SUCCESS * 256;
+	node->exit_status = EXIT_SUCCESS * 256;
 	i = 0;
 	if (args[1] && chdir(args[1]) == -1)
 	{
-		*exit_status = EXIT_FAILURE * 256;
+		node->exit_status = EXIT_FAILURE * 256;
 		printf("minishell: cd: %s: No such file or directory\n", args[1]);
 		return ;
 	}

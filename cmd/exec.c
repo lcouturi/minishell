@@ -62,7 +62,7 @@ static void	exec_proc(char **args, char **envp)
 	exit(127);
 }
 
-void	cmd_exec(char **args, char **envp, int *exit_status)
+void	cmd_exec(char **args, char **envp, t_node *node)
 {
 	int	pid;
 	int	status;
@@ -71,5 +71,5 @@ void	cmd_exec(char **args, char **envp, int *exit_status)
 	if (!pid)
 		exec_proc(args, envp);
 	waitpid(pid, &status, 0);
-	*exit_status = status;
+	node->exit_status = status;
 }
