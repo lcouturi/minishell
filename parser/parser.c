@@ -14,6 +14,7 @@
 
 static char	**find_command(char **args, char **envp, int *exit_status)
 {
+	//printf("find_command실행 : %s\n", args[0]);
 	if (!ft_strncmp(args[0], "cd", 3))
 		cmd_cd(args, envp, exit_status);
 	else if (!ft_strncmp(args[0], "exit", 5))
@@ -40,15 +41,15 @@ int	ft_isspace(char c)
 
 char	**execute(char **args, char **envp, t_node *node, int *exit_status)
 {
-	int	fds[2];
 	int	pid;
 
-	pipe(fds);
+	pipe(node->fds);
 	node->backup_stdout = dup(STDOUT_FILENO);
 	node->backup_stdin = dup(STDIN_FILENO);
+	pid = 0;
 	if (node->redir_flag)
 	{
-		if (exec_redir(args, envp, fds))
+		if (exec_redir(args, envp, node->fds))
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 	}
 	if (pipe_check(args, node))
@@ -56,9 +57,31 @@ char	**execute(char **args, char **envp, t_node *node, int *exit_status)
 		pid = fork();
 		if (pid < 0)
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
+		// node->fds[0] = dup(STDOUT_FILENO);
+		// node->fds[1] = dup(STDIN_FILENO);
 	}
-	if (args[0])
+	else
+	{
 		envp = find_command(args, envp, exit_status);
+		
+		if (node->redir_flag == 0)
+			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
+		else
+		{
+			dup2(node->backup_stdout, STDOUT_FILENO);
+			dup2(node->backup_stdin, STDIN_FILENO);
+			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
+		}
+	}
+	if (pid == 0 && args[0])
+	{
+		envp = find_command(args, envp, exit_status);
+		exec_child(args, envp, node, exit_status);
+	}
+	else
+	{
+		exec_parents(pid, node, exit_status);
+	}
 	dup2(node->backup_stdout, STDOUT_FILENO);
 	dup2(node->backup_stdin, STDIN_FILENO);
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));

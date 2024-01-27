@@ -25,7 +25,7 @@ int	redir_chk(char **args)
 		if (!ft_strncmp("<<", args[i], 3)
 			|| !ft_strncmp(">>", args[i], 3)
 			|| !ft_strncmp("<", args[i], 2)
-			||!ft_strncmp(">", args[i], 2))
+			|| !ft_strncmp(">", args[i], 2))
 			return (1);
 	}
 	return (0);

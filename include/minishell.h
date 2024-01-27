@@ -30,6 +30,8 @@ typedef struct s_node
 	int	backup_stdout;
 	int	backup_stdin;
 	int	pipe_idx;
+	int	fds[2];
+	int	repeat;
 }	t_node;
 
 char	**arg_splitter(char *s);
@@ -47,6 +49,7 @@ char	**expand_wildcard(char **args);
 int		ft_isspace(char c);
 char	**get_file_list(void);
 void	match(char *str, char **split, char **files, int i);
+char	**execute(char **args, char **envp, t_node *node, int *exit_status);
 char	**parser(char *str, char **envp, int *exit_status, t_node *node);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args);
@@ -66,8 +69,8 @@ void	left_double_redir(char **args, int i, int **fds);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
 // pipe
-void	exec_child(char **args, char **envp, int fds[], int *exit_status);
-void	exec_parents(int pid, int fds[], int *exit_status);
+void	exec_child(char **args, char **envp, t_node *node, int *exit_status);
+void	exec_parents(int pid,  t_node *node, int *exit_status);
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
 int		pipe_check(char **args, t_node *node);
 void	init_node(t_node *node);

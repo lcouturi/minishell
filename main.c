@@ -77,10 +77,10 @@ int	main(int argc, char **argv, char **envp)
 	exit_status = 0;
 	envp_copy = strarrcpy(envp);
 	set_signal();
-	init_node(&node);
 	while (1)
 	{
 		line = readline("minishell> ");
+		init_node(&node);
 		if (line)
 		{
 			if (ft_strncmp(line, "\0", 1))
