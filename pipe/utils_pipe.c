@@ -14,25 +14,25 @@
 
 void	exec_child(char **args, char **envp, t_node *node)
 {
-	// printf("[exec_child] %s\n", args[0]);
-	(void)envp;
-	(void)args;
-	close(node->fds[1]);
-	dup2(node->fds[0], STDIN_FILENO);
 	close(node->fds[0]);
-	execute(args + node->pipe_idx, envp, node);
+	dup2(node->fds[1], STDOUT_FILENO);
+	close(node->fds[1]);
+	envp = find_command(args, envp, node);
 	exit(node->exit_status);
 }
 
-void	exec_parents(int pid, t_node *node)
+void	exec_parents(int pid, char **args, char **envp, t_node *node)
 {
-	// printf("[exec_parent] \n");
 	int	status;
 
-	close(node->fds[1]);
-	close(node->fds[0]);
 	waitpid(pid, &status, 0);
 	node->exit_status = status >> 8;
+	close(node->fds[1]);
+	dup2(node->fds[0], STDIN_FILENO);
+	close(node->fds[0]);
+	envp = find_command(args + node->pipe_idx, envp, node);
+	dup2(STDIN_FILENO, 0);
+	dup2(STDOUT_FILENO, 1);
 }
 
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp)
