@@ -12,10 +12,37 @@
 
 #include "../include/minishell.h"
 
-static void	exec_proc_loop(int i, char **paths, char **args, char **envp)
+char	**changeArgu(char **args, t_node *node)
+{
+	char	**temp;
+	int		i;
+	int		j;
+
+	i = -1;
+	temp = malloc((node->pipe_idx) * sizeof(char *));
+	if (temp < 0)
+		return (NULL);
+	while (++i < node->pipe_idx - 1)
+	{
+		temp[i] = malloc(ft_strlen(args[i]));
+		j = 0;
+		while (args[i][j])
+		{
+			temp[i][j] = args[i][j];
+			j++;
+		}
+		temp[i][j] = '\0';
+		// printf(">%s\n",temp[i]);
+	}
+	temp[i] = NULL;
+	return (temp);
+}
+
+static void	exec_proc_loop(int i, char **paths, char **args, char **envp, t_node * node)
 {
 	int		n;
 	char	*path;
+	char	**temp;
 
 	n = ft_strlen(paths[i]) + ft_strlen(args[0]) + 2;
 	path = malloc(n);
@@ -31,12 +58,18 @@ static void	exec_proc_loop(int i, char **paths, char **args, char **envp)
 	if (!access(path, X_OK))
 	{
 		strarrfree(paths);
-		execve(path, args, envp);
+		if (node->pipe_flag)
+		{
+			temp = changeArgu(args, node);
+			execve(path, temp, envp);
+		}
+		else
+			execve(path, args, envp);
 	}
 	free(path);
 }
 
-static void	exec_proc(char **args, char **envp)
+static void	exec_proc(char **args, char **envp, t_node *node)
 {
 	int		i;
 	char	**paths;
@@ -54,7 +87,7 @@ static void	exec_proc(char **args, char **envp)
 	}
 	i = -1;
 	while (paths[++i])
-		exec_proc_loop(i, paths, args, envp);
+		exec_proc_loop(i, paths, args, envp, node);
 	printf("minishell: %s: command not found\n", args[0]);
 	strarrfree(envp);
 	strarrfree(paths);
@@ -69,7 +102,7 @@ void	cmd_exec(char **args, char **envp, t_node *node)
 
 	pid = fork();
 	if (!pid)
-		exec_proc(args, envp);
+		exec_proc(args, envp, node);
 	waitpid(pid, &status, 0);
 	node->exit_status = status;
 }

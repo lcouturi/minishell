@@ -14,6 +14,7 @@
 
 void	exec_child(char **args, char **envp, t_node *node)
 {
+	// printf("[exec_child] %s\n", args[0]);
 	(void)envp;
 	(void)args;
 	close(node->fds[1]);
@@ -25,6 +26,7 @@ void	exec_child(char **args, char **envp, t_node *node)
 
 void	exec_parents(int pid, t_node *node)
 {
+	// printf("[exec_parent] \n");
 	int	status;
 
 	close(node->fds[1]);
