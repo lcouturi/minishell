@@ -12,9 +12,8 @@
 
 #include "../include/minishell.h"
 
-static char	**find_command(char **args, char **envp, t_node *node)
+char	**find_command(char **args, char **envp, t_node *node)
 {
-	//printf("find_command실행 : %s\n", args[0]);
 	if (!ft_strncmp(args[0], "cd", 3))
 		cmd_cd(args, envp, node);
 	else if (!ft_strncmp(args[0], "exit", 5))
@@ -43,7 +42,6 @@ char	**execute(char **args, char **envp, t_node *node)
 {
 	int	pid;
 
-	pipe(node->fds);
 	node->backup_stdout = dup(STDOUT_FILENO);
 	node->backup_stdin = dup(STDIN_FILENO);
 	pid = 0;
@@ -54,11 +52,10 @@ char	**execute(char **args, char **envp, t_node *node)
 	}
 	if (pipe_check(args, node))
 	{
+		pipe(node->fds);
 		pid = fork();
 		if (pid < 0)
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
-		// node->fds[0] = dup(STDOUT_FILENO);
-		// node->fds[1] = dup(STDIN_FILENO);
 	}
 	else
 	{
@@ -67,22 +64,15 @@ char	**execute(char **args, char **envp, t_node *node)
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 		else
 		{
-			dup2(node->backup_stdout, STDOUT_FILENO);
-			dup2(node->backup_stdin, STDIN_FILENO);
+			backup_restor(node);
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 		}
 	}
-	if (pid == 0 && args[0])
-	{
-		envp = find_command(args, envp, node);
+	if (pid == 0)
 		exec_child(args, envp, node);
-	}
 	else
-	{
-		exec_parents(pid, node);
-	}
-	dup2(node->backup_stdout, STDOUT_FILENO);
-	dup2(node->backup_stdin, STDIN_FILENO);
+		exec_parents(pid, args, envp, node);
+	backup_restor(node);
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 }
 

@@ -12,53 +12,80 @@
 
 #include "../include/minishell.h"
 
-static void	exec_proc_loop(int i, char **paths, char **args, char **envp)
+static void	exec_proc_loop2(char **paths, char **args,
+					char **envp, t_node *node)
+{
+	char	**temp;
+	int		n;
+
+	n = ft_strlen(paths[node->i]) + ft_strlen(args[0]) + 2;
+	ft_strlcpy(node->path, paths[node->i], n);
+	ft_strlcat(node->path, "/", n);
+	ft_strlcat(node->path, args[0], n);
+	if (!access(node->path, X_OK))
+	{
+		strarrfree(paths);
+		if (node->pipe_flag)
+		{
+			temp = split_before_pipe_args(args, node);
+			execve(node->path, temp, envp);
+			free(temp);
+		}
+		else
+			execve(node->path, args, envp);
+	}
+	free(node->path);
+}
+
+static void	exec_proc_loop(char **paths, char **args,
+					char **envp, t_node *node)
 {
 	int		n;
-	char	*path;
 
-	n = ft_strlen(paths[i]) + ft_strlen(args[0]) + 2;
-	path = malloc(n);
-	if (!path)
+	n = ft_strlen(paths[node->i]) + ft_strlen(args[0]) + 2;
+	node->path = malloc(n);
+	if (!(node->path))
 	{
 		strarrfree(envp);
 		strarrfree(paths);
 		exit(EXIT_FAILURE);
 	}
-	ft_strlcpy(path, paths[i], n);
-	ft_strlcat(path, "/", n);
-	ft_strlcat(path, args[0], n);
-	if (!access(path, X_OK))
-	{
-		strarrfree(paths);
-		execve(path, args, envp);
-	}
-	free(path);
+	exec_proc_loop2(paths, args, envp, node);
 }
 
-static void	exec_proc(char **args, char **envp)
+static void	strarrfree_all(char **args, char **envp, char	**paths)
 {
-	int		i;
+	strarrfree(envp);
+	strarrfree(paths);
+	strarrfree(args);
+}
+
+static void	exec_proc(char **args, char **envp, t_node *node)
+{
 	char	**paths;
+	char	**temp;
 
 	if (!access(args[0], X_OK))
-		execve(args[0], args, envp);
-	i = 0;
-	while (ft_strncmp(envp[i], "PATH=", 5))
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
+	{
+		if (node->pipe_flag)
+			execve(args[0], temp, envp);
+		else
+			execve(args[0], args, envp);
+	}
+	node->i = 0;
+	while (ft_strncmp(envp[node->i], "PATH=", 5))
+		node->i += 1;
+	paths = ft_split(envp[node->i] + 5, ':');
 	if (!paths)
 	{
 		strarrfree(envp);
 		exit(EXIT_FAILURE);
 	}
-	i = -1;
-	while (paths[++i])
-		exec_proc_loop(i, paths, args, envp);
+	node->i = -1;
+	while (paths[++(node->i)])
+		exec_proc_loop(paths, args, envp, node);
 	printf("minishell: %s: command not found\n", args[0]);
-	strarrfree(envp);
-	strarrfree(paths);
-	strarrfree(args);
+	strarrfree_all(args, envp, paths);
 	exit(127);
 }
 
@@ -69,7 +96,7 @@ void	cmd_exec(char **args, char **envp, t_node *node)
 
 	pid = fork();
 	if (!pid)
-		exec_proc(args, envp);
+		exec_proc(args, envp, node);
 	waitpid(pid, &status, 0);
 	node->exit_status = status;
 }

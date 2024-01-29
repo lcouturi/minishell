@@ -11,7 +11,7 @@ MAIN = main signal
 CMD = cd echo env exec exit export pwd unset
 PARSER =  arg_splitter expand_envvar expand_wildcard get_file_list parser rm_quotes
 REDIR = cmd_redir exec_redir utils_redir
-PIPE = utils_pipe
+PIPE = utils_pipe utils
 
 SRCS =	$(addsuffix .c, $(MAIN)) \
 		$(addsuffix .c, $(addprefix cmd/, $(CMD))) \
