@@ -64,8 +64,7 @@ char	**execute(char **args, char **envp, t_node *node)
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 		else
 		{
-			dup2(node->backup_stdout, STDOUT_FILENO);
-			dup2(node->backup_stdin, STDIN_FILENO);
+			backup_restor(node);
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 		}
 	}
@@ -73,8 +72,7 @@ char	**execute(char **args, char **envp, t_node *node)
 		exec_child(args, envp, node);
 	else
 		exec_parents(pid, args, envp, node);
-	dup2(node->backup_stdout, STDOUT_FILENO);
-	dup2(node->backup_stdin, STDIN_FILENO);
+	backup_restor(node);
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 }
 

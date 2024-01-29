@@ -25,14 +25,15 @@
 
 typedef struct s_node
 {
-	int	redir_flag;
-	int	pipe_flag;
-	int	backup_stdout;
-	int	backup_stdin;
-	int	pipe_idx;
-	int	fds[2];
-	int	exit_status;
-	int	i;
+	int		redir_flag;
+	int		pipe_flag;
+	int		backup_stdout;
+	int		backup_stdin;
+	int		pipe_idx;
+	int		fds[2];
+	int		exit_status;
+	int		i;
+	char	*path;
 }	t_node;
 
 char	**arg_splitter(char *s);
@@ -76,5 +77,7 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node);
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
 int		pipe_check(char **args, t_node *node);
 void	init_node(t_node *node);
+void	backup_restor(t_node *node);
+char	**split_before_pipe_args(char **args, t_node *node);
 
 #endif
