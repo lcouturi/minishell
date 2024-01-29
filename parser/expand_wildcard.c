@@ -39,7 +39,7 @@ static void	get_arg_num_loop(char **args, int *i, int *n)
 
 static int	get_arg_num(char **args)
 {
-	int	i[5];
+	int	i[10];
 	int	n;
 
 	i[2] = -1;

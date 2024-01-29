@@ -12,6 +12,37 @@
 
 #include "../include/minishell.h"
 
+static char	*ft_getenv(const char *name, char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (ft_strncmp(envp[i], name, ft_strlen(name))
+		|| envp[i][ft_strlen(name)] != '=')
+		i++;
+	return (envp[i] + ft_strlen(name) + 1);
+}
+
+static int	ft_setenv(const char *name, const char *value, char **envp)
+{
+	int	i;
+	int	n;
+
+	i = 0;
+	while (ft_strncmp(envp[i], name, ft_strlen(name))
+		|| envp[i][ft_strlen(name)] != '=')
+		i++;
+	free(envp[i]);
+	n = ft_strlen(name) + ft_strlen(value) + 2;
+	envp[i] = malloc(n);
+	if (!envp[i])
+		return (1);
+	ft_strlcpy(envp[i], name, n);
+	ft_strlcat(envp[i], "=", n);
+	ft_strlcat(envp[i], value, n);
+	return (0);
+}
+
 void	cmd_cd(char **args, char **envp, t_node *node)
 {
 	int		i;
@@ -31,11 +62,8 @@ void	cmd_cd(char **args, char **envp, t_node *node)
 			i++;
 		chdir(envp[i] + 5);
 	}
-	i = 0;
-	while (ft_strncmp(envp[i], "PWD=", 4))
-		i++;
-	free(envp[i]);
+	ft_setenv("OLDPWD", ft_getenv("PWD", envp), envp);
 	cwd = getcwd(NULL, 0);
-	envp[i] = ft_strjoin("PWD=", cwd);
+	ft_setenv("PWD", cwd, envp);
 	free(cwd);
 }
