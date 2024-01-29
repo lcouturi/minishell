@@ -37,6 +37,7 @@ typedef struct s_node
 }	t_node;
 
 char	**arg_splitter(char *s);
+char	**asterisk_splitter(char *s);
 void	cmd_cd(char **args, char **envp, t_node *node);
 void	cmd_echo(char **args, char **envs, t_node *node);
 void	cmd_env(char **envs);
