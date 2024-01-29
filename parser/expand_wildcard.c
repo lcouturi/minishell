@@ -81,9 +81,11 @@ char	**expand_wildcard(char **args)
 {
 	int		i[5];
 	int		i2;
+	int		n;
 	char	**newargs;
 
-	newargs = malloc((strarrlen(args) + get_arg_num(args) + 1) * 8);
+	n = get_arg_num(args);
+	newargs = malloc((strarrlen(args) + n + 1) * 8);
 	i[2] = -1;
 	i2 = 0;
 	while (args[++i[2]])
