@@ -47,8 +47,8 @@ static void	get_arg_num_loop(char **args, int *i, int *n)
 
 static int	get_arg_num(char **args)
 {
-	int		i[5];
-	int		n;
+	int	i[5];
+	int	n;
 
 	i[2] = -1;
 	n = 0;
@@ -95,11 +95,9 @@ char	**expand_wildcard(char **args)
 {
 	int		i[5];
 	int		i2;
-	int		n;
 	char	**newargs;
 
-	n = get_arg_num(args);
-	newargs = malloc((strarrlen(args) + n + 1) * 8);
+	newargs = malloc((strarrlen(args) + get_arg_num(args) + 1) * 8);
 	i[2] = -1;
 	i2 = 0;
 	while (args[++i[2]])
