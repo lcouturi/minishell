@@ -12,34 +12,43 @@
 
 #include "../include/minishell.h"
 
-static char	*ft_getenv(const char *name, char **envp)
+char	*ft_getenv(const char *name, char **envp)
 {
 	int	i;
 
 	i = 0;
-	while (ft_strncmp(envp[i], name, ft_strlen(name))
-		|| envp[i][ft_strlen(name)] != '=')
+	while (envp[i] && (ft_strncmp(envp[i], name, ft_strlen(name))
+			|| envp[i][ft_strlen(name)] != '='))
 		i++;
+	if (!envp[i])
+		return (NULL);
 	return (envp[i] + ft_strlen(name) + 1);
 }
 
-static int	ft_setenv(const char *name, const char *value, char **envp)
+int	ft_setenv(const char *name, const char *value, char **envp)
 {
-	int	i;
-	int	n;
+	int		i;
+	int		n;
+	char	*str;
 
-	i = 0;
-	while (ft_strncmp(envp[i], name, ft_strlen(name))
-		|| envp[i][ft_strlen(name)] != '=')
-		i++;
-	free(envp[i]);
 	n = ft_strlen(name) + ft_strlen(value) + 2;
-	envp[i] = malloc(n);
-	if (!envp[i])
+	str = malloc(n);
+	if (!str)
 		return (1);
-	ft_strlcpy(envp[i], name, n);
-	ft_strlcat(envp[i], "=", n);
-	ft_strlcat(envp[i], value, n);
+	ft_strlcpy(str, name, n);
+	ft_strlcat(str, "=", n);
+	ft_strlcat(str, value, n);
+	i = 0;
+	while (envp[i] && (ft_strncmp(envp[i], name, ft_strlen(name))
+			|| envp[i][ft_strlen(name)] != '='))
+		i++;
+	if (envp[i])
+	{
+		free(envp[i]);
+		envp[i] = str;
+	}
+	else if (!strarradd(envp, str))
+		return (1);
 	return (0);
 }
 

@@ -50,7 +50,7 @@ static void	loop(char *s, char **returned, int *i)
 
 char	**arg_splitter(char *s)
 {
-	int		i[6];
+	int		i[5];
 	char	**returned;
 
 	i[0] = -1;
