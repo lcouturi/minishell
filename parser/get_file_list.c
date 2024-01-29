@@ -74,6 +74,7 @@ char	**get_file_list(bool hidden)
 {
 	DIR				*dir;
 	struct dirent	*dr;
+	char			**files;
 
 	dir = opendir(".");
 	dr = readdir(dir);
@@ -85,7 +86,9 @@ char	**get_file_list(bool hidden)
 	if (!dr)
 	{
 		closedir(dir);
-		return (0);
+		files = malloc(8);
+		files[0] = 0;
+		return (files);
 	}
 	return (load_lst(dr, dir, hidden));
 }
