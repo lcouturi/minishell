@@ -85,7 +85,7 @@ int	main(int argc, char **argv, char **envp)
 	set_signal();
 	while (1)
 	{
-		line = readline("minishell> ");
+		line = readline("minishell$ ");
 		init_node(&node);
 		if (line)
 		{

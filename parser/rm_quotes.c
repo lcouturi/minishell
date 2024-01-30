@@ -41,11 +41,36 @@ static char	*rm_quotes_loop(char *str)
 	return (newstr);
 }
 
-char	**rm_quotes(char **args)
+void	quote_pipe_check(char **args, t_node *node)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (args[i])
+	{
+		j = 0;
+		while (args[i][j] && args[i][j + 1] && args[i][j + 2])
+		{
+			if (args[i][j] == '\'' && args[i][j + 1] == '|'
+				&& args[i][j + 2] == '\'')
+				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = j + 1;
+			else if (args[i][j] == '\"' && args[i][j + 1] == '|'
+				&& args[i][j + 2] == '\"')
+				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = j + 1;
+			j++;
+		}
+		i++;
+	}
+	j = -1;
+}
+
+char	**rm_quotes(char **args, t_node *node)
 {
 	int	i;
 
 	i = -1;
+	quote_pipe_check(args, node);
 	while (args[++i])
 		args[i] = rm_quotes_loop(args[i]);
 	return (args);

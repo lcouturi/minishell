@@ -46,15 +46,23 @@ char	**cloturn(int backup_stdout, int backup_stdin, char **envp)
 int	pipe_check(char **args, t_node *node)
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	while (args[i])
 	{
 		if (ft_strncmp(args[i], "|", 2) == 0)
 		{
-			node->pipe_idx = i + 1;
-			node->pipe_flag = 1;
-			return (1);
+			if (j < node->quota_pipe_cnt
+				&& node->quota_pipe_idx_arr[j] == i)
+				j++;
+			else
+			{
+				node->pipe_idx = i + 1;
+				node->pipe_flag = 1;
+				return (1);
+			}
 		}
 		i++;
 	}
@@ -65,4 +73,5 @@ int	pipe_check(char **args, t_node *node)
 void	init_node(t_node *node)
 {
 	node->pipe_idx = 0;
+	node->quota_pipe_cnt = 0;
 }

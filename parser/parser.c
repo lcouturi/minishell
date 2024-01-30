@@ -82,7 +82,7 @@ char	**parser(char *str, char **envp, t_node *node)
 
 	args = expand_wildcard(arg_splitter(expand_envvar(str, envp, node)));
 	node->redir_flag = redir_chk(args);
-	args = rm_quotes(args);
+	args = rm_quotes(args, node);
 	add_history(str);
 	free(str);
 	if (!args)

@@ -34,6 +34,8 @@ typedef struct s_node
 	int		exit_status;
 	int		i;
 	char	*path;
+	int		quota_pipe_idx_arr[10];
+	int		quota_pipe_cnt;
 }	t_node;
 
 char	**arg_splitter(char *s);
@@ -57,7 +59,7 @@ void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);
 char	**parser(char *str, char **envp, t_node *node);
 void	quote_check(char const *s, int *i);
-char	**rm_quotes(char **args);
+char	**rm_quotes(char **args, t_node *node);
 char	**strarradd(char **strs, char *str);
 char	**strarrcpy(char **strs);
 void	strarrfree(char **strs);
