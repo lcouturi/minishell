@@ -37,6 +37,7 @@ typedef struct s_node
 }	t_node;
 
 char	**arg_splitter(char *s);
+char	**asterisk_splitter(char *s);
 void	cmd_cd(char **args, char **envp, t_node *node);
 void	cmd_echo(char **args, char **envs, t_node *node);
 void	cmd_env(char **envs);
@@ -48,8 +49,10 @@ void	cmd_pwd(void);
 void	cmd_unset(char **args, char **envp, t_node *node);
 char	*expand_envvar(char *str, char **envp, t_node *node);
 char	**expand_wildcard(char **args);
+char	*ft_getenv(const char *name, char **envp);
 int		ft_isspace(char c);
-char	**get_file_list(void);
+int		ft_setenv(const char *name, const char *value, char **envp);
+char	**get_file_list(bool hidden);
 void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);
 char	**parser(char *str, char **envp, t_node *node);
