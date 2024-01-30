@@ -89,6 +89,6 @@ void	cmd_echo(char **args, char **envp, t_node *node)
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
-	if (new_line)
+	if (new_line && !(node->pipe_flag))
 		ft_putchar_fd('\n', 1);
 }
