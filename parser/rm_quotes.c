@@ -47,14 +47,16 @@ void	quote_pipe_check(char **args, t_node *node)
 	int	j;
 
 	i = 0;
-	while(args[i])
+	while (args[i])
 	{
 		j = 0;
-		while(args[i][j] && args[i][j + 1] && args[i][j + 2])
+		while (args[i][j] && args[i][j + 1] && args[i][j + 2])
 		{
-			if (args[i][j] == '\'' && args[i][j + 1] == '|' && args[i][j + 2] == '\'')
+			if (args[i][j] == '\'' && args[i][j + 1] == '|'
+				&& args[i][j + 2] == '\'')
 				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = j + 1;
-			else if (args[i][j] == '\"' && args[i][j + 1] == '|' && args[i][j + 2] == '\"')
+			else if (args[i][j] == '\"' && args[i][j + 1] == '|'
+				&& args[i][j + 2] == '\"')
 				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = j + 1;
 			j++;
 		}

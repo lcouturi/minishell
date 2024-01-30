@@ -54,8 +54,8 @@ int	pipe_check(char **args, t_node *node)
 	{
 		if (ft_strncmp(args[i], "|", 2) == 0)
 		{
-			if (j < node->quota_pipe_cnt &&
-				node->quota_pipe_idx_arr[j] == i)
+			if (j < node->quota_pipe_cnt
+				&& node->quota_pipe_idx_arr[j] == i)
 				j++;
 			else
 			{
