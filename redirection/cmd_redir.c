@@ -34,11 +34,14 @@ void	left_double_redir(char **args, int i, int **fds)
 {
 	char	*line;
 
-	line = readline("minishell> ");
-	while (ft_strncmp((line), args[i + 1], 5))
+	line = readline("> ");
+	while (ft_strncmp((line), args[i + 1], ft_strlen(args[i + 1]) + 1))
+	{
 		ft_putendl_fd(line, (*fds)[1]);
+		line = readline("> ");
+	}
 	close((*fds)[1]);
-	dup2((*fds)[0], 0);
+	dup2((*fds)[0], STDIN_FILENO);
 	close((*fds)[0]);
 	pipe((*fds));
 }
