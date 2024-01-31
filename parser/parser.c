@@ -47,7 +47,7 @@ char	**execute(char **args, char **envp, t_node *node)
 	pid = 0;
 	if (node->redir_flag)
 	{
-		if (exec_redir(args, envp, node->fds))
+		if (exec_redir(args, envp, node))
 			return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 	}
 	if (pipe_check(args, node))

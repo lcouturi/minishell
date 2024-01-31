@@ -16,12 +16,9 @@ static void	exec_proc_loop2(char **paths, char **args,
 					char **envp, t_node *node)
 {
 	char	**temp;
-	int		n;
 
-	n = ft_strlen(paths[node->i]) + ft_strlen(args[0]) + 2;
-	ft_strlcpy(node->path, paths[node->i], n);
-	ft_strlcat(node->path, "/", n);
-	ft_strlcat(node->path, args[0], n);
+	if (node->redir_flag)
+		argu_left_change(args);
 	if (!access(node->path, X_OK))
 	{
 		strarrfree(paths);
@@ -50,6 +47,9 @@ static void	exec_proc_loop(char **paths, char **args,
 		strarrfree(paths);
 		exit(EXIT_FAILURE);
 	}
+	ft_strlcpy(node->path, paths[node->i], n);
+	ft_strlcat(node->path, "/", n);
+	ft_strlcat(node->path, args[0], n);
 	exec_proc_loop2(paths, args, envp, node);
 }
 

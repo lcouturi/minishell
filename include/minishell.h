@@ -71,12 +71,13 @@ char	**rm_quotes_wildcards(char **args);
 void	set_signal(void);
 // redirection
 int		redir_chk(char **args);
-int		exec_redir(char **args, char **envp, int fds[]);
+int		exec_redir(char **args, char **envp, t_node *node);
 void	exec_redir_cmd(char **args, char **envp);
 int		left_redir(char **args, int i);
-void	left_double_redir(char **args, int i, int **fds);
+int		left_double_redir(char **args, int i);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
+void	argu_left_change(char **args);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
 void	exec_parents(int pid, char **args, char **envp, t_node *node);
