@@ -66,6 +66,7 @@ void	strarrfree(char **strs);
 size_t	strarrlen(char **strs);
 void	strarrprint(char **strs);
 char	**find_command(char **args, char **envp, t_node *node);
+char	**rm_quotes_wildcards(char **args);
 // signal
 void	set_signal(void);
 // redirection
