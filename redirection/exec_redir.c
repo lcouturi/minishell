@@ -29,12 +29,13 @@ void	exec_redir_cmd(char **args, char **envp)
 		waitpid(pid, &status, WUNTRACED);
 }
 
-int	exec_redir(char **args, char **envp, int fds[])
+int	exec_redir(char **args, char **envp, t_node *node)
 {
 	int	i;
 
 	i = -1;
 	(void)envp;
+	(void)node;
 	while (args[++i] != NULL)
 	{
 		if (ft_strncmp(args[i], "<", 2) == 0)
@@ -47,7 +48,8 @@ int	exec_redir(char **args, char **envp, int fds[])
 		else if (ft_strncmp(args[i], ">>", 3) == 0)
 			right_double_redir(args, i);
 		else if (ft_strncmp(args[i], "<<", 3) == 0)
-			left_double_redir(args, i, &fds);
+			if (left_double_redir(args, i))
+				return (1);
 	}
 	return (0);
 }

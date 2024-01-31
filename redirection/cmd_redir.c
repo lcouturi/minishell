@@ -30,20 +30,30 @@ int	left_redir(char **args, int i)
 	return (0);
 }
 
-void	left_double_redir(char **args, int i, int **fds)
+int	left_double_redir(char **args, int i)
 {
 	char	*line;
+	int		fd;
 
+	fd = open(".temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
+	if (args[i + 1] == NULL
+		|| ft_strncmp(args[i + 1], " ", ft_strlen(args[i + 1]) == 0))
+	{
+		printf("minishell: syntax error near unexpected token `newline'\n");
+		return (1);
+	}
 	line = readline("> ");
 	while (ft_strncmp((line), args[i + 1], ft_strlen(args[i + 1]) + 1))
 	{
-		ft_putendl_fd(line, (*fds)[1]);
+		ft_putendl_fd(line, fd);
 		line = readline("> ");
 	}
-	close((*fds)[1]);
-	dup2((*fds)[0], STDIN_FILENO);
-	close((*fds)[0]);
-	pipe((*fds));
+	lseek(fd, 0, SEEK_SET);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	if (unlink(".temp") != 0)
+		return (1);
+	return (0);
 }
 
 void	right_redir(char **args, int i)

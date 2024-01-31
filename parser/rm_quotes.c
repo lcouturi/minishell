@@ -75,3 +75,13 @@ char	**rm_quotes(char **args, t_node *node)
 		args[i] = rm_quotes_loop(args[i]);
 	return (args);
 }
+
+char	**rm_quotes_wildcards(char **args)
+{
+	int	i;
+
+	i = -1;
+	while (args[++i])
+		args[i] = rm_quotes_loop(args[i]);
+	return (args);
+}

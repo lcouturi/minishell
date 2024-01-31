@@ -30,3 +30,61 @@ int	redir_chk(char **args)
 	}
 	return (0);
 }
+
+int	ftlen(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	return (i);
+}
+
+void	argu_long(char **args, int k, int len)
+{
+	free(args[k]);
+	free(args[k + 1]);
+	args[k + 1] = NULL;
+	while (k + 2 < len)
+	{
+		args[k] = ft_strdup(args[k + 2]);
+		free(args[k + 2]);
+		args[k + 2] = NULL;
+		k++;
+	}
+}
+
+void	argu_two(char **args, int k)
+{
+	free(args[k]);
+	free(args[k + 1]);
+	args[k] = NULL;
+	args[k + 1] = NULL;
+}
+
+void	argu_left_change(char **args)
+{
+	int	i;
+	int	k;
+	int	len;
+
+	i = -1;
+	len = ftlen(args);
+	while (args[++i])
+	{
+		if (ft_strncmp(args[i], "<<", 3) == 0)
+		{
+			k = i;
+			if (k + 1 == len)
+			{
+				free(args[k]);
+				args[k] = NULL;
+			}
+			else if (k + 2 == len)
+				argu_two(args, k);
+			else
+				argu_long(args, k, len);
+		}
+	}
+}
