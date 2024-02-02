@@ -36,7 +36,7 @@ clean :
 
 debug : fclean $(OBJS)
 	@make debug -s -C libs/Libft
-	$(CC) $(CFLAGS) -g -fsanitize=thread $(LDFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) -g -fsanitize=address $(LDFLAGS) $(OBJS) -o $(NAME)
 
 
 fclean : clean
