@@ -24,12 +24,12 @@ static int	getsize(long n)
 	return (s);
 }
 
-static void	handle_envvar(char *str, char **envp, int *i, t_node *node)
+static int	handle_envvar(char *str, char **envp, int *i, t_node *node)
 {
 	if (str[++i[0]] == '?')
 	{
 		i[5] += getsize(node->exit_status / 256);
-		return ;
+		return (1);
 	}
 	i[1] = i[0];
 	while (ft_isalnum(str[i[1]]))
@@ -41,13 +41,14 @@ static void	handle_envvar(char *str, char **envp, int *i, t_node *node)
 	if (envp[i[2]])
 		i[5] += ft_strlen(envp[i[2]]) - (i[1] - i[0] + 1);
 	i[0] = i[1] - 1;
+	return (0);
 }
 
 void	get_length(char *str, char **envp, int *i, t_node *node)
 {
 	quote_check(str, i);
-	if (!i[4] && str[i[0]] == '$')
-		handle_envvar(str, envp, i, node);
+	if (!i[4] && str[i[0]] == '$' && handle_envvar(str, envp, i, node))
+		return ;
 	else if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
 	{
 		i[5] += 2;
