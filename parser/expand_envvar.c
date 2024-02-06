@@ -92,7 +92,7 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp, t_node *node)
 			if (str[++i[0]] == '?')
 			{
 				insert_int(str2, i, node);
-				return ;
+				continue ;
 			}
 			i[5] = i[0];
 			while (ft_isalnum(str[i[5]]) || str[i[5]] == '_')
