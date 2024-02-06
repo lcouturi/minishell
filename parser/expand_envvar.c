@@ -12,11 +12,6 @@
 
 #include "../include/minishell.h"
 
-int	isop(char c)
-{
-	return (c == '<' || c == '>' || c == '|' || c == '&');
-}
-
 static int	getsize(long n)
 {
 	int	s;
@@ -72,7 +67,8 @@ static void	get_length_loop(char *str, char **envp, int *i, t_node *node)
 		if (str[i[0] + 1] && !isop(str[i[0] + 1]))
 			i[5] += 1;
 	}
-	else if (!i[3] && !i[4] && isop(str[i[0]]) && str[i[0] + 1] && !isop(str[i[0] + 1]))
+	else if (!i[3] && !i[4] && isop(str[i[0]]) && str[i[0] + 1]
+		&& !isop(str[i[0] + 1]))
 		i[5] += 2;
 	else
 		i[5]++;
@@ -109,14 +105,16 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp, t_node *node)
 			}
 			i[0] = i[5];
 		}
-		else if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
+		else if (i[0] && !i[3] && !i[4] && isop(str[i[0]])
+			&& !isop(str[i[0] - 1]))
 		{
 			str2[i[1]++] = ' ';
 			str2[i[1]++] = str[i[0]++];
 			if (str[i[0]] && !isop(str[i[0]]))
 				str2[i[1]++] = ' ';
 		}
-		else if (!i[3] && !i[4] && isop(str[i[0]]) && str[i[0] + 1] && !isop(str[i[0] + 1]))
+		else if (!i[3] && !i[4] && isop(str[i[0]]) && str[i[0] + 1]
+			&& !isop(str[i[0] + 1]))
 		{
 			str2[i[1]++] = str[i[0]++];
 			str2[i[1]++] = ' ';

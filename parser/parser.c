@@ -33,6 +33,11 @@ char	**find_command(char **args, char **envp, t_node *node)
 	return (envp);
 }
 
+int	isop(char c)
+{
+	return (c == '<' || c == '>' || c == '|' || c == '&');
+}
+
 int	ft_isspace(char c)
 {
 	return ((c >= 9 && c <= 13) || c == 32);
