@@ -38,50 +38,6 @@ int	ft_isspace(char c)
 	return ((c >= 9 && c <= 13) || c == 32);
 }
 
-void	backup(t_node *node)
-{
-	node->backup_stdout = dup(STDOUT_FILENO);
-	node->backup_stdin = dup(STDIN_FILENO);
-}
-
-void	repeat(char **args, char **envp, t_node *node)
-{
-	int	pid;
-
-	pid = 0;
-	if (node->redir_flag)
-	{
-		if (exec_redir(args, envp, node))
-			return ;
-	}
-	if (pipe_check(args, node))
-	{
-		pipe(node->fds);
-		pid = fork();
-		if (pid < 0)
-			return ;
-	}
-	else
-	{
-		envp = find_command(args, envp, node);
-		if (node->redir_flag != 0)
-			backup_restor(node);
-		return ;
-	}
-	if (pid == 0)
-		exec_child(args, envp, node);
-	else
-		exec_parents(pid, args, envp, node);
-}
-
-char	**execute(char **args, char **envp, t_node *node)
-{
-	backup(node);
-	repeat(args, envp, node);
-	backup_restor(node);
-	return (cloturn(node->backup_stdout, node->backup_stdin, envp));
-}
-
 char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
