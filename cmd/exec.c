@@ -98,5 +98,5 @@ void	cmd_exec(char **args, char **envp, t_node *node)
 	if (!pid)
 		exec_proc(args, envp, node);
 	waitpid(pid, &status, 0);
-	node->exit_status = status;
+	node->exit_status = status / 256;
 }

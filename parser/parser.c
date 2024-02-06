@@ -19,11 +19,11 @@ char	**find_command(char **args, char **envp, t_node *node)
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp);
 	else if (!ft_strncmp(args[0], "env", 4))
-		cmd_env(envp);
+		cmd_env(envp, node);
 	else if (!ft_strncmp(args[0], "export", 7))
-		envp = cmd_export(args, envp);
+		envp = cmd_export(args, envp, node);
 	else if (!ft_strncmp(args[0], "pwd", 4))
-		cmd_pwd();
+		cmd_pwd(node);
 	else if (!ft_strncmp(args[0], "echo", 5))
 		cmd_echo(args, envp, node);
 	else if (!ft_strncmp(args[0], "unset", 6))

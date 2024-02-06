@@ -19,11 +19,11 @@ static void	insert_int(char *str, int *i, t_node *node)
 	j = 1000000000;
 	while (j)
 	{
-		if (node->exit_status / 256 / j)
-			str[i[1]++] = node->exit_status / 256 / j % 10 + '0';
+		if (node->exit_status / j)
+			str[i[1]++] = node->exit_status / j % 10 + '0';
 		j /= 10;
 	}
-	if (!(node->exit_status / 256))
+	if (!node->exit_status)
 		str[i[1]++] = '0';
 	i[0]++;
 }

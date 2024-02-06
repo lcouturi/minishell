@@ -57,11 +57,11 @@ void	cmd_cd(char **args, char **envp, t_node *node)
 	int		i;
 	char	*cwd;
 
-	node->exit_status = EXIT_SUCCESS * 256;
+	node->exit_status = EXIT_SUCCESS;
 	i = 0;
 	if (args[1] && chdir(args[1]) == -1)
 	{
-		node->exit_status = EXIT_FAILURE * 256;
+		node->exit_status = EXIT_FAILURE;
 		printf("minishell: cd: %s: No such file or directory\n", args[1]);
 		return ;
 	}
