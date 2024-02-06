@@ -19,7 +19,7 @@ int	is_n_option(char *str)
 	if (ft_strncmp(str, "-n", 2) != 0)
 		return (0);
 	i = 1;
-	while (str[++i])
+	while (str && str[++i])
 	{
 		if (str[i] != 'n')
 			return (0);
@@ -34,7 +34,7 @@ void	change_args(char *args, char c)
 
 	i = 0;
 	j = 0;
-	while (args[i])
+	while (args && args[i])
 	{
 		if (args[i] != c)
 			args[j++] = args[i];
@@ -75,7 +75,7 @@ void	cmd_echo(char **args, char **envp, t_node *node)
 	new_line = 1;
 	while (is_n_option(args[++i]))
 		new_line = 0;
-	while (args[i])
+	while (args && args[i])
 	{
 		if (node->pipe_flag && node->pipe_idx <= i + 1)
 			break ;
