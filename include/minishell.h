@@ -55,6 +55,7 @@ char	*ft_getenv(const char *name, char **envp);
 int		ft_isspace(char c);
 int		ft_setenv(const char *name, const char *value, char **envp);
 char	**get_file_list(bool hidden);
+void	get_length(char *str, char **envp, int *i, t_node *node);
 int		isop(char c);
 void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);
