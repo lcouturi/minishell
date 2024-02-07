@@ -12,12 +12,12 @@
 
 #include "../include/minishell.h"
 
-void	cmd_env(char **envp, t_node *node)
+void	cmd_env(char **envp)
 {
 	int	i;
 
 	i = -1;
 	while (envp[++i])
 		printf("%s\n", envp[i]);
-	node->exit_status = EXIT_SUCCESS;
+	exit_status = EXIT_SUCCESS;
 }

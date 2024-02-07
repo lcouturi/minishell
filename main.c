@@ -80,7 +80,7 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
-	node.exit_status = 0;
+	exit_status = 0;
 	envp_copy = strarrcpy(envp);
 	set_signal();
 	while (1)

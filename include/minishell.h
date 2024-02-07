@@ -31,7 +31,6 @@ typedef struct s_node
 	int		backup_stdin;
 	int		pipe_idx;
 	int		fds[2];
-	int		exit_status;
 	int		i;
 	char	*path;
 	int		quota_pipe_idx_arr[10];
@@ -39,24 +38,26 @@ typedef struct s_node
 	int		quota_idx_j;
 }	t_node;
 
+int		exit_status;
+
 char	**arg_splitter(char *s);
 char	**asterisk_splitter(char *s);
-void	cmd_cd(char **args, char **envp, t_node *node);
+void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, char **envs, t_node *node);
-void	cmd_env(char **envs, t_node *node);
+void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, t_node *node);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
-char	**cmd_export(char **args, char **envp, t_node *node);
-void	cmd_pwd(t_node *node);
-void	cmd_unset(char **args, char **envp, t_node *node);
-char	*expand_envvar(char *str, char **envp, t_node *node);
+char	**cmd_export(char **args, char **envp);
+void	cmd_pwd();
+void	cmd_unset(char **args, char **envp);
+char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args);
 char	*ft_getenv(const char *name, char **envp);
 int		ft_isspace(char c);
 int		ft_setenv(const char *name, const char *value, char **envp);
 char	**get_file_list(bool hidden);
-void	get_length(char *str, char **envp, int *i, t_node *node);
+void	get_length(char *str, char **envp, int *i);
 int		isop(char c);
 void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);

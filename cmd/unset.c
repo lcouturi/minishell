@@ -66,7 +66,7 @@ int	delete_env(char *str, char **envp)
 	return (1);
 }
 
-void	cmd_unset(char **args, char **envp, t_node *node)
+void	cmd_unset(char **args, char **envp)
 {
 	int	i;
 	int	flag;
@@ -88,8 +88,8 @@ void	cmd_unset(char **args, char **envp, t_node *node)
 		while (args[++i])
 			flag = delete_env(args[i], envp);
 		if (flag != 1)
-			node->exit_status = EXIT_FAILURE;
+			exit_status = EXIT_FAILURE;
 		else
-			node->exit_status = EXIT_SUCCESS;
+			exit_status = EXIT_SUCCESS;
 	}
 }

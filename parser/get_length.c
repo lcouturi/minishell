@@ -24,11 +24,11 @@ static int	getsize(long n)
 	return (s);
 }
 
-static int	handle_envvar(char *str, char **envp, int *i, t_node *node)
+static int	handle_envvar(char *str, char **envp, int *i)
 {
 	if (str[++i[0]] == '?')
 	{
-		i[5] += getsize(node->exit_status / 256);
+		i[5] += getsize(exit_status / 256);
 		return (1);
 	}
 	i[1] = i[0];
@@ -44,10 +44,10 @@ static int	handle_envvar(char *str, char **envp, int *i, t_node *node)
 	return (0);
 }
 
-void	get_length(char *str, char **envp, int *i, t_node *node)
+void	get_length(char *str, char **envp, int *i)
 {
 	quote_check(str, i);
-	if (!i[4] && str[i[0]] == '$' && handle_envvar(str, envp, i, node))
+	if (!i[4] && str[i[0]] == '$' && handle_envvar(str, envp, i))
 		return ;
 	else if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
 	{

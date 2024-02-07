@@ -52,16 +52,16 @@ int	ft_setenv(const char *name, const char *value, char **envp)
 	return (0);
 }
 
-void	cmd_cd(char **args, char **envp, t_node *node)
+void	cmd_cd(char **args, char **envp)
 {
 	int		i;
 	char	*cwd;
 
-	node->exit_status = EXIT_SUCCESS;
+	exit_status = EXIT_SUCCESS;
 	i = 0;
 	if (args[1] && chdir(args[1]) == -1)
 	{
-		node->exit_status = EXIT_FAILURE;
+		exit_status = EXIT_FAILURE;
 		printf("minishell: cd: %s: No such file or directory\n", args[1]);
 		return ;
 	}

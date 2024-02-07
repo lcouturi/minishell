@@ -12,13 +12,13 @@
 
 #include "../include/minishell.h"
 
-static void	failure(char **args, t_node *node)
+static void	failure(char **args)
 {
 	printf("minishell: export: `%s': not a valid identifier\n", args[1]);
-	node->exit_status = EXIT_FAILURE;
+	exit_status = EXIT_FAILURE;
 }
 
-char	**cmd_export(char **args, char **envp, t_node *node)
+char	**cmd_export(char **args, char **envp)
 {
 	int	i;
 	int	i2;
@@ -33,7 +33,7 @@ char	**cmd_export(char **args, char **envp, t_node *node)
 			return (envp);
 		else if (!args[1][0] || (!ft_isalnum(args[1][i]) && args[1][i] != '_'))
 		{
-			failure(args, node);
+			failure(args);
 			return (envp);
 		}
 	}
@@ -43,6 +43,6 @@ char	**cmd_export(char **args, char **envp, t_node *node)
 		return (strarradd(envp, args[1]));
 	free(envp[i2]);
 	envp[i2] = ft_strdup(args[1]);
-	node->exit_status = EXIT_SUCCESS;
+	exit_status = EXIT_SUCCESS;
 	return (envp);
 }

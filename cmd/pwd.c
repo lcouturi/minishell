@@ -12,12 +12,12 @@
 
 #include "../include/minishell.h"
 
-void	cmd_pwd(t_node *node)
+void	cmd_pwd()
 {
 	char	*str;
 
 	str = getcwd(NULL, 0);
 	printf("%s\n", str);
 	free(str);
-	node->exit_status = EXIT_SUCCESS;
+	exit_status = EXIT_SUCCESS;
 }
