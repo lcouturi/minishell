@@ -53,11 +53,23 @@ static void	exec_proc_loop(char **paths, char **args,
 	exec_proc_loop2(paths, args, envp, node);
 }
 
-static void	strarrfree_all(char **args, char **envp, char	**paths)
+static void	chkdir(char **args, char **envp)
 {
-	strarrfree(envp);
-	strarrfree(paths);
-	strarrfree(args);
+	DIR	*test;
+
+	test = opendir(args[0]);
+	if (test)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		errno = 21;
+		perror(0);
+		strarrfree(envp);
+		strarrfree(args);
+		closedir(test);
+		exit(126);
+	}
 }
 
 static void	exec_proc(char **args, char **envp, t_node *node)
@@ -66,6 +78,7 @@ static void	exec_proc(char **args, char **envp, t_node *node)
 
 	if (!access(args[0], X_OK))
 		execve(args[0], args, envp);
+	chkdir(args, envp);
 	node->i = 0;
 	while (ft_strncmp(envp[node->i], "PATH=", 5))
 		node->i += 1;
@@ -81,7 +94,9 @@ static void	exec_proc(char **args, char **envp, t_node *node)
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(args[0], STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	strarrfree_all(args, envp, paths);
+	strarrfree(envp);
+	strarrfree(paths);
+	strarrfree(args);
 	exit(127);
 }
 
