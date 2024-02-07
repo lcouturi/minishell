@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include <dirent.h>
+# include <errno.h>
+# include <fcntl.h>
 # include "../libs/Libft/libft.h"
 # include <signal.h>
 # include <stdio.h>
@@ -20,8 +22,8 @@
 # include <readline/history.h>
 # include <stdbool.h>
 # include <stdlib.h>
+# include <string.h>
 # include <unistd.h>
-# include <fcntl.h>
 
 typedef struct s_node
 {

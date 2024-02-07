@@ -17,9 +17,9 @@ static int	failure(char **args, int i)
 	if (!args[1][0] || args[1][0] == '=' || ft_isdigit(args[1][0])
 		|| (!ft_isalnum(args[1][i]) && args[1][i] != '_'))
 	{
-		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(args[1], 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
 		g_exit_status = EXIT_FAILURE;
 		return (1);
 	}

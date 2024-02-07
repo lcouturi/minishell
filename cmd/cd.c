@@ -12,6 +12,27 @@
 
 #include "../include/minishell.h"
 
+static bool	error_check(char **args)
+{
+	if (strarrlen(args) > 2)
+	{
+		g_exit_status = EXIT_FAILURE;
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		return (1);
+	}
+	if (args[1] && chdir(args[1]) == -1)
+	{
+		g_exit_status = EXIT_FAILURE;
+		errno = ENOENT;
+		ft_putstr_fd("minshell: cd: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(": ", 2);
+		perror(0);
+		return (1);
+	}
+	return (0);
+}
+
 char	*ft_getenv(const char *name, char **envp)
 {
 	int	i;
@@ -52,20 +73,17 @@ int	ft_setenv(const char *name, const char *value, char **envp)
 	return (0);
 }
 
+
 void	cmd_cd(char **args, char **envp)
 {
 	int		i;
 	char	*cwd;
 
+	if (error_check(args))
+		return ;
 	g_exit_status = EXIT_SUCCESS;
 	i = 0;
-	if (args[1] && chdir(args[1]) == -1)
-	{
-		g_exit_status = EXIT_FAILURE;
-		printf("minishell: cd: %s: No such file or directory\n", args[1]);
-		return ;
-	}
-	else if (!args[1])
+	if (!args[1])
 	{
 		while (ft_strncmp(envp[i], "HOME=", 5))
 			i++;
