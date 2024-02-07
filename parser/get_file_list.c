@@ -12,64 +12,6 @@
 
 #include "../include/minishell.h"
 
-static char	*lowest(t_list *lst)
-{
-	char	*ret;
-	t_list	*tmp;
-	t_list	*low;
-
-	low = lst;
-	while (!low->content)
-		low = low->next;
-	tmp = low->next;
-	while (tmp)
-	{
-		if (ft_strncmp(low->content, tmp->content, ft_strlen(low->content)) > 0)
-			low = tmp;
-		tmp = tmp->next;
-	}
-	ret = low->content;
-	low->content = 0;
-	return (ret);
-}
-
-static void	load_lst_loop(t_list *lst, struct dirent *dr, DIR *dir, bool hidden)
-{
-	while (1)
-	{
-		dr = readdir(dir);
-		if (!dr)
-			break ;
-		if (!hidden && dr->d_name[0] != '.')
-			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(dr->d_name)));
-		if (hidden && dr->d_name[0] == '.' && ft_strncmp(dr->d_name, ".", 2)
-			&& ft_strncmp(dr->d_name, "..", 3))
-			ft_lstadd_back(&lst, ft_lstnew(ft_strdup(dr->d_name)));
-	}
-}
-
-static char	**load_lst(struct dirent *dr, DIR *dir, bool hidden)
-{
-	char	**files;
-	int		i;
-	t_list	*lst;
-
-	lst = ft_lstnew(ft_strdup(dr->d_name));
-	load_lst_loop(lst, dr, dir, hidden);
-	files = malloc(8 * ft_lstsize(lst) + 1);
-	i = -1;
-	while (++i < ft_lstsize(lst))
-		files[i] = lowest(lst);
-	files[i] = 0;
-	while (lst)
-	{
-		free(lst);
-		lst = lst->next;
-	}
-	closedir(dir);
-	return (files);
-}
-
 char	**get_file_list(bool hidden)
 {
 	DIR				*dir;
@@ -87,6 +29,8 @@ char	**get_file_list(bool hidden)
 	{
 		closedir(dir);
 		files = malloc(8);
+		if (!files)
+			exit(EXIT_FAILURE);
 		files[0] = 0;
 		return (files);
 	}

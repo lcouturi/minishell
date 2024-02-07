@@ -37,7 +37,7 @@ static void	exec_proc_loop2(char **paths, char **args,
 static void	exec_proc_loop(char **paths, char **args,
 					char **envp, t_node *node)
 {
-	int		n;
+	int	n;
 
 	n = ft_strlen(paths[node->i]) + ft_strlen(args[0]) + 2;
 	node->path = malloc(n);

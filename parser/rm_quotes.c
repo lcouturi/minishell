@@ -12,6 +12,19 @@
 
 #include "../include/minishell.h"
 
+static char	*alloc_str(char *str, int l)
+{
+	char	*newstr;
+
+	newstr = malloc((l + 1) * sizeof(char));
+	if (!newstr)
+	{
+		free(str);
+		exit(EXIT_FAILURE);
+	}
+	return (newstr);
+}
+
 static char	*rm_quotes_loop(char *str)
 {
 	int		i[5];
@@ -28,7 +41,7 @@ static char	*rm_quotes_loop(char *str)
 		if (!(!i[4] && str[i[0]] == '\"') && !(!i[3] && str[i[0]] == '\''))
 			l++;
 	}
-	newstr = malloc((l + 1) * sizeof(char));
+	newstr = alloc_str(str, l);
 	i[0] = -1;
 	while (str[++i[0]])
 	{
