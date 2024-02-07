@@ -20,23 +20,3 @@ void	redir_excute(char **args, char **envp, t_node *node)
 			return ;
 	}
 }
-
-int	repeat_check(char **args, t_node *node)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (ft_strncmp(args[i], "|", 2) == 0)
-		{
-			if (node->quota_idx_j < node->quota_pipe_cnt
-				&& node->quota_pipe_idx_arr[node->quota_idx_j] == i)
-				(node->quota_idx_j)++;
-			else
-				return (1);
-		}
-		i++;
-	}
-	return (0);
-}
