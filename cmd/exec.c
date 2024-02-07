@@ -63,15 +63,9 @@ static void	strarrfree_all(char **args, char **envp, char	**paths)
 static void	exec_proc(char **args, char **envp, t_node *node)
 {
 	char	**paths;
-	char	**temp;
 
 	if (!access(args[0], X_OK))
-	{
-		if (node->pipe_flag)
-			execve(args[0], temp, envp);
-		else
-			execve(args[0], args, envp);
-	}
+		execve(args[0], args, envp);
 	node->i = 0;
 	while (ft_strncmp(envp[node->i], "PATH=", 5))
 		node->i += 1;
@@ -84,7 +78,9 @@ static void	exec_proc(char **args, char **envp, t_node *node)
 	node->i = -1;
 	while (paths[++(node->i)])
 		exec_proc_loop(paths, args, envp, node);
-	printf("minishell: %s: command not found\n", args[0]);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(args[0], STDERR_FILENO);
+	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	strarrfree_all(args, envp, paths);
 	exit(127);
 }
