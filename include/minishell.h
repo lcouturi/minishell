@@ -36,6 +36,7 @@ typedef struct s_node
 	char	*path;
 	int		quota_pipe_idx_arr[10];
 	int		quota_pipe_cnt;
+	int		quota_idx_j;
 }	t_node;
 
 char	**arg_splitter(char *s);
@@ -81,6 +82,7 @@ void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
 void	argu_left_change(char **args);
 void	redir_excute(char **args, char **envp, t_node *node);
+int		repeat_check(char **args, t_node *node);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
 void	exec_parents(int pid, char **args, char **envp, t_node *node);
