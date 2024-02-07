@@ -12,6 +12,33 @@
 
 #include "../include/minishell.h"
 
+static void	chkdir(char **args, char **envp)
+{
+	int	err;
+	DIR	*test;
+
+	err = errno;
+	test = opendir(args[0]);
+	if (test)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		errno = 21;
+		perror(0);
+		strarrfree(envp);
+		strarrfree(args);
+		closedir(test);
+		exit(126);
+	}
+	if (err == EACCES)
+	{
+		strarrfree(envp);
+		strarrfree(args);
+		exit(126);
+	}
+}
+
 static void	exec_proc_loop2(char **paths, char **args,
 					char **envp, t_node *node)
 {
@@ -31,6 +58,7 @@ static void	exec_proc_loop2(char **paths, char **args,
 		else
 			execve(node->path, args, envp);
 	}
+	chkdir(&node->path, envp);
 	free(node->path);
 }
 
@@ -53,32 +81,16 @@ static void	exec_proc_loop(char **paths, char **args,
 	exec_proc_loop2(paths, args, envp, node);
 }
 
-static void	chkdir(char **args, char **envp)
-{
-	DIR	*test;
-
-	test = opendir(args[0]);
-	if (test)
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		errno = 21;
-		perror(0);
-		strarrfree(envp);
-		strarrfree(args);
-		closedir(test);
-		exit(126);
-	}
-}
-
 static void	exec_proc(char **args, char **envp, t_node *node)
 {
 	char	**paths;
 
-	if (!access(args[0], X_OK))
-		execve(args[0], args, envp);
-	chkdir(args, envp);
+	if (ft_strchr(args[0], '/'))
+	{
+		if (!access(args[0], X_OK))
+			execve(args[0], args, envp);
+		chkdir(args, envp);
+	}
 	node->i = 0;
 	while (ft_strncmp(envp[node->i], "PATH=", 5))
 		node->i += 1;
@@ -93,7 +105,14 @@ static void	exec_proc(char **args, char **envp, t_node *node)
 		exec_proc_loop(paths, args, envp, node);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(args[0], STDERR_FILENO);
-	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	if (ft_strchr(args[0], '/'))
+	{
+		errno = 2;
+		perror(0);
+	}
+	else
+		ft_putstr_fd("command not found\n", STDERR_FILENO);
 	strarrfree(envp);
 	strarrfree(paths);
 	strarrfree(args);
