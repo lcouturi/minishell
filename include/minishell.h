@@ -54,6 +54,7 @@ char	**expand_wildcard(char **args);
 char	*ft_getenv(const char *name, char **envp);
 int		ft_isspace(char c);
 int		ft_setenv(const char *name, const char *value, char **envp);
+int		get_arg_num(char **args);
 char	**get_file_list(bool hidden);
 void	get_length(char *str, char **envp, int *i, t_node *node);
 int		isop(char c);

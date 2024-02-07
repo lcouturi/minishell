@@ -12,66 +12,6 @@
 
 #include "include/minishell.h"
 
-char	**strarradd(char **strs, char *str)
-{
-	int		i;
-	char	**newstrs;
-
-	i = 0;
-	while (strs[i])
-		i++;
-	newstrs = malloc((i + 2) * 8);
-	if (!newstrs)
-		return (0);
-	newstrs[i] = ft_strdup(str);
-	if (!newstrs[i])
-	{
-		free(newstrs);
-		return (0);
-	}
-	newstrs[i + 1] = 0;
-	while (i--)
-		newstrs[i] = strs[i];
-	free(strs);
-	return (newstrs);
-}
-
-char	**strarrcpy(char **strs)
-{
-	int		i;
-	char	**newstrs;
-
-	i = 0;
-	while (strs[i])
-		i++;
-	newstrs = malloc((i + 1) * 8);
-	i = -1;
-	while (strs[++i])
-		newstrs[i] = ft_strdup(strs[i]);
-	newstrs[i] = 0;
-	return (newstrs);
-}
-
-void	strarrfree(char **strs)
-{
-	int	i;
-
-	i = -1;
-	while (strs[++i])
-		free(strs[i]);
-	free(strs);
-}
-
-size_t	strarrlen(char **strs)
-{
-	size_t	i;
-
-	i = 0;
-	while (strs[i])
-		i++;
-	return (i);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;

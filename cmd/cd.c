@@ -34,7 +34,7 @@ int	ft_setenv(const char *name, const char *value, char **envp)
 	n = ft_strlen(name) + ft_strlen(value) + 2;
 	str = malloc(n);
 	if (!str)
-		return (1);
+		exit(EXIT_FAILURE);
 	ft_strlcpy(str, name, n);
 	ft_strlcat(str, "=", n);
 	ft_strlcat(str, value, n);
@@ -47,8 +47,8 @@ int	ft_setenv(const char *name, const char *value, char **envp)
 		free(envp[i]);
 		envp[i] = str;
 	}
-	else if (!strarradd(envp, str))
-		return (1);
+	else
+		strarradd(envp, str);
 	return (0);
 }
 

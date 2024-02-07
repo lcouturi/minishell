@@ -25,14 +25,14 @@ char	**split_before_pipe_args(char **args, t_node *node)
 	int		j;
 
 	i = -1;
-	temp = malloc((node->pipe_idx) * sizeof(char *));
-	if (temp < 0)
-		return (NULL);
+	temp = malloc((node->pipe_idx + 1) * sizeof(char *));
+	if (!temp)
+		exit(EXIT_FAILURE);
 	while (++i < node->pipe_idx - 1)
 	{
 		temp[i] = malloc(ft_strlen(args[i]));
-		if (temp[i] < 0)
-			return (NULL);
+		if (!temp[i])
+			exit(EXIT_FAILURE);
 		j = 0;
 		while (args[i][j])
 		{
@@ -41,7 +41,7 @@ char	**split_before_pipe_args(char **args, t_node *node)
 		}
 		temp[i][j] = '\0';
 	}
-	temp[++i] = NULL;
+	temp[i] = NULL;
 	return (temp);
 }
 

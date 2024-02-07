@@ -29,6 +29,11 @@ static char	*rm_quotes_loop(char *str)
 			l++;
 	}
 	newstr = malloc((l + 1) * sizeof(char));
+	if (!newstr)
+	{
+		free(str);
+		exit(EXIT_FAILURE);
+	}
 	i[0] = -1;
 	while (str[++i[0]])
 	{

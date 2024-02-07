@@ -56,7 +56,7 @@ char	**asterisk_splitter(char *s)
 	i[0] = -1;
 	i[1] = 0;
 	i[2] = 0;
-	while (s && s[++i[0]])
+	while (s[++i[0]])
 	{
 		quote_check(s, i);
 		if ((sep(s[i[0]], i) == 0) && sep(s[i[0] + 1], i) == 1)
@@ -64,8 +64,11 @@ char	**asterisk_splitter(char *s)
 	}
 	i[0] = ft_strlen(s) + 1;
 	returned = malloc((i[2] + 1) * 8);
-	if (!s || !returned)
-		return (0);
+	if (!returned)
+	{
+		free(s);
+		exit(EXIT_FAILURE);
+	}
 	returned[i[2]] = 0;
 	while (i[0]--)
 		loop(s, returned, i);

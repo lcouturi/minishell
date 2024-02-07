@@ -99,6 +99,12 @@ char	*expand_envvar(char *str, char **envp, t_node *node)
 	while (str[++i[0]])
 		get_length(str, envp, i, node);
 	str2 = malloc((i[5] + 1) * sizeof(char));
+	if (!str2)
+	{
+		free(str);
+		strarrfree(envp);
+		exit(EXIT_FAILURE);
+	}
 	expand_envvar_loop(str, str2, envp, node);
 	return (str2);
 }
