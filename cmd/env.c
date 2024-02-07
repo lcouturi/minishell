@@ -19,5 +19,5 @@ void	cmd_env(char **envp)
 	i = -1;
 	while (envp[++i])
 		printf("%s\n", envp[i]);
-	exit_status = EXIT_SUCCESS;
+	g_exit_status = EXIT_SUCCESS;
 }

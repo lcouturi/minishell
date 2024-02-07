@@ -88,8 +88,8 @@ void	cmd_unset(char **args, char **envp)
 		while (args[++i])
 			flag = delete_env(args[i], envp);
 		if (flag != 1)
-			exit_status = EXIT_FAILURE;
+			g_exit_status = EXIT_FAILURE;
 		else
-			exit_status = EXIT_SUCCESS;
+			g_exit_status = EXIT_SUCCESS;
 	}
 }

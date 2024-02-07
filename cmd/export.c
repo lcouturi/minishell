@@ -15,7 +15,7 @@
 static void	failure(char **args)
 {
 	printf("minishell: export: `%s': not a valid identifier\n", args[1]);
-	exit_status = EXIT_FAILURE;
+	g_exit_status = EXIT_FAILURE;
 }
 
 char	**cmd_export(char **args, char **envp)
@@ -43,6 +43,6 @@ char	**cmd_export(char **args, char **envp)
 		return (strarradd(envp, args[1]));
 	free(envp[i2]);
 	envp[i2] = ft_strdup(args[1]);
-	exit_status = EXIT_SUCCESS;
+	g_exit_status = EXIT_SUCCESS;
 	return (envp);
 }

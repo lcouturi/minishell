@@ -28,7 +28,7 @@ static int	handle_envvar(char *str, char **envp, int *i)
 {
 	if (str[++i[0]] == '?')
 	{
-		i[5] += getsize(exit_status / 256);
+		i[5] += getsize(g_exit_status / 256);
 		return (1);
 	}
 	i[1] = i[0];

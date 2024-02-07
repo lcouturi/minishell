@@ -61,7 +61,7 @@ void	cmd_echo_envv(char **args, char **envp, int i)
 	char	*str;
 
 	if (args[i][0] == '$' && args[1][1] == '?')
-		ft_putstr_fd(ft_itoa(exit_status), 1);
+		ft_putstr_fd(ft_itoa(g_exit_status), 1);
 	str = find_value(&(args[i][1]), envp);
 	ft_putstr_fd(str, 1);
 }

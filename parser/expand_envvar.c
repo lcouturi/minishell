@@ -19,11 +19,11 @@ static void	insert_int(char *str, int *i)
 	j = 1000000000;
 	while (j)
 	{
-		if (exit_status / j)
-			str[i[1]++] = exit_status / j % 10 + '0';
+		if (g_exit_status / j)
+			str[i[1]++] = g_exit_status / j % 10 + '0';
 		j /= 10;
 	}
-	if (!exit_status)
+	if (!g_exit_status)
 		str[i[1]++] = '0';
 	i[0]++;
 }

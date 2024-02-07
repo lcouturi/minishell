@@ -18,7 +18,7 @@ void	exec_child(char **args, char **envp, t_node *node)
 	dup2(node->fds[1], STDOUT_FILENO);
 	close(node->fds[1]);
 	envp = find_command(args, envp, node);
-	exit(exit_status);
+	exit(g_exit_status);
 }
 
 void	exec_parents(int pid, char **args, char **envp, t_node *node)
@@ -26,7 +26,7 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 	int	status;
 
 	waitpid(pid, &status, 0);
-	exit_status = status >> 8;
+	g_exit_status = status >> 8;
 	close(node->fds[1]);
 	dup2(node->fds[0], STDIN_FILENO);
 	close(node->fds[0]);

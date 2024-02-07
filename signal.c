@@ -25,7 +25,7 @@ void	sigint(void)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	exit_status = 130;
+	g_exit_status = 130;
 }
 
 void	sigquit(void)
@@ -33,7 +33,7 @@ void	sigquit(void)
 	rl_on_new_line();
 	rl_redisplay();
 	ft_putstr_fd("  \b\b", STDOUT_FILENO);
-	exit_status = 131;
+	g_exit_status = 131;
 }
 
 void	handle_signal(int signo)
