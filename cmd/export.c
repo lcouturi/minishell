@@ -14,12 +14,12 @@
 
 static int	failure(char **args, int i)
 {
-	if (!args[1][0] || (!ft_isalnum(args[1][i]) && args[1][i] != '_'))
+	if (!args[1][0] || args[1][0] == '=' || ft_isdigit(args[1][0])
+		|| (!ft_isalnum(args[1][i]) && args[1][i] != '_'))
 	{
 		ft_putstr_fd("minishell: export: ", 2);
 		ft_putstr_fd(args[1], 2);
 		ft_putstr_fd(": not a valid identifier\n", 2);
-		//printf("minishell: export: `%s': not a valid identifier\n", args[1]);
 		g_exit_status = EXIT_FAILURE;
 		return (1);
 	}
@@ -35,9 +35,9 @@ char	**cmd_export(char **args, char **envp)
 	i = -1;
 	if (!args[1])
 		return (envp);
-	while (args[1][++i] != '=')
+	while (args[1][0] == '=' || ft_isdigit(args[1][0]) || args[1][++i] != '=')
 	{
-		if (i && !args[1][i])
+		if (i > 0 && !args[1][i])
 			return (envp);
 		else if (failure(args, i))
 			return (envp);
