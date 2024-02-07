@@ -36,12 +36,19 @@ char	**find_command(char **args, char **envp, t_node *node)
 char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
+	int		i;
 
 	args = expand_wildcard(arg_splitter(expand_envvar(str, envp)));
-	node->redir_flag = redir_chk(args);
-	args = rm_quotes(args, node);
+	i = -1;
 	add_history(str);
 	free(str);
+	if (!args[0])
+	{
+		strarrfree(args);
+		return (envp);
+	}
+	node->redir_flag = redir_chk(args);
+	args = rm_quotes(args, node);
 	if (!args)
 	{
 		rl_clear_history();
