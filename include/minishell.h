@@ -58,6 +58,7 @@ int		get_arg_num(char **args);
 char	**get_file_list(bool hidden);
 void	get_length(char *str, char **envp, int *i, t_node *node);
 int		isop(char c);
+char	**load_lst(struct dirent *dr, DIR *dir, bool hidden);
 void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);
 char	**parser(char *str, char **envp, t_node *node);
