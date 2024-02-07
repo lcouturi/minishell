@@ -31,7 +31,7 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 	dup2(node->fds[0], STDIN_FILENO);
 	close(node->fds[0]);
 	node->pipe_flag = 0;
-	if (pipe_check(args + node->pipe_idx, node))
+	if (repeat_check(args + node->pipe_idx, node))
 	{
 		repeat(args + node->pipe_idx, envp, node);
 	}
@@ -53,17 +53,15 @@ char	**cloturn(int backup_stdout, int backup_stdin, char **envp)
 int	pipe_check(char **args, t_node *node)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
 	while (args[i])
 	{
 		if (ft_strncmp(args[i], "|", 2) == 0)
 		{
-			if (j < node->quota_pipe_cnt
-				&& node->quota_pipe_idx_arr[j] == i)
-				j++;
+			if (node->quota_idx_j < node->quota_pipe_cnt
+				&& node->quota_pipe_idx_arr[node->quota_idx_j] == i)
+				(node->quota_idx_j)++;
 			else
 			{
 				node->pipe_idx = i + 1;

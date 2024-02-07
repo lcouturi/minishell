@@ -60,6 +60,8 @@ void	quote_pipe_check(char **args, t_node *node)
 	int	j;
 
 	i = 0;
+	node->quota_idx_j = 0;
+	j = 0;
 	while (args[i])
 	{
 		j = 0;
@@ -75,7 +77,6 @@ void	quote_pipe_check(char **args, t_node *node)
 		}
 		i++;
 	}
-	j = -1;
 }
 
 char	**rm_quotes(char **args, t_node *node)
