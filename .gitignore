@@ -55,6 +55,7 @@ dkms.conf
 # more trash
 .nfs.*
 .vscode
+minishell_tester
 
 # json
 *.json

@@ -16,7 +16,10 @@ static int	failure(char **args, int i)
 {
 	if (!args[1][0] || (!ft_isalnum(args[1][i]) && args[1][i] != '_'))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", args[1]);
+		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd(args[1], 2);
+		ft_putstr_fd(": not a valid identifier\n", 2);
+		//printf("minishell: export: `%s': not a valid identifier\n", args[1]);
 		g_exit_status = EXIT_FAILURE;
 		return (1);
 	}

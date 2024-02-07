@@ -54,6 +54,7 @@ void	cmd_unset(char **args, char **envp);
 char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args);
 char	*ft_getenv(const char *name, char **envp);
+int		ft_isenv(char c);
 int		ft_isspace(char c);
 int		ft_setenv(const char *name, const char *value, char **envp);
 int		get_arg_num(char **args);

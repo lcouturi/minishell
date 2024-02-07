@@ -50,7 +50,7 @@ static void	no_env(int *i, char *str, char *str2)
 static void	handle_envvar(int *i, char *str, char *str2, char **envp)
 {
 	i[5] = i[0];
-	while (ft_isalnum(str[i[5]]) || str[i[5]] == '_')
+	while (ft_isenv(str[i[5]]))
 		i[5]++;
 	i[2] = 0;
 	while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0])
@@ -74,7 +74,7 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp)
 	while (str[i[0]])
 	{
 		quote_check(str, i);
-		if (!i[4] && str[i[0]] == '$')
+		if (!i[4] && str[i[0]] == '$' && ft_isenv(str[i[0] + 1]))
 		{
 			if (str[++i[0]] == '?')
 			{

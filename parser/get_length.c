@@ -32,7 +32,7 @@ static int	handle_envvar(char *str, char **envp, int *i)
 		return (1);
 	}
 	i[1] = i[0];
-	while (ft_isalnum(str[i[1]]))
+	while (ft_isenv(str[i[1]]))
 		i[1]++;
 	i[2] = 0;
 	while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[1] - i[0])
@@ -47,7 +47,8 @@ static int	handle_envvar(char *str, char **envp, int *i)
 void	get_length(char *str, char **envp, int *i)
 {
 	quote_check(str, i);
-	if (!i[4] && str[i[0]] == '$' && handle_envvar(str, envp, i))
+	if (!i[4] && str[i[0]] == '$' && ft_isenv(str[i[0] + 1])
+		&& handle_envvar(str, envp, i))
 		return ;
 	else if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
 	{
