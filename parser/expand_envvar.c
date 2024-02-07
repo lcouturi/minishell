@@ -12,18 +12,18 @@
 
 #include "../include/minishell.h"
 
-static void	insert_int(char *str, int *i, t_node *node)
+static void	insert_int(char *str, int *i)
 {
 	int	j;
 
 	j = 1000000000;
 	while (j)
 	{
-		if (node->exit_status / j)
-			str[i[1]++] = node->exit_status / j % 10 + '0';
+		if (g_exit_status / j)
+			str[i[1]++] = g_exit_status / j % 10 + '0';
 		j /= 10;
 	}
-	if (!node->exit_status)
+	if (!g_exit_status)
 		str[i[1]++] = '0';
 	i[0]++;
 }
@@ -65,7 +65,7 @@ static void	handle_envvar(int *i, char *str, char *str2, char **envp)
 	i[0] = i[5];
 }
 
-static void	expand_envvar_loop(char *str, char *str2, char **envp, t_node *node)
+static void	expand_envvar_loop(char *str, char *str2, char **envp)
 {
 	int	i[7];
 
@@ -78,7 +78,7 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp, t_node *node)
 		{
 			if (str[++i[0]] == '?')
 			{
-				insert_int(str2, i, node);
+				insert_int(str2, i);
 				continue ;
 			}
 			handle_envvar(i, str, str2, envp);
@@ -89,7 +89,7 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp, t_node *node)
 	str2[i[1]] = '\0';
 }
 
-char	*expand_envvar(char *str, char **envp, t_node *node)
+char	*expand_envvar(char *str, char **envp)
 {
 	int		i[6];
 	char	*str2;
@@ -97,7 +97,7 @@ char	*expand_envvar(char *str, char **envp, t_node *node)
 	i[0] = -1;
 	i[5] = 0;
 	while (str[++i[0]])
-		get_length(str, envp, i, node);
+		get_length(str, envp, i);
 	str2 = malloc((i[5] + 1) * sizeof(char));
 	if (!str2)
 	{
@@ -105,6 +105,6 @@ char	*expand_envvar(char *str, char **envp, t_node *node)
 		strarrfree(envp);
 		exit(EXIT_FAILURE);
 	}
-	expand_envvar_loop(str, str2, envp, node);
+	expand_envvar_loop(str, str2, envp);
 	return (str2);
 }

@@ -15,19 +15,19 @@
 char	**find_command(char **args, char **envp, t_node *node)
 {
 	if (!ft_strncmp(args[0], "cd", 3))
-		cmd_cd(args, envp, node);
+		cmd_cd(args, envp);
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp);
 	else if (!ft_strncmp(args[0], "env", 4))
-		cmd_env(envp, node);
+		cmd_env(envp);
 	else if (!ft_strncmp(args[0], "export", 7))
-		envp = cmd_export(args, envp, node);
+		envp = cmd_export(args, envp);
 	else if (!ft_strncmp(args[0], "pwd", 4))
-		cmd_pwd(node);
+		cmd_pwd();
 	else if (!ft_strncmp(args[0], "echo", 5))
 		cmd_echo(args, envp, node);
 	else if (!ft_strncmp(args[0], "unset", 6))
-		cmd_unset(args, envp, node);
+		cmd_unset(args, envp);
 	else
 		cmd_exec(args, envp, node);
 	return (envp);
@@ -47,7 +47,7 @@ char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
 
-	args = expand_wildcard(arg_splitter(expand_envvar(str, envp, node)));
+	args = expand_wildcard(arg_splitter(expand_envvar(str, envp)));
 	node->redir_flag = redir_chk(args);
 	args = rm_quotes(args, node);
 	add_history(str);
