@@ -24,9 +24,9 @@ static bool	error_check(char **args, bool num, int i)
 			{
 				num = 1;
 				g_exit_status = 2;
-				ft_putstr_fd("minishell: exit: ", 2);
+				ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 				ft_putstr_fd(args[1], 2);
-				ft_putstr_fd(": numeric argument required\n", 2);
+				ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 				break ;
 			}
 		}
@@ -34,7 +34,7 @@ static bool	error_check(char **args, bool num, int i)
 	if (!num && strarrlen(args) > 2)
 	{
 		g_exit_status = EXIT_FAILURE;
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
 		return (1);
 	}
 	return (0);

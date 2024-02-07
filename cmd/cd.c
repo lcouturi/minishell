@@ -17,16 +17,16 @@ static bool	error_check(char **args)
 	if (strarrlen(args) > 2)
 	{
 		g_exit_status = EXIT_FAILURE;
-		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
+		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
 		return (1);
 	}
 	if (args[1] && chdir(args[1]) == -1)
 	{
 		g_exit_status = EXIT_FAILURE;
 		errno = ENOENT;
-		ft_putstr_fd("minshell: cd: ", 2);
-		ft_putstr_fd(args[1], 2);
-		ft_putstr_fd(": ", 2);
+		ft_putstr_fd("minshell: cd: ", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(0);
 		return (1);
 	}
