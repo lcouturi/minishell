@@ -12,12 +12,8 @@
 
 #include "../include/minishell.h"
 
-void	cmd_pwd(void)
+void	cmd_pwd(char **envp)
 {
-	char	*str;
-
-	str = getcwd(NULL, 0);
-	printf("%s\n", str);
-	free(str);
+	printf("%s\n", ft_getenv("PWD", envp));
 	g_exit_status = EXIT_SUCCESS;
 }

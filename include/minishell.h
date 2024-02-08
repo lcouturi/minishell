@@ -51,7 +51,7 @@ void	cmd_exec(char **args, char **envp, t_node *node);
 void	cmd_exit(char **args, char **envp);
 void	cmd_exit_no_arg(void);
 char	**cmd_export(char **args, char **envp);
-void	cmd_pwd(void);
+void	cmd_pwd(char **envp);
 void	cmd_unset(char **args, char **envp);
 char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args);
