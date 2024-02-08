@@ -53,6 +53,7 @@ void	cmd_exit_no_arg(void);
 char	**cmd_export(char **args, char **envp);
 void	cmd_pwd(char **envp);
 void	cmd_unset(char **args, char **envp);
+void	exec_proc(char **args, char **envp, t_node *node);
 char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args);
 char	*ft_getenv(const char *name, char **envp);

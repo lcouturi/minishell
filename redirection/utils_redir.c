@@ -18,7 +18,6 @@ int	redir_chk(char **args)
 	int		i;
 
 	i = -1;
-	(void)str_len;
 	while (args[++i])
 	{
 		str_len = ft_strlen(args[i]);
