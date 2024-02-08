@@ -69,10 +69,10 @@ void	quote_pipe_check(char **args, t_node *node)
 		{
 			if (args[i][j] == '\'' && args[i][j + 1] == '|'
 				&& args[i][j + 2] == '\'')
-				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = j + 1;
+				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = i;
 			else if (args[i][j] == '\"' && args[i][j + 1] == '|'
 				&& args[i][j + 2] == '\"')
-				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = j + 1;
+				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = i;
 			j++;
 		}
 		i++;

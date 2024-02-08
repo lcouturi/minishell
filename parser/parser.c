@@ -36,10 +36,8 @@ char	**find_command(char **args, char **envp, t_node *node)
 char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
-	int		i;
 
 	args = expand_wildcard(arg_splitter(expand_envvar(str, envp)));
-	i = -1;
 	add_history(str);
 	free(str);
 	if (!args[0])
