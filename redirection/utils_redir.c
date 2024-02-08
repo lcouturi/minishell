@@ -31,16 +31,6 @@ int	redir_chk(char **args)
 	return (0);
 }
 
-int	ftlen(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-		i++;
-	return (i);
-}
-
 void	argu_long(char **args, int k, int len)
 {
 	free(args[k]);
@@ -70,7 +60,7 @@ void	argu_left_change(char **args)
 	int	len;
 
 	i = -1;
-	len = ftlen(args);
+	len = strarrlen(args);
 	while (args[++i])
 	{
 		if (ft_strncmp(args[i], "<<", 3) == 0)
@@ -86,5 +76,14 @@ void	argu_left_change(char **args)
 			else
 				argu_long(args, k, len);
 		}
+	}
+}
+
+void	redir_excute(char **args, char **envp, t_node *node)
+{
+	if (node->redir_flag)
+	{
+		if (exec_redir(args, envp, node))
+			return ;
 	}
 }

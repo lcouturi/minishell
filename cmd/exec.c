@@ -108,7 +108,7 @@ static void	exec_proc(char **args, char **envp, t_node *node)
 	ft_putstr_fd(": ", STDERR_FILENO);
 	if (ft_strchr(args[0], '/'))
 	{
-		errno = 2;
+		errno = ENOENT;
 		perror(0);
 	}
 	else

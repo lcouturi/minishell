@@ -10,7 +10,7 @@ INCLUDE_DIR = ./include
 MAIN = main signal strarrutils
 CMD = cd echo env exec exit export pwd unset
 PARSER =  arg_splitter asterisk_splitter expand_envvar expand_wildcard get_arg_num get_file_list get_length is load_lst parser rm_quotes
-REDIR = cmd_redir exec_redir utils_redir utils_redir2
+REDIR = cmd_redir exec_redir utils_redir
 PIPE = utils_pipe utils_pipe2 utils_pipe3
 
 SRCS =	$(addsuffix .c, $(MAIN)) \
@@ -27,6 +27,10 @@ $(NAME) : $(OBJS)
 	@make bonus -s -C libs/Libft
 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)
 
+bonus : $(OBJS)
+	@make bonus -s -C libs/Libft
+	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS) -o $(NAME)_bonus
+
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -I$(INCLUDE_DIR) -c $< -o $@
 
@@ -41,8 +45,8 @@ debug : fclean $(OBJS)
 
 fclean : clean
 	@make fclean -s -C libs/Libft
-	@rm -rf $(NAME)
+	@rm -rf $(NAME) $(NAME)_bonus
 
 re : fclean all
 
-.PHONY : all, clean, debug, fclean, re, $(NAME),
+.PHONY : all, bonus, clean, debug, fclean, re, $(NAME),
