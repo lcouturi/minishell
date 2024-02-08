@@ -43,25 +43,11 @@ void	change_args(char *args, char c)
 	args[j] = '\0';
 }
 
-char	*find_value(char *key, char **envp)
-{
-	int	i;
-
-	i = -1;
-	while (envp[++i])
-	{
-		if (!ft_strncmp(envp[i], key, ft_strlen(key)))
-			return (envp[i] + ft_strlen(key) + 1);
-	}
-	return ("");
-}
-
-void	cmd_echo(char **args, char **envp, t_node *node)
+void	cmd_echo(char **args, t_node *node)
 {
 	int	i;
 	int	new_line;
 
-	(void)envp;
 	i = 0;
 	new_line = 1;
 	while (is_n_option(args[++i]))

@@ -29,13 +29,11 @@ void	exec_redir_cmd(char **args, char **envp)
 		waitpid(pid, &status, WUNTRACED);
 }
 
-int	exec_redir(char **args, char **envp, t_node *node)
+int	exec_redir(char **args)
 {
 	int	i;
 
 	i = -1;
-	(void)envp;
-	(void)node;
 	while (args[++i] != NULL)
 	{
 		if (ft_strncmp(args[i], "<", 2) == 0)

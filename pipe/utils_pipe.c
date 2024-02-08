@@ -32,13 +32,9 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 	close(node->fds[0]);
 	node->pipe_flag = 0;
 	if (repeat_check(args + node->pipe_idx, node))
-	{
 		repeat(args + node->pipe_idx, envp, node);
-	}
 	else
-	{
 		envp = find_command(args + node->pipe_idx, envp, node);
-	}
 	dup2(STDIN_FILENO, 0);
 	dup2(STDOUT_FILENO, 1);
 }

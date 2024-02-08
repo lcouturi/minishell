@@ -25,7 +25,7 @@ char	**find_command(char **args, char **envp, t_node *node)
 	else if (!ft_strncmp(args[0], "pwd", 4))
 		cmd_pwd(envp);
 	else if (!ft_strncmp(args[0], "echo", 5))
-		cmd_echo(args, envp, node);
+		cmd_echo(args, node);
 	else if (!ft_strncmp(args[0], "unset", 6))
 		cmd_unset(args, envp);
 	else

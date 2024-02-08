@@ -24,7 +24,7 @@ static void	chkdir(char **args, char **envp)
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
-		errno = 21;
+		errno = EISDIR;
 		perror(0);
 		strarrfree(envp);
 		strarrfree(args);

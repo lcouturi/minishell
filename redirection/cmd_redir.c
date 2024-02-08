@@ -36,8 +36,8 @@ int	left_double_redir(char **args, int i)
 	int		fd;
 
 	fd = open(".temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (args[i + 1] == NULL
-		|| ft_strncmp(args[i + 1], " ", ft_strlen(args[i + 1]) == 0))
+	if (args[i + 1] == NULL || ft_strncmp(args[i + 1], " ", ft_strlen(args[i
+					+ 1]) == 0))
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		return (1);

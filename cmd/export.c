@@ -45,9 +45,12 @@ char	**cmd_export(char **args, char **envp)
 	while (ft_strncmp(envp[i2], args[1], i + 1))
 		i2++;
 	if (!envp[i2])
-		strarradd(envp, args[1]);
-	free(envp[i2]);
-	envp[i2] = ft_strdup(args[1]);
+		envp = strarradd(envp, args[1]);
+	else
+	{
+		free(envp[i2]);
+		envp[i2] = ft_strdup(args[1]);
+	}
 	g_exit_status = EXIT_SUCCESS;
 	return (envp);
 }

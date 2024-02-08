@@ -51,36 +51,37 @@ void	backup(t_node *node)
 	node->backup_stdin = dup(STDIN_FILENO);
 }
 
-void	repeat(char **args, char **envp, t_node *node)
+char	**repeat(char **args, char **envp, t_node *node)
 {
 	int	pid;
 
 	pid = 0;
-	redir_excute(args, envp, node);
+	redir_excute(args, node);
 	if (pipe_check(args, node))
 	{
 		pipe(node->fds);
 		pid = fork();
 		if (pid < 0)
-			return ;
+			return (envp);
 	}
 	else
 	{
 		envp = find_command(args, envp, node);
 		if (node->redir_flag != 0)
 			backup_restor(node);
-		return ;
+		return (envp);
 	}
 	if (pid == 0)
 		exec_child(args, envp, node);
 	else
 		exec_parents(pid, args, envp, node);
+	return (envp);
 }
 
 char	**execute(char **args, char **envp, t_node *node)
 {
 	backup(node);
-	repeat(args, envp, node);
+	envp = repeat(args, envp, node);
 	backup_restor(node);
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 }
