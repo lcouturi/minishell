@@ -88,7 +88,7 @@ int		left_double_redir(char **args, int i);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
 void	argu_left_change(char **args);
-void	redir_excute(char **args, t_node *node);
+int		redir_excute(char **args, t_node *node);
 int		repeat_check(char **args, t_node *node);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);

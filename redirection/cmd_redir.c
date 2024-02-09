@@ -12,19 +12,44 @@
 
 #include "../include/minishell.h"
 
+void	args_left_move(char **args, int i)
+{
+	while (args[i] && args[i + 1])
+	{
+		free(args[i]);
+		args[i] = ft_strdup(args[i + 1]);
+		i++;
+	}
+	if (args[i + 1] == NULL)
+	{
+		args[i] = NULL;
+		free(args[i + 1]);
+	}
+}
+
 int	left_redir(char **args, int i)
 {
 	int	fd;
 
-	args[i] = NULL;
 	if (access(args[i + 1], R_OK))
 	{
-		printf("minishell: %s: No such file or directory\n", args[i + 1]);
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(args[i + 1], STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		g_exit_status = 1;
 		return (1);
 	}
 	fd = open(args[i + 1], O_RDONLY, 0744);
 	if (fd <= 0)
 		return (1);
+	if (ft_strncmp(args[0], "echo", 5) == 0
+		|| ft_strncmp(args[0], "cat", 4) == 0)
+	{
+		args_left_move(args, i);
+		args_left_move(args, i);
+	}
+	else
+		args[i] = NULL;
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (0);
