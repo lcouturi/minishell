@@ -14,13 +14,11 @@
 
 int	redir_chk(char **args)
 {
-	size_t	str_len;
 	int		i;
 
 	i = -1;
 	while (args[++i])
 	{
-		str_len = ft_strlen(args[i]);
 		if (!ft_strncmp("<<", args[i], 3) || !ft_strncmp(">>", args[i], 3)
 			|| !ft_strncmp("<", args[i], 2) || !ft_strncmp(">", args[i], 2))
 			return (1);
