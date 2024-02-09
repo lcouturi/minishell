@@ -33,7 +33,8 @@ int	left_redir(char **args, int i)
 
 	if (access(args[i + 1], R_OK))
 	{
-		printf("minishell: no such file or directory : %s\n", args[i + 1]);
+		printf("minishell: %s: No such file or directory\n", args[i + 1]);
+		g_exit_status = 1;
 		return (1);
 	}
 	fd = open(args[i + 1], O_RDONLY, 0744);
