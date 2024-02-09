@@ -39,7 +39,8 @@ int	left_redir(char **args, int i)
 	fd = open(args[i + 1], O_RDONLY, 0744);
 	if (fd <= 0)
 		return (1);
-	if (ft_strncmp(args[0], "echo", 5) == 0)
+	if (ft_strncmp(args[0], "echo", 5) == 0
+		|| ft_strncmp(args[0], "cat", 4) == 0)
 	{
 		args_left_move(args, i);
 		args_left_move(args, i);
