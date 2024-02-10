@@ -46,7 +46,8 @@ int	left_redir(char **args, int i)
 		|| ft_strncmp(args[0], "cat", 4) == 0)
 	{
 		args_left_move(args, i);
-		args_left_move(args, i);
+		if (ft_strncmp(args[i + 1], "<", 2) != 0)
+			args_left_move(args, i);
 	}
 	else
 		args[i] = NULL;
