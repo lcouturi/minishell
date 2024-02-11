@@ -25,7 +25,7 @@ static bool	error_check(char **args, bool num, int i)
 				num = 1;
 				g_exit_status = 2;
 				ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-				ft_putstr_fd(args[1], 2);
+				ft_putstr_fd(args[1], STDERR_FILENO);
 				ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
 				break ;
 			}
@@ -44,7 +44,8 @@ void	cmd_exit(char **args, char **envp)
 {
 	unsigned char	exit_status;
 
-	printf("exit\n");
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
 	g_exit_status = EXIT_SUCCESS;
 	if (strarrlen(args) > 1)
 	{

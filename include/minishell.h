@@ -73,7 +73,7 @@ char	**parser(char *str, char **envp, t_node *node);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args, t_node *node);
 char	**strarradd(char **strs, char *str);
-char	**strarrcpy(char **strs);
+char	**strarrdup(char **strs);
 void	strarrfree(char **strs);
 size_t	strarrlen(char **strs);
 void	strarrprint(char **strs);

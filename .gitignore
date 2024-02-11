@@ -35,8 +35,6 @@
 *.i*86
 *.x86_64
 *.hex
-minishell
-minishell_bonus
 
 # Debug files
 *.dSYM/
@@ -53,9 +51,12 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-# more trash
+# more
 .nfs.*
 .vscode
+minishell
+minishell_bonus
+minishell_test.log
 minishell_tester
 
 # json

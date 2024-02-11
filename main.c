@@ -12,28 +12,46 @@
 
 #include "include/minishell.h"
 
+static void	argmode(char *arg, char **envp, t_node *node)
+{
+	char	*line;
+
+	line = ft_strdup(arg);
+	if (!line)
+	{
+		strarrfree(envp);
+		exit(EXIT_FAILURE);
+	}
+	init_node(node);
+	if (ft_strncmp(line, "\0", 1))
+		envp = parser(line, envp, node);
+	strarrfree(envp);
+	exit(EXIT_SUCCESS);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;
 	char	*line;
 	t_node	node;
 
-	(void)argc;
-	(void)argv;
 	g_exit_status = 0;
-	envp_copy = strarrcpy(envp);
+	envp_copy = strarrdup(envp);
+	if (!envp_copy)
+		exit(EXIT_FAILURE);
 	set_signal();
+	if (argc > 2 && !ft_strncmp(argv[1], "-c", 3))
+		argmode(argv[2], envp_copy, &node);
 	while (1)
 	{
 		line = readline("minishell$ ");
-		init_node(&node);
-		if (line)
+		if (!line)
 		{
-			if (ft_strncmp(line, "\0", 1))
-				envp_copy = parser(line, envp_copy, &node);
+			strarrfree(envp_copy);
+			exit(EXIT_FAILURE);
 		}
-		else
-			cmd_exit_no_arg();
+		init_node(&node);
+		if (ft_strncmp(line, "\0", 1))
+			envp_copy = parser(line, envp_copy, &node);
 	}
-	return (0);
 }

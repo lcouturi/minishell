@@ -43,7 +43,7 @@ char	**strarradd(char **strs, char *str)
 	return (newstrs);
 }
 
-char	**strarrcpy(char **strs)
+char	**strarrdup(char **strs)
 {
 	int		i;
 	char	**newstrs;
