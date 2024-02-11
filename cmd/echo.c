@@ -50,18 +50,21 @@ void	cmd_echo(char **args, t_node *node)
 
 	i = 0;
 	new_line = 1;
-	while (is_n_option(args[++i]))
-		new_line = 0;
-	while (args && args[i])
+	if (args[++i] != NULL && node->echo_skip == 0)
 	{
-		if (node->pipe_flag && node->pipe_idx <= i + 1)
-			break ;
-		if (args[i][0] == '\'')
-			change_args(args[i], '\'');
-		ft_putstr_fd(args[i], 1);
-		if (args[i + 1] != NULL)
-			ft_putchar_fd(' ', 1);
-		i++;
+		while (is_n_option(args[i]))
+			new_line = 0;
+		while (args && args[i])
+		{
+			if (node->pipe_flag && node->pipe_idx <= i + 1)
+				break ;
+			if (args[i][0] == '\'')
+				change_args(args[i], '\'');
+			ft_putstr_fd(args[i], 1);
+			if (args[i + 1] != NULL)
+				ft_putchar_fd(' ', 1);
+			i++;
+		}
 	}
 	if (new_line && !(node->pipe_flag))
 		ft_putchar_fd('\n', 1);

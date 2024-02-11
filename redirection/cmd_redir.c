@@ -27,7 +27,7 @@ void	args_left_move(char **args, int i)
 	}
 }
 
-int	left_redir(char **args, int i)
+int	left_redir(char **args, int i, t_node *node)
 {
 	int	fd;
 
@@ -46,11 +46,16 @@ int	left_redir(char **args, int i)
 		|| ft_strncmp(args[0], "cat", 4) == 0)
 	{
 		args_left_move(args, i);
-		if (ft_strncmp(args[i + 1], "<", 2) != 0)
+		if (ft_strncmp(args[i + 1], "<", 2) != 0
+		 && ft_strncmp(args[i + 1], "|", 2) != 0)
 			args_left_move(args, i);
 	}
 	else
 		args[i] = NULL;
+	if (ft_strncmp(args[0], "echo", 5) == 0
+		&& ft_strncmp(args[1], "./", 2) == 0
+		&& args[2] == NULL)
+		node->echo_skip = 1;
 	dup2(fd, STDIN_FILENO);
 	close(fd);
 	return (0);

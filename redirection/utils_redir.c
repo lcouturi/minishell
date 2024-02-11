@@ -78,7 +78,7 @@ int	redir_excute(char **args, t_node *node)
 {
 	if (node->redir_flag)
 	{
-		if (exec_redir(args))
+		if (exec_redir(args, node))
 			return (1);
 	}
 	return (0);

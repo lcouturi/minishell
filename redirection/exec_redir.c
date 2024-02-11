@@ -29,16 +29,16 @@ void	exec_redir_cmd(char **args, char **envp)
 		waitpid(pid, &status, WUNTRACED);
 }
 
-int	exec_redir(char **args)
+int	exec_redir(char **args, t_node *node)
 {
 	int	i;
 
-	i = -1;
-	while (args[++i] != NULL)
+	i = 0;
+	while (args[i] != NULL && ft_strncmp(args[i], "|", 2))
 	{
 		if (ft_strncmp(args[i], "<", 2) == 0)
 		{
-			if (left_redir(args, i))
+			if (left_redir(args, i, node))
 				return (1);
 		}
 		else if (ft_strncmp(args[i], ">", 2) == 0)
@@ -48,6 +48,23 @@ int	exec_redir(char **args)
 		else if (ft_strncmp(args[i], "<<", 3) == 0)
 			if (left_double_redir(args, i))
 				return (1);
+		i++;
 	}
 	return (0);
+}
+
+void	original_store(char **args, t_node *node)
+{
+	int	i;
+
+	i = 0;
+	while (args[i])
+		i++;
+	node->ori_args = malloc(sizeof(char *) * (i + 1));
+	i = -1;
+	while (args[++i])
+	{
+		node->ori_args[i] = ft_strdup(args[i]);
+	}
+	node->ori_args[i] = NULL;
 }

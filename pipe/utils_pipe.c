@@ -34,7 +34,11 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 	if (repeat_check(args + node->pipe_idx, node))
 		repeat(args + node->pipe_idx, envp, node);
 	else
+	{
+		node->redir_flag = redir_chk(node->ori_args + node->pipe_idx);
+		redir_excute(args + node->pipe_idx, node);
 		envp = find_command(args + node->pipe_idx, envp, node);
+	}
 	dup2(STDIN_FILENO, 0);
 	dup2(STDOUT_FILENO, 1);
 }
@@ -75,4 +79,5 @@ void	init_node(t_node *node)
 {
 	node->pipe_idx = 0;
 	node->quota_pipe_cnt = 0;
+	node->echo_skip = 0;
 }
