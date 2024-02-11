@@ -17,7 +17,8 @@ SRCS =	$(addsuffix .c, $(MAIN)) \
 		$(addsuffix .c, $(addprefix cmd/, $(CMD))) \
 		$(addsuffix .c, $(addprefix parser/, $(PARSER))) \
 		$(addsuffix .c, $(addprefix redirection/, $(REDIR))) \
-		$(addsuffix .c, $(addprefix pipe/, $(PIPE))) 
+		$(addsuffix .c, $(addprefix pipe/, $(PIPE))) \
+		$(addsuffix .c, $(addprefix libs/get_next_line/, $(GET_NEXT_LINE)))
 
 OBJS = $(SRCS:.c=.o)
 

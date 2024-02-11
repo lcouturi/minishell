@@ -74,7 +74,8 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp)
 	while (str[i[0]])
 	{
 		quote_check(str, i);
-		if (!i[4] && str[i[0]] == '$' && ft_isenv(str[i[0] + 1]))
+		if (!i[4] && str[i[0]] == '$' && (ft_isenv(str[i[0] + 1]) || (!i[3]
+					&& str[i[0] + 1] == '\"')))
 		{
 			if (str[++i[0]] == '?')
 			{

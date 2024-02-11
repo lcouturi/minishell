@@ -45,13 +45,13 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		line = readline("minishell$ ");
-		init_node(&node);
-		if (line)
+		if (!line)
 		{
-			if (ft_strncmp(line, "\0", 1))
-				envp_copy = parser(line, envp_copy, &node);
+			strarrfree(envp);
+			exit(EXIT_FAILURE);
 		}
-		else
-			cmd_exit_no_arg();
+		init_node(&node);
+		if (ft_strncmp(line, "\0", 1))
+			envp_copy = parser(line, envp_copy, &node);
 	}
 }

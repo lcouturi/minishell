@@ -16,12 +16,14 @@ int	is_n_option(char *str)
 {
 	int	i;
 
-	if (!ft_strncmp(str, "-n", 2))
+	if (ft_strncmp(str, "-n", 2) != 0)
 		return (0);
 	i = 1;
-	while (str[++i])
+	while (str && str[++i])
+	{
 		if (str[i] != 'n')
 			return (0);
+	}
 	return (1);
 }
 
@@ -57,7 +59,7 @@ void	cmd_echo(char **args, t_node *node)
 		if (args[i][0] == '\'')
 			change_args(args[i], '\'');
 		ft_putstr_fd(args[i], 1);
-		if (args[i + 1])
+		if (args[i + 1] != NULL)
 			ft_putchar_fd(' ', 1);
 		i++;
 	}
