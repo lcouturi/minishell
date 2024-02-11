@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 		line = readline("minishell$ ");
 		if (!line)
 		{
-			strarrfree(envp);
+			strarrfree(envp_copy);
 			exit(EXIT_FAILURE);
 		}
 		init_node(&node);

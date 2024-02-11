@@ -44,7 +44,8 @@ void	cmd_exit(char **args, char **envp)
 {
 	unsigned char	exit_status;
 
-	printf("exit\n");
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
 	g_exit_status = EXIT_SUCCESS;
 	if (strarrlen(args) > 1)
 	{
