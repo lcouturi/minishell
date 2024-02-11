@@ -40,11 +40,9 @@ void	cmd_echo(char **args, t_node *node)
 		{
 			if (node->pipe_flag && node->pipe_idx <= i + 1)
 				break ;
-			if (args[i][0] == '\'')
-				change_args(args[i], '\'');
-			ft_putstr_fd(args[i], 1);
-			if (args[i + 1] != NULL)
-				ft_putchar_fd(' ', 1);
+			ft_putstr_fd(args[i], STDOUT_FILENO);
+			if (args[i + 1])
+				ft_putchar_fd(' ', STDOUT_FILENO);
 			i++;
 		}
 	}
