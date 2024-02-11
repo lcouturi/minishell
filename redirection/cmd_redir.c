@@ -12,33 +12,12 @@
 
 #include "../include/minishell.h"
 
-void	args_left_move(char **args, int i)
-{
-	while (args[i] && args[i + 1])
-	{
-		free(args[i]);
-		args[i] = ft_strdup(args[i + 1]);
-		i++;
-	}
-	if (args[i + 1] == NULL)
-	{
-		args[i] = NULL;
-		free(args[i + 1]);
-	}
-}
-
 int	left_redir(char **args, int i, t_node *node)
 {
 	int	fd;
 
 	if (access(args[i + 1], R_OK))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(args[i + 1], STDERR_FILENO);
-		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
-		g_exit_status = 1;
-		return (1);
-	}
+		return (print_err(args, i));
 	fd = open(args[i + 1], O_RDONLY, 0744);
 	if (fd <= 0)
 		return (1);
@@ -47,7 +26,7 @@ int	left_redir(char **args, int i, t_node *node)
 	{
 		args_left_move(args, i);
 		if (ft_strncmp(args[i + 1], "<", 2) != 0
-		 && ft_strncmp(args[i + 1], "|", 2) != 0)
+			&& ft_strncmp(args[i + 1], "|", 2) != 0)
 			args_left_move(args, i);
 	}
 	else
