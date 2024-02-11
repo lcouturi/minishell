@@ -16,31 +16,13 @@ int	is_n_option(char *str)
 {
 	int	i;
 
-	if (ft_strncmp(str, "-n", 2) != 0)
+	if (ft_strncmp(str, "-n", 2))
 		return (0);
 	i = 1;
 	while (str && str[++i])
-	{
 		if (str[i] != 'n')
 			return (0);
-	}
 	return (1);
-}
-
-void	change_args(char *args, char c)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (args && args[i])
-	{
-		if (args[i] != c)
-			args[j++] = args[i];
-		i++;
-	}
-	args[j] = '\0';
 }
 
 void	cmd_echo(char **args, t_node *node)
@@ -56,14 +38,12 @@ void	cmd_echo(char **args, t_node *node)
 	{
 		if (node->pipe_flag && node->pipe_idx <= i + 1)
 			break ;
-		if (args[i][0] == '\'')
-			change_args(args[i], '\'');
-		ft_putstr_fd(args[i], 1);
-		if (args[i + 1] != NULL)
-			ft_putchar_fd(' ', 1);
+		ft_putstr_fd(args[i], STDOUT_FILENO);
+		if (args[i + 1])
+			ft_putchar_fd(' ', STDOUT_FILENO);
 		i++;
 	}
 	if (new_line && !(node->pipe_flag))
-		ft_putchar_fd('\n', 1);
+		ft_putchar_fd('\n', STDOUT_FILENO);
 	g_exit_status = EXIT_SUCCESS;
 }
