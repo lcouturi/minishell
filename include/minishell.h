@@ -38,6 +38,8 @@ typedef struct s_node
 	int		quota_pipe_idx_arr[10];
 	int		quota_pipe_cnt;
 	int		quota_idx_j;
+	int		echo_skip;
+	char	**ori_args;
 }	t_node;
 
 int		g_exit_status;
@@ -81,15 +83,18 @@ char	**rm_quotes_wildcards(char **args);
 void	set_signal(void);
 // redirection
 int		redir_chk(char **args);
-int		exec_redir(char **args);
+int		exec_redir(char **args, t_node *node);
 void	exec_redir_cmd(char **args, char **envp);
-int		left_redir(char **args, int i);
+int		left_redir(char **args, int i, t_node *node);
 int		left_double_redir(char **args, int i);
 void	right_redir(char **args, int i);
 void	right_double_redir(char **args, int i);
 void	argu_left_change(char **args);
 int		redir_excute(char **args, t_node *node);
 int		repeat_check(char **args, t_node *node);
+void	original_store(char **args, t_node *node);
+void	args_left_move(char **args, int i);
+int		print_err(char **args, int i);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
 void	exec_parents(int pid, char **args, char **envp, t_node *node);

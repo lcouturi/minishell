@@ -45,7 +45,7 @@ char	**parser(char *str, char **envp, t_node *node)
 		strarrfree(args);
 		return (envp);
 	}
-	node->redir_flag = redir_chk(args);
+	original_store(args, node);
 	args = rm_quotes(args, node);
 	if (!args)
 	{
@@ -55,6 +55,7 @@ char	**parser(char *str, char **envp, t_node *node)
 	}
 	envp = execute(args, envp, node);
 	strarrfree(args);
+	strarrfree(node->ori_args);
 	return (envp);
 }
 
