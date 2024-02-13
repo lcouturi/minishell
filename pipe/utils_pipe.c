@@ -17,7 +17,8 @@ void	exec_child(char **args, char **envp, t_node *node)
 	close(node->fds[0]);
 	dup2(node->fds[1], STDOUT_FILENO);
 	close(node->fds[1]);
-	envp = find_command(args, envp, node);
+	if (node->child_die == 0)
+		envp = find_command(args, envp, node);
 	exit(g_exit_status);
 }
 
@@ -80,4 +81,5 @@ void	init_node(t_node *node)
 	node->pipe_idx = 0;
 	node->quota_pipe_cnt = 0;
 	node->echo_skip = 0;
+	node->child_die = 0;
 }
