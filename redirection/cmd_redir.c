@@ -17,7 +17,7 @@ int	left_redir(char **args, int i, t_node *node)
 	int	fd;
 
 	if (access(args[i + 1], R_OK))
-		return (print_err(args, i));
+		return (print_err(args, i, node));
 	fd = open(args[i + 1], O_RDONLY, 0744);
 	if (fd <= 0)
 		return (1);

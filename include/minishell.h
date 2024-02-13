@@ -40,6 +40,7 @@ typedef struct s_node
 	int		quota_idx_j;
 	int		echo_skip;
 	char	**ori_args;
+	int		child_die;
 }	t_node;
 
 int		g_exit_status;
@@ -94,7 +95,7 @@ int		redir_excute(char **args, t_node *node);
 int		repeat_check(char **args, t_node *node);
 void	original_store(char **args, t_node *node);
 void	args_left_move(char **args, int i);
-int		print_err(char **args, int i);
+int		print_err(char **args, int i, t_node *node);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
 void	exec_parents(int pid, char **args, char **envp, t_node *node);
