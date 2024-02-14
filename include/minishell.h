@@ -15,6 +15,7 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
+# include "../libs/get_next_line/get_next_line_bonus.h"
 # include "../libs/Libft/libft.h"
 # include <signal.h>
 # include <stdio.h>

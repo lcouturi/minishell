@@ -52,8 +52,14 @@ Mkfile.old
 dkms.conf
 
 # more
+<
+>
+>>
 .nfs.*
 .vscode
+asd
+grep
+lol
 minishell
 minishell_bonus
 minishell_test.log

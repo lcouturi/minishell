@@ -58,20 +58,6 @@ static char	**parser(char *str, char **envp, t_node *node)
 	return (envp);
 }
 
-char	**semicolon_handler(char *str, char **envp, t_node *node)
-{
-	int		i;
-	char	**split;
-
-	i = -1;
-	add_history(str);
-	split = escape_split(str, ';');
-	while (split[++i])
-		envp = parser(split[i], envp, node);
-	free(split);
-	return (envp);
-}
-
 void	quote_check(char const *s, int *i)
 {
 	int	j;
@@ -97,4 +83,18 @@ void	quote_check(char const *s, int *i)
 		}
 		j++;
 	}
+}
+
+char	**semicolon_handler(char *str, char **envp, t_node *node)
+{
+	int		i;
+	char	**split;
+
+	i = -1;
+	add_history(str);
+	split = escape_split(str, ';');
+	while (split[++i])
+		envp = parser(split[i], envp, node);
+	free(split);
+	return (envp);
 }
