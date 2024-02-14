@@ -40,7 +40,6 @@ static bool	exec_check_loop(char **paths, char **args)
 
 bool	exec_check(char **args, char **envp)
 {
-	int		i;
 	char	**paths;
 	bool	ret;
 
@@ -49,10 +48,7 @@ bool	exec_check(char **args, char **envp)
 		|| !ft_strncmp(args[0], "exit", 5) || !ft_strncmp(args[0], "export", 7)
 		|| !ft_strncmp(args[0], "pwd", 4) || !ft_strncmp(args[0], "unset", 6))
 		return (1);
-	i = 0;
-	while (ft_strncmp(envp[i], "PATH=", 5))
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
+	paths = ft_split(ft_getenv("PATH", envp), ':');
 	if (!paths)
 		exit(EXIT_FAILURE);
 	ret = exec_check_loop(paths, args);
