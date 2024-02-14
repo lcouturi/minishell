@@ -74,11 +74,11 @@ void	argu_left_change(char **args)
 	}
 }
 
-int	redir_excute(char **args, t_node *node)
+int	redir_excute(char **args, char **envp, t_node *node)
 {
 	if (node->redir_flag)
 	{
-		if (exec_redir(args, node))
+		if (exec_redir(args, envp, node))
 			return (1);
 	}
 	return (0);

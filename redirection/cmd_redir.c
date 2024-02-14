@@ -66,26 +66,32 @@ int	left_double_redir(char **args, int i)
 	return (0);
 }
 
-void	right_redir(char **args, int i)
+void	right_redir(char **args, char **envp, int i)
 {
 	int	fd;
 
 	args[i] = NULL;
-	fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0744);
-	if (fd <= 0)
-		exit(EXIT_FAILURE);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	if (exec_check(args, envp))
+	{
+		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0744);
+		if (fd <= 0)
+			exit(EXIT_FAILURE);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
 }
 
-void	right_double_redir(char **args, int i)
+void	right_double_redir(char **args, char **envp, int i)
 {
 	int	fd;
 
 	args[i] = NULL;
-	fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0744);
-	if (fd <= 0)
-		exit(EXIT_FAILURE);
-	dup2(fd, STDOUT_FILENO);
-	close(fd);
+	if (exec_check(args, envp))
+	{
+		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0744);
+		if (fd <= 0)
+			exit(EXIT_FAILURE);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+	}
 }
