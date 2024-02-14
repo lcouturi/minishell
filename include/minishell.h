@@ -85,14 +85,14 @@ char	**rm_quotes_wildcards(char **args);
 void	set_signal(void);
 // redirection
 int		redir_chk(char **args);
-int		exec_redir(char **args, t_node *node);
+int		exec_redir(char **args, char **envp, t_node *node);
 void	exec_redir_cmd(char **args, char **envp);
 int		left_redir(char **args, int i, t_node *node);
 int		left_double_redir(char **args, int i);
-void	right_redir(char **args, int i);
-void	right_double_redir(char **args, int i);
+void	right_redir(char **args, char **envp, int i);
+void	right_double_redir(char **args, char **envp, int i);
 void	argu_left_change(char **args);
-int		redir_excute(char **args, t_node *node);
+int		redir_excute(char **args, char **envp, t_node *node);
 int		repeat_check(char **args, t_node *node);
 void	original_store(char **args, t_node *node);
 void	args_left_move(char **args, int i);
