@@ -38,7 +38,7 @@ bonus : $(OBJS)
 
 clean :
 	@make clean -s -C libs/Libft
-	@rm -rf $(OBJS) "<" ">" ">>" "asd" "grep" "lol" minishell_test.log
+	@rm -rf $(OBJS) "<" ">" ">>" .temp "asd" "grep" "lol" minishell_test.log
 
 debug : fclean $(OBJS)
 	@make debug -s -C libs/Libft

@@ -56,6 +56,7 @@ dkms.conf
 >
 >>
 .nfs.*
+.temp
 .vscode
 asd
 grep
