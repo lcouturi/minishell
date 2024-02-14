@@ -26,7 +26,7 @@ static void	argmode(char *arg, char **envp, t_node *node)
 	if (ft_strncmp(line, "\0", 1))
 		envp = parser(line, envp, node);
 	strarrfree(envp);
-	exit(EXIT_SUCCESS);
+	exit(g_exit_status);
 }
 
 int	main(int argc, char **argv, char **envp)

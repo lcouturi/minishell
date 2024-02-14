@@ -32,10 +32,10 @@ void	cmd_echo(char **args, t_node *node)
 
 	i = 0;
 	new_line = 1;
-	if (args[++i] != NULL && node->echo_skip == 0)
+	while (args[++i] && is_n_option(args[i]))
+		new_line = 0;
+	if (args[i] && !node->echo_skip)
 	{
-		while (is_n_option(args[i]))
-			new_line = 0;
 		while (args && args[i])
 		{
 			if (node->pipe_flag && node->pipe_idx <= i + 1)
