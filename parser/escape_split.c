@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asterisk_splitter.c                                :+:      :+:    :+:   */
+/*   escape_split.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,25 +12,25 @@
 
 #include "../include/minishell.h"
 
-static int	sep(char s, int *i)
+static bool	sep(char s, int *i, char c)
 {
-	if (!s || (!i[3] && !i[4] && s == '*'))
+	if (!s || (!i[3] && !i[4] && s == c))
 		return (1);
 	return (0);
 }
 
-static void	loop(char *s, char **returned, int *i)
+static void	loop(char *s, char **returned, int *i, char c)
 {
 	quote_check(s, i);
-	if (i[0] && sep(s[i[0]], i) == 1 && sep(s[i[0] - 1], i) == 0)
+	if (i[0] && sep(s[i[0]], i, c) && !sep(s[i[0] - 1], i, c))
 	{
 		i[1] = i[0]--;
-		while (i[0] && !(sep(s[i[0]], i) == 1 && sep(s[i[0] - 1], i) == 0))
+		while (i[0] && !(sep(s[i[0]], i, c) && !sep(s[i[0] - 1], i, c)))
 		{
 			i[0]--;
 			quote_check(s, i);
 		}
-		while (sep(s[i[0]], i) == 1)
+		while (sep(s[i[0]], i, c))
 		{
 			i[0]++;
 			quote_check(s, i);
@@ -42,13 +42,13 @@ static void	loop(char *s, char **returned, int *i)
 			while (returned[++i[2]])
 				free(returned[i[2]]);
 			free(returned);
-			return ;
+			exit(EXIT_FAILURE);
 		}
 		i[0] = i[1];
 	}
 }
 
-char	**asterisk_splitter(char *s)
+char	**escape_split(char *s, char c)
 {
 	int		i[5];
 	char	**returned;
@@ -59,7 +59,7 @@ char	**asterisk_splitter(char *s)
 	while (s[++i[0]])
 	{
 		quote_check(s, i);
-		if ((sep(s[i[0]], i) == 0) && sep(s[i[0] + 1], i) == 1)
+		if (!sep(s[i[0]], i, c) && sep(s[i[0] + 1], i, c))
 			i[2]++;
 	}
 	i[0] = ft_strlen(s) + 1;
@@ -71,6 +71,6 @@ char	**asterisk_splitter(char *s)
 	}
 	returned[i[2]] = 0;
 	while (i[0]--)
-		loop(s, returned, i);
+		loop(s, returned, i, c);
 	return (returned);
 }

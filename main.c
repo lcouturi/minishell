@@ -24,7 +24,7 @@ static void	argmode(char *arg, char **envp, t_node *node)
 	}
 	init_node(node);
 	if (ft_strncmp(line, "\0", 1))
-		envp = parser(line, envp, node);
+		envp = semicolon_handler(line, envp, node);
 	strarrfree(envp);
 	exit(g_exit_status);
 }
@@ -52,6 +52,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		init_node(&node);
 		if (ft_strncmp(line, "\0", 1))
-			envp_copy = parser(line, envp_copy, &node);
+			envp_copy = semicolon_handler(line, envp_copy, &node);
 	}
 }
