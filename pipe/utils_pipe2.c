@@ -83,7 +83,7 @@ char	**repeat(char **args, char **envp, t_node *node)
 char	**execute(char **args, char **envp, t_node *node)
 {
 	backup(node);
-	if (pipe_syntax_check(args) && redir_syntax_check(args))
+	if (pipe_syntax_check(node->ori_args) && redir_syntax_check(node->ori_args))
 		envp = repeat(args, envp, node);
 	backup_restor(node);
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));

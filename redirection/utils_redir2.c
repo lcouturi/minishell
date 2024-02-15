@@ -50,11 +50,11 @@ bool	is_redir(char **args, int i, int j)
 	return (false);
 }
 
-int	print_re_syntax_error()
+int	print_re_syntax_error(void)
 {
 	g_exit_status = 2;
 	ft_putstr_fd("minishell: syntax error near ", STDERR_FILENO);
-	ft_putstr_fd("unexpected token `newline'", STDERR_FILENO);
+	ft_putstr_fd("unexpected token `newline'\n", STDERR_FILENO);
 	return (0);
 }
 
@@ -67,7 +67,8 @@ int	redir_syntax_check(char **args)
 		return (print_re_syntax_error());
 	while (args[++i])
 	{
-		if (args[i + 1] == NULL && (is_redir(args, i, 0)
+		if (args[i][0] != '\'' && args[i][0] != '\"'
+		&& args[i + 1] == NULL && (is_redir(args, i, 0)
 			|| args[i][0] == '|'))
 			return (print_re_syntax_error());
 	}

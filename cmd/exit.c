@@ -23,7 +23,7 @@ static bool	error_check(char **args, bool num, int i)
 						|| args[1][i] == '+')))
 			{
 				num = 1;
-				g_exit_status = 2;
+				g_exit_status = 255;
 				ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
 				ft_putstr_fd(args[1], STDERR_FILENO);
 				ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
@@ -40,17 +40,31 @@ static bool	error_check(char **args, bool num, int i)
 	return (0);
 }
 
+int	ft_isalldigit(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '+' || str[0] == '-')
+		i++;
+	while (str && str[i])
+	{
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	cmd_exit(char **args, char **envp)
 {
-	unsigned char	exit_status;
-
 	if (isatty(STDIN_FILENO))
 		printf("exit\n");
 	g_exit_status = EXIT_SUCCESS;
 	if (strarrlen(args) > 1)
 	{
-		exit_status = ft_atoi(args[1]);
-		g_exit_status = exit_status;
+		if (ft_isalldigit(args[1]))
+			g_exit_status = ft_atoi(args[1]);
 	}
 	if (error_check(args, 0, -1))
 		return ;
