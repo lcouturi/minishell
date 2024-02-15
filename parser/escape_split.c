@@ -72,5 +72,6 @@ char	**escape_split(char *s, char *c)
 	returned[i[2]] = 0;
 	while (i[0]--)
 		loop(s, returned, i, c);
+	free(s);
 	return (returned);
 }
