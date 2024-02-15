@@ -14,12 +14,12 @@
 
 int	isop(char c)
 {
-	return (c == '<' || c == '>' || c == '|' || c == '&');
+	return (c == '<' || c == '>' || c == '|');
 }
 
 int	ft_isspace(char c)
 {
-	return ((c >= 9 && c <= 13) || c == 32);
+	return (c == ' ' || c == '\n' || c == '\t');
 }
 
 int	ft_isenv(char c)

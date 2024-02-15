@@ -33,12 +33,11 @@ char	**find_command(char **args, char **envp, t_node *node)
 	return (envp);
 }
 
-char	**parser(char *str, char **envp, t_node *node)
+static char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
 
 	args = expand_wildcard(arg_splitter(expand_envvar(str, envp)));
-	add_history(str);
 	free(str);
 	if (!args[0])
 	{
@@ -84,4 +83,18 @@ void	quote_check(char const *s, int *i)
 		}
 		j++;
 	}
+}
+
+char	**semicolon_handler(char *str, char **envp, t_node *node)
+{
+	int		i;
+	char	**split;
+
+	i = -1;
+	add_history(str);
+	split = escape_split(str, ';');
+	while (split[++i])
+		envp = parser(split[i], envp, node);
+	free(split);
+	return (envp);
 }

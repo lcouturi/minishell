@@ -24,9 +24,29 @@ static void	argmode(char *arg, char **envp, t_node *node)
 	}
 	init_node(node);
 	if (ft_strncmp(line, "\0", 1))
-		envp = parser(line, envp, node);
+		envp = semicolon_handler(line, envp, node);
 	strarrfree(envp);
-	exit(EXIT_SUCCESS);
+	exit(g_exit_status);
+}
+
+static char	*get_line(void)
+{
+	char	*line;
+	char	*line2;
+
+	if (isatty(STDIN_FILENO))
+		line = readline("minishell$ ");
+	else
+	{
+		line2 = get_next_line(STDIN_FILENO);
+		if (!line2)
+			exit(g_exit_status);
+		line = ft_strtrim(line2, "\n");
+		if (!line)
+			exit(EXIT_FAILURE);
+		free(line2);
+	}
+	return (line);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -44,7 +64,7 @@ int	main(int argc, char **argv, char **envp)
 		argmode(argv[2], envp_copy, &node);
 	while (1)
 	{
-		line = readline("minishell$ ");
+		line = get_line();
 		if (!line)
 		{
 			strarrfree(envp_copy);
@@ -52,6 +72,6 @@ int	main(int argc, char **argv, char **envp)
 		}
 		init_node(&node);
 		if (ft_strncmp(line, "\0", 1))
-			envp_copy = parser(line, envp_copy, &node);
+			envp_copy = semicolon_handler(line, envp_copy, &node);
 	}
 }

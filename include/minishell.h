@@ -15,6 +15,7 @@
 # include <dirent.h>
 # include <errno.h>
 # include <fcntl.h>
+# include "../libs/get_next_line/get_next_line_bonus.h"
 # include "../libs/Libft/libft.h"
 # include <signal.h>
 # include <stdio.h>
@@ -46,7 +47,7 @@ typedef struct s_node
 int		g_exit_status;
 
 char	**arg_splitter(char *s);
-char	**asterisk_splitter(char *s);
+char	**escape_split(char *s, char c);
 void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
@@ -71,9 +72,9 @@ int		isop(char c);
 char	**load_lst(struct dirent *dr, DIR *dir, bool hidden);
 void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);
-char	**parser(char *str, char **envp, t_node *node);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args, t_node *node);
+char	**semicolon_handler(char *str, char **envp, t_node *node);
 char	**strarradd(char **strs, char *str);
 char	**strarrdup(char **strs);
 void	strarrfree(char **strs);
