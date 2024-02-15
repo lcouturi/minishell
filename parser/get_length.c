@@ -24,18 +24,18 @@ static int	getsize(long n)
 	return (s);
 }
 
-static int	handle_envvar(char *str, char **envp, int *i)
+static int	handle_envvar(t_args *args, char **envp, int *i)
 {
-	if (str[++i[0]] == '?')
+	if (args->s[++i[0]] == '?')
 	{
 		i[5] += getsize(g_exit_status / 256);
 		return (1);
 	}
 	i[1] = i[0];
-	while (ft_isenv(str[i[1]]))
+	while (ft_isenv(args, i[1]))
 		i[1]++;
 	i[2] = 0;
-	while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[1] - i[0])
+	while (envp[i[2]] && (ft_strncmp(envp[i[2]], args->s + i[0], i[1] - i[0])
 			|| envp[i[2]][i[1] - i[0]] != '='))
 		i[2]++;
 	if (envp[i[2]])
@@ -44,20 +44,20 @@ static int	handle_envvar(char *str, char **envp, int *i)
 	return (0);
 }
 
-void	get_length(char *str, char **envp, int *i)
+void	get_length(t_args *args, char **envp, int *i)
 {
-	quote_check(str, i);
-	if (!i[4] && str[i[0]] == '$' && (ft_isenv(str[i[0] + 1]) || (!i[3]
-				&& str[i[0] + 1] == '\"')) && handle_envvar(str, envp, i))
+	if (!args->e[i[0]] && args->s[i[0]] == '$' && ft_isenv(args, i[0] + 1)
+		&& handle_envvar(args, envp, i))
 		return ;
-	else if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
+	else if (i[0] && !args->e[i[0]] && isop(args, i[0]) && !isop(args, i[0]
+			- 1))
 	{
 		i[5] += 2;
-		if (str[i[0] + 1] && !isop(str[i[0] + 1]))
+		if (args->s[i[0] + 1] && !isop(args, i[0] + 1))
 			i[5] += 1;
 	}
-	else if (!i[3] && !i[4] && isop(str[i[0]]) && str[i[0] + 1]
-		&& !isop(str[i[0] + 1]))
+	else if (!i[3] && !i[4] && isop(args, i[0]) && args->s[i[0] + 1]
+		&& !isop(args, i[0] + 1))
 		i[5] += 2;
 	else
 		i[5]++;

@@ -12,12 +12,14 @@
 
 #include "../include/minishell.h"
 
-int	isop(char c)
+int	isop(t_args *args, int i)
 {
-	return (c == '<' || c == '>' || c == '|');
+	return ((!args->e[i] && (args->s[i] == '<' || args->s[i] == '>'
+				|| args->s[i] == '|')));
 }
 
-int	ft_isenv(char c)
+int	ft_isenv(t_args *args, int i)
 {
-	return (ft_isalnum(c) || c == '_' || c == '?');
+	return ((!args->e[i] && (ft_isalnum(args->s[i]) || args->s[i] == '_'
+				|| args->s[i] == '?')));
 }

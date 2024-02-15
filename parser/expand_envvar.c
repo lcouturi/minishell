@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static void	insert_int(char *str, int *i)
+static void	insert_int(t_args *args, int *i)
 {
 	int	j;
 
@@ -20,92 +20,112 @@ static void	insert_int(char *str, int *i)
 	while (j)
 	{
 		if (g_exit_status / j)
-			str[i[1]++] = g_exit_status / j % 10 + '0';
+		{
+			args->s[i[1]] = g_exit_status / j % 10 + '0';
+			args->e[i[1]++] = false;
+		}
 		j /= 10;
 	}
 	if (!g_exit_status)
-		str[i[1]++] = '0';
+	{
+		args->s[i[1]] = '0';
+		args->e[i[1]++] = false;
+	}
 	i[0]++;
 }
 
-static void	no_env(int *i, char *str, char *str2)
+static void	no_env(int *i, t_args *args, t_args *args2)
 {
-	if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
+	if (i[0] && !args->e[i[0]] && isop(args, i[0]) && !isop(args, i[0] - 1))
 	{
-		str2[i[1]++] = ' ';
-		str2[i[1]++] = str[i[0]++];
-		if (str[i[0]] && !isop(str[i[0]]))
-			str2[i[1]++] = ' ';
+		args2->s[i[1]] = ' ';
+		args2->e[i[1]++] = false;
+		args2->s[i[1]] = args->s[i[0]];
+		args2->e[i[1]++] = args->e[i[0]++];
+		if (args->s[i[0]] && !isop(args, i[0]))
+		{
+			args2->s[i[1]] = ' ';
+			args2->e[i[1]] = false;
+		}
 	}
-	else if (!i[3] && !i[4] && isop(str[i[0]]) && str[i[0] + 1]
-		&& !isop(str[i[0] + 1]))
+	else if (!args->e[i[0]] && isop(args, i[0]) && args->s[i[0] + 1]
+		&& !isop(args, i[0] + 1))
 	{
-		str2[i[1]++] = str[i[0]++];
-		str2[i[1]++] = ' ';
+		args2->s[i[1]] = args->s[i[0]];
+		args2->e[i[1]++] = args->e[i[0]++];
+		args2->s[i[1]] = ' ';
+		args2->e[i[1]++] = false;
 	}
 	else
-		str2[i[1]++] = str[i[0]++];
+	{
+		args2->s[i[1]] = args->s[i[0]];
+		args2->e[i[1]++] = args->e[i[0]++];
+	}
 }
 
-static void	handle_envvar(int *i, char *str, char *str2, char **envp)
+static void	handle_envvar(int *i, t_args *args, t_args *args2, char **envp)
 {
 	i[5] = i[0];
-	while (ft_isenv(str[i[5]]))
+	while (ft_isenv(args, i[5]))
 		i[5]++;
 	i[2] = 0;
-	while (envp[i[2]] && (ft_strncmp(envp[i[2]], str + i[0], i[5] - i[0])
+	while (envp[i[2]] && (ft_strncmp(envp[i[2]], args->s + i[0], i[5] - i[0])
 			|| envp[i[2]][i[5] - i[0]] != '='))
 		i[2]++;
 	if (envp[i[2]])
 	{
 		i[6] = i[5] - i[0] + 1;
 		while (envp[i[2]][i[6]])
-			str2[i[1]++] = envp[i[2]][i[6]++];
+		{
+			args2->s[i[1]] = envp[i[2]][i[6]++];
+			args2->e[i[1]++] = false;
+		}
 	}
 	i[0] = i[5];
 }
 
-static void	expand_envvar_loop(char *str, char *str2, char **envp)
+static void	expand_envvar_loop(t_args *args, t_args *args2, char **envp)
 {
 	int	i[7];
 
 	i[0] = 0;
 	i[1] = 0;
-	while (str[i[0]])
+	while (args->s[i[0]])
 	{
-		quote_check(str, i);
-		if (!i[4] && str[i[0]] == '$' && (ft_isenv(str[i[0] + 1]) || (!i[3]
-					&& str[i[0] + 1] == '\"')))
+		if (!args->e[i[0]] && args->s[i[0]] == '$' && ft_isenv(args, i[0] + 1))
 		{
-			if (str[++i[0]] == '?')
+			if (args->s[++i[0]] == '?')
 			{
-				insert_int(str2, i);
+				insert_int(args2, i);
 				continue ;
 			}
-			handle_envvar(i, str, str2, envp);
+			handle_envvar(i, args, args2, envp);
 		}
 		else
-			no_env(i, str, str2);
+			no_env(i, args, args2);
 	}
-	str2[i[1]] = '\0';
+	args2->s[i[1]] = '\0';
 }
 
-char	*expand_envvar(char *str, char **envp)
+t_args	*expand_envvar(t_args *args, char **envp)
 {
-	int		i[6];
-	char	*str2;
+	int				i[6];
+	static t_args	args2;
 
 	i[0] = -1;
 	i[5] = 0;
-	while (str[++i[0]])
-		get_length(str, envp, i);
-	str2 = malloc((i[5] + 1) * sizeof(char));
-	if (!str2)
+	while (args->s[++i[0]])
+		get_length(args, envp, i);
+	args2.s = malloc((i[5] + 1) * sizeof(char));
+	args2.e = malloc((i[5]) * sizeof(bool));
+	if (!args2.s || !args2.e)
 	{
-		free(str);
+		free(args->s);
+		free(args->e);
 		strarrfree(envp);
 		exit(EXIT_FAILURE);
 	}
-	expand_envvar_loop(str, str2, envp);
-	return (str2);
+	expand_envvar_loop(args, &args2, envp);
+	printf("%s\n", args2.s);
+	return (&args2);
 }

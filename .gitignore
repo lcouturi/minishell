@@ -59,6 +59,7 @@ dkms.conf
 .temp
 .vscode
 asd
+echo
 grep
 lol
 minishell*

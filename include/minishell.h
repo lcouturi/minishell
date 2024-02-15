@@ -26,6 +26,12 @@
 # include <string.h>
 # include <unistd.h>
 
+typedef struct s_args
+{
+	char	*s;
+	bool	*e;
+}	t_args;
+
 typedef struct s_node
 {
 	int		redir_flag;
@@ -47,6 +53,7 @@ typedef struct s_node
 int		g_exit_status;
 
 char	**escape_split(char *s, char *charset);
+char	**escape_split2(t_args *args, char *c);
 void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
@@ -56,17 +63,18 @@ void	cmd_exit_no_arg(void);
 char	**cmd_export(char **args, char **envp);
 void	cmd_pwd(char **envp);
 void	cmd_unset(char **args, char **envp);
+t_args	*escape(char *str);
 bool	exec_check(char **args, char **envp);
 void	exec_proc(char **args, char **envp, t_node *node);
-char	*expand_envvar(char *str, char **envp);
+t_args	*expand_envvar(t_args *str, char **envp);
 char	**expand_wildcard(char **args);
 char	*ft_getenv(const char *name, char **envp);
-int		ft_isenv(char c);
+int		ft_isenv(t_args *args, int i);
 int		ft_setenv(const char *name, const char *value, char **envp);
 int		get_arg_num(char **args);
 char	**get_file_list(bool hidden);
-void	get_length(char *str, char **envp, int *i);
-int		isop(char c);
+void	get_length(t_args *args, char **envp, int *i);
+int		isop(t_args *args, int i);
 char	**load_lst(struct dirent *dr, DIR *dir, bool hidden);
 void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);

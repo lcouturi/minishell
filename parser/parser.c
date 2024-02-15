@@ -37,7 +37,8 @@ static char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
 
-	args = expand_wildcard(escape_split(expand_envvar(str, envp), " \t\n"));
+	args = expand_wildcard(escape_split2(expand_envvar(escape(str), envp),
+				" \t\n"));
 	free(str);
 	if (!args[0])
 	{
