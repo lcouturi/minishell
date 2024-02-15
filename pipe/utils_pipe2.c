@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_pipe.c                                       :+:      :+:    :+:   */
+/*   utils_pipe2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kyung-ki <kyung-ki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -83,7 +83,7 @@ char	**repeat(char **args, char **envp, t_node *node)
 char	**execute(char **args, char **envp, t_node *node)
 {
 	backup(node);
-	if (syntax_error_check(args, envp, node))
+	if (pipe_syntax_check(args) && redir_syntax_check(args))
 		envp = repeat(args, envp, node);
 	backup_restor(node);
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));

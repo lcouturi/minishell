@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_pipe4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kyung-ki <kyung-ki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -33,7 +33,7 @@ int	print_syntax_error(char **args, int i, int j)
 {
 	g_exit_status = 2;
 	ft_putstr_fd("minishell: syntax error ", STDERR_FILENO);
-	ft_putstr_fd("unexpected token `", STDERR_FILENO);
+	ft_putstr_fd("near unexpected token `", STDERR_FILENO);
 	if (args[i][j] == '|' && (args[i][j + 1] == 0 || args[i][j + 1] != '|'))
 		ft_putstr_fd("|", STDERR_FILENO);
 	else if (args[i][j] == '&' && (args[i][j + 1] == 0
@@ -47,14 +47,11 @@ int	print_syntax_error(char **args, int i, int j)
 	return (0);
 }
 
-int	syntax_error_check(char **args, char **envp, t_node *node)
+int	pipe_syntax_check(char **args)
 {
 	int	i;
 
 	i = -1;
-	(void)node;
-	(void)envp;
-	(void)i;
 	if (args && args[0] && is_operator(args, 0, 0))
 		return (print_syntax_error(args, 0, 0));
 	while (args[++i])

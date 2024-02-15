@@ -42,3 +42,34 @@ void	args_left_move(char **args, int i)
 		free(args[i + 1]);
 	}
 }
+
+bool	is_redir(char **args, int i, int j)
+{
+	if (args[i][j] == '<' || args[i][j] == '>')
+		return (true);
+	return (false);
+}
+
+int	print_re_syntax_error()
+{
+	g_exit_status = 2;
+	ft_putstr_fd("minishell: syntax error near ", STDERR_FILENO);
+	ft_putstr_fd("unexpected token `newline'", STDERR_FILENO);
+	return (0);
+}
+
+int	redir_syntax_check(char **args)
+{
+	int	i;
+
+	i = -1;
+	if (args && args[0] && is_redir(args, 0, 0))
+		return (print_re_syntax_error());
+	while (args[++i])
+	{
+		if (args[i + 1] == NULL && (is_redir(args, i, 0)
+			|| args[i][0] == '|'))
+			return (print_re_syntax_error());
+	}
+	return (1);
+}
