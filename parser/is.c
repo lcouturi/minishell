@@ -17,11 +17,6 @@ int	isop(char c)
 	return (c == '<' || c == '>' || c == '|');
 }
 
-int	ft_isspace(char c)
-{
-	return (c == ' ' || c == '\n' || c == '\t');
-}
-
 int	ft_isenv(char c)
 {
 	return (ft_isalnum(c) || c == '_' || c == '?');

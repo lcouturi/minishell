@@ -12,14 +12,14 @@
 
 #include "../include/minishell.h"
 
-static bool	sep(char s, int *i, char c)
+static bool	sep(char s, int *i, char *c)
 {
-	if (!s || (!i[3] && !i[4] && s == c))
+	if (!s || (!i[3] && !i[4] && ft_strchr(c, s)))
 		return (1);
 	return (0);
 }
 
-static void	loop(char *s, char **returned, int *i, char c)
+static void	loop(char *s, char **returned, int *i, char *c)
 {
 	quote_check(s, i);
 	if (i[0] && sep(s[i[0]], i, c) && !sep(s[i[0] - 1], i, c))
@@ -48,7 +48,7 @@ static void	loop(char *s, char **returned, int *i, char c)
 	}
 }
 
-char	**escape_split(char *s, char c)
+char	**escape_split(char *s, char *c)
 {
 	int		i[5];
 	char	**returned;

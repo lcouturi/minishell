@@ -47,7 +47,7 @@ typedef struct s_node
 int		g_exit_status;
 
 char	**arg_splitter(char *s);
-char	**escape_split(char *s, char c);
+char	**escape_split(char *s, char *charset);
 void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
@@ -63,7 +63,6 @@ char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args);
 char	*ft_getenv(const char *name, char **envp);
 int		ft_isenv(char c);
-int		ft_isspace(char c);
 int		ft_setenv(const char *name, const char *value, char **envp);
 int		get_arg_num(char **args);
 char	**get_file_list(bool hidden);

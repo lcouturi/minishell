@@ -20,7 +20,7 @@ static void	get_arg_num_loop(char **args, int *i, int *n)
 
 	files = get_file_list(args[i[2]][0] == '.');
 	i[1] = -1;
-	split = escape_split(args[i[2]], '*');
+	split = escape_split(args[i[2]], "*");
 	split = rm_quotes_wildcards(split);
 	while (files[++i[1]])
 		match(args[i[2]], split, files, i[1]);

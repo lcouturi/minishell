@@ -37,7 +37,7 @@ static char	**parser(char *str, char **envp, t_node *node)
 {
 	char	**args;
 
-	args = expand_wildcard(arg_splitter(expand_envvar(str, envp)));
+	args = expand_wildcard(escape_split(expand_envvar(str, envp), " \t\n"));
 	free(str);
 	if (!args[0])
 	{
@@ -92,7 +92,7 @@ char	**semicolon_handler(char *str, char **envp, t_node *node)
 
 	i = -1;
 	add_history(str);
-	split = escape_split(str, ';');
+	split = escape_split(str, ";");
 	while (split[++i])
 		envp = parser(split[i], envp, node);
 	free(split);
