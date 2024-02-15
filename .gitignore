@@ -61,10 +61,8 @@ dkms.conf
 asd
 grep
 lol
-minishell
-minishell_bonus
-minishell_test.log
-minishell_tester
+minishell*
+tmp_*
 
 # json
 *.json
