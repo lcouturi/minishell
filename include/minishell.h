@@ -107,5 +107,6 @@ void	backup_restor(t_node *node);
 char	**split_before_pipe_args(char **args, t_node *node);
 char	**repeat(char **args, char **envp, t_node *node);
 void	print_from_fd(int fd);
+int		syntax_error_check(char **args, char **envp, t_node *node);
 
 #endif
