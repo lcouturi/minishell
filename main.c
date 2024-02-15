@@ -42,8 +42,6 @@ static char	*get_line(void)
 		if (!line2)
 			exit(g_exit_status);
 		line = ft_strtrim(line2, "\n");
-		if (!line)
-			exit(EXIT_FAILURE);
 		free(line2);
 	}
 	return (line);
