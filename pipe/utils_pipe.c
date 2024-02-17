@@ -23,7 +23,7 @@ void	exec_child(char **args, char **envp, t_node *node)
 	exit(g_exit_status);
 }
 
-void	exec_parents(int pid, char **args, char **envp, t_node *node)
+char	**exec_parents(int pid, char **args, char **envp, t_node *node)
 {
 	int	status;
 
@@ -44,6 +44,7 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 	}
 	dup2(STDIN_FILENO, 0);
 	dup2(STDOUT_FILENO, 1);
+	return (envp);
 }
 
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp)

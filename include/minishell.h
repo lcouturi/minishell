@@ -100,7 +100,7 @@ int		print_err(char **args, int i, t_node *node);
 bool	is_redir(char **args, int i, int j);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
-void	exec_parents(int pid, char **args, char **envp, t_node *node);
+char	**exec_parents(int pid, char **args, char **envp, t_node *node);
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
 int		pipe_check(char **args, t_node *node);
 void	init_node(t_node *node);

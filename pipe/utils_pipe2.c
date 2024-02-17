@@ -76,7 +76,7 @@ char	**repeat(char **args, char **envp, t_node *node)
 	if (pid == 0)
 		exec_child(args, envp, node);
 	else
-		exec_parents(pid, args, envp, node);
+		envp = exec_parents(pid, args, envp, node);
 	return (envp);
 }
 
