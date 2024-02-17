@@ -68,19 +68,9 @@ void	quote_check(char const *s, int *i)
 	while (j <= i[0])
 	{
 		if (!i[4] && s[j] == '\"')
-		{
-			if (!i[3])
-				i[3] = 1;
-			else
-				i[3] = 0;
-		}
-		if (!i[3] && s[j] == '\'')
-		{
-			if (!i[4])
-				i[4] = 1;
-			else
-				i[4] = 0;
-		}
+			i[3] = !i[3];
+		else if (!i[3] && s[j] == '\'')
+			i[4] = !i[4];
 		j++;
 	}
 }
