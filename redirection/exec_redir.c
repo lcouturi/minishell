@@ -34,6 +34,8 @@ int	exec_redir(char **args, char **envp, t_node *node)
 	int	i;
 
 	i = 0;
+	if (ft_strncmp(args[0], ">", 2) == 0 || ft_strncmp(args[0], ">>", 3) == 0)
+		return (1);
 	while (args[i] != NULL && ft_strncmp(args[i], "|", 2))
 	{
 		if (ft_strncmp(args[i], "<", 2) == 0)
