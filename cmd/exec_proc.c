@@ -58,7 +58,7 @@ static void	exec_proc_loop2(char **paths, char **args, char **envp,
 {
 	char	**temp;
 
-	if (node->redir_flag)
+	if (node->redir_flag && ft_strncmp(args[0], "<<", 3))
 		argu_left_change(args);
 	if (!access(node->path, X_OK))
 	{

@@ -63,6 +63,7 @@ grep
 lol
 minishell*
 tmp_*
+.DS_Store
 
 # json
 *.json
