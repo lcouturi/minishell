@@ -14,6 +14,7 @@
 
 void	exec_child(char **args, char **envp, t_node *node)
 {
+	node->exit_flag = 0;
 	close(node->fds[0]);
 	dup2(node->fds[1], STDOUT_FILENO);
 	close(node->fds[1]);
@@ -26,6 +27,7 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 {
 	int	status;
 
+	node->exit_flag = 0;
 	waitpid(pid, &status, 0);
 	g_exit_status = status >> 8;
 	close(node->fds[1]);
@@ -82,4 +84,5 @@ void	init_node(t_node *node)
 	node->quota_pipe_cnt = 0;
 	node->echo_skip = 0;
 	node->child_die = 0;
+	node->exit_flag = 1;
 }

@@ -56,8 +56,10 @@ int	ft_isalldigit(char *str)
 	return (1);
 }
 
-void	cmd_exit(char **args, char **envp)
+void	cmd_exit(char **args, char **envp, t_node *node)
 {
+	if (node->exit_flag == 0)
+		return ;
 	if (isatty(STDIN_FILENO))
 		printf("exit\n");
 	g_exit_status = EXIT_SUCCESS;
