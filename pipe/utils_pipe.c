@@ -35,7 +35,7 @@ char	**exec_parents(int pid, char **args, char **envp, t_node *node)
 	close(node->fds[0]);
 	node->pipe_flag = 0;
 	if (repeat_check(args + node->pipe_idx, node))
-		repeat(args + node->pipe_idx, envp, node);
+		envp = repeat(args + node->pipe_idx, envp, node);
 	else
 	{
 		node->redir_flag = redir_chk(node->ori_args + node->pipe_idx);
