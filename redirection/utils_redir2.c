@@ -63,7 +63,7 @@ int	redir_syntax_check(char **args)
 	int	i;
 
 	i = -1;
-	if (args && args[0] && is_redir(args, 0, 0))
+	if (args && args[0] && is_redir(args, 0, 0) && args[i + 1] == NULL)
 		return (print_re_syntax_error());
 	while (args[++i])
 	{

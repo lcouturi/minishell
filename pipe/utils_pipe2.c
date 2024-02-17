@@ -57,7 +57,7 @@ char	**repeat(char **args, char **envp, t_node *node)
 
 	pid = 0;
 	node->redir_flag = redir_chk(node->ori_args);
-	if (redir_excute(args, envp, node))
+	if (redir_excute(args, envp, node) || is_redir(args, 0, 0))
 		return (envp);
 	if (pipe_check(args, node))
 	{
