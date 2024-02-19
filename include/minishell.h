@@ -45,6 +45,8 @@ typedef struct s_node
 	int		exit_flag;
 	int		redir_fds[2];
 	int		redir_idx;
+	int		redir_stop;
+	int		parent_die;
 }	t_node;
 
 int		g_exit_status;
