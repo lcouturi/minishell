@@ -47,6 +47,20 @@ static char	*get_line(void)
 	return (line);
 }
 
+static void	shlvl_plus_plus(char **envp)
+{
+	char	*str;
+
+	str = ft_itoa(ft_atoi(ft_getenv("SHLVL", envp)) + 1);
+	if (!str)
+	{
+		strarrfree(envp);
+		exit(EXIT_FAILURE);
+	}
+	ft_setenv("SHLVL", str, envp);
+	free(str);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;
@@ -55,6 +69,7 @@ int	main(int argc, char **argv, char **envp)
 
 	g_exit_status = 0;
 	envp_copy = strarrdup(envp);
+	shlvl_plus_plus(envp_copy);
 	if (!envp_copy)
 		exit(EXIT_FAILURE);
 	set_signal();
