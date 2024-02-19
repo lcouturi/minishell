@@ -68,7 +68,8 @@ char	**repeat(char **args, char **envp, t_node *node)
 	}
 	else
 	{
-		envp = find_command(args, envp, node);
+		if (node->redir_idx == 0)	
+			envp = find_command(args, envp, node);
 		if (node->redir_flag != 0)
 			backup_restor(node);
 		return (envp);
