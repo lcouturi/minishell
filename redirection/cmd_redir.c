@@ -73,7 +73,7 @@ void	right_redir(char **args, char **envp, int i)
 	args[i] = NULL;
 	if (exec_check(args, envp))
 	{
-		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0744);
+		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd <= 0)
 			exit(EXIT_FAILURE);
 		dup2(fd, STDOUT_FILENO);
