@@ -23,7 +23,7 @@ void	exec_child(char **args, char **envp, t_node *node)
 	exit(g_exit_status);
 }
 
-char	**exec_parents(int pid, char **args, char **envp, t_node *node)
+void	exec_parents(int pid, char **args, char **envp, t_node *node)
 {
 	int	status;
 
@@ -38,15 +38,13 @@ char	**exec_parents(int pid, char **args, char **envp, t_node *node)
 		envp = repeat(args + node->pipe_idx, envp, node);
 	else
 	{
-		node->parent_die = 0;
 		node->redir_flag = redir_chk(node->ori_args + node->pipe_idx);
 		redir_excute(args + node->pipe_idx, envp, node);
-		if (node->parent_die == 0)
-			envp = find_command(args + node->pipe_idx, envp, node);
+		envp = find_command(args + node->pipe_idx, envp, node);
 	}
 	dup2(STDIN_FILENO, 0);
 	dup2(STDOUT_FILENO, 1);
-	return (envp);
+	strarrfree(envp);
 }
 
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp)
@@ -88,7 +86,4 @@ void	init_node(t_node *node)
 	node->echo_skip = 0;
 	node->child_die = 0;
 	node->exit_flag = 1;
-	node->redir_idx = 0;
-	node->redir_stop = 0;
-	node->parent_die = 0;
 }
