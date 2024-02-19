@@ -76,10 +76,28 @@ void	argu_left_change(char **args)
 
 int	redir_excute(char **args, char **envp, t_node *node)
 {
-	if (node->redir_flag)
+	int	pid;
+	int	flag;
+
+	pid = 0;
+	flag = 0;
+	if (two_redir(args, node))
 	{
-		if (exec_redir(args, envp, node))
+		pipe(node->redir_fds);
+		pid = fork();
+		if (pid < 0)
 			return (1);
 	}
-	return (0);
+	if (node->redir_flag)
+	{
+		if (pid == 0)
+		{
+			if (node->redir_idx != 0)
+				args[node->redir_idx] = 0;
+			exec_redir_child(args, envp, node, &flag);
+		}
+		else
+			exec_redir_parents(args + node->redir_idx, envp, node, &flag);
+	}
+	return (flag);
 }

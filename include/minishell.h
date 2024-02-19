@@ -43,6 +43,10 @@ typedef struct s_node
 	char	**ori_args;
 	int		child_die;
 	int		exit_flag;
+	int		redir_fds[2];
+	int		redir_idx;
+	int		redir_stop;
+	int		parent_die;
 }	t_node;
 
 int		g_exit_status;
@@ -98,6 +102,11 @@ void	original_store(char **args, t_node *node);
 void	args_left_move(char **args, int i);
 int		print_err(char **args, int i, t_node *node);
 bool	is_redir(char **args, int i, int j);
+int		redir_excute(char **args, char **envp, t_node *node);
+bool	is_redir_check(char *str);
+void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag);
+void	exec_redir_child(char **args, char **envp, t_node *node, int *flag);
+int		two_redir(char **args, t_node *node);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
 char	**exec_parents(int pid, char **args, char **envp, t_node *node);
@@ -110,5 +119,6 @@ char	**repeat(char **args, char **envp, t_node *node);
 void	print_from_fd(int fd);
 int		pipe_syntax_check(char **args);
 int		redir_syntax_check(char **args);
+void	pipe_work(int pid, char **args, char **envp, t_node *node);
 
 #endif
