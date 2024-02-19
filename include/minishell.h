@@ -65,6 +65,7 @@ bool	exec_check(char **args, char **envp);
 void	exec_proc(char **args, char **envp, t_node *node);
 char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args);
+char	**find_command(char **args, char **envp, t_node *node);
 char	*ft_getenv(const char *name, char **envp);
 int		ft_isenv(char c);
 int		ft_setenv(const char *name, const char *value, char **envp);
@@ -77,14 +78,14 @@ void	match(char *str, char **split, char **files, int i);
 char	**execute(char **args, char **envp, t_node *node);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args, t_node *node);
+char	**rm_quotes_wildcards(char **args);
 char	**semicolon_handler(char *str, char **envp, t_node *node);
+char	**split_operators(char **args);
 char	**strarradd(char **strs, char *str);
 char	**strarrdup(char **strs);
 void	strarrfree(char **strs);
 size_t	strarrlen(char **strs);
 void	strarrprint(char **strs);
-char	**find_command(char **args, char **envp, t_node *node);
-char	**rm_quotes_wildcards(char **args);
 // signal
 void	set_signal(void);
 // redirection
