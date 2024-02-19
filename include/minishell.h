@@ -64,7 +64,7 @@ void	cmd_unset(char **args, char **envp);
 bool	exec_check(char **args, char **envp);
 void	exec_proc(char **args, char **envp, t_node *node);
 char	*expand_envvar(char *str, char **envp);
-char	**expand_wildcard(char **args);
+char	**expand_wildcard(char **args, char **envp);
 char	**find_command(char **args, char **envp, t_node *node);
 char	*ft_getenv(const char *name, char **envp);
 int		ft_isenv(char c);
@@ -86,6 +86,7 @@ char	**strarrdup(char **strs);
 void	strarrfree(char **strs);
 size_t	strarrlen(char **strs);
 void	strarrprint(char **strs);
+void	tilde_handler(char **args, int *i, char **envp);
 // signal
 void	set_signal(void);
 // redirection

@@ -89,3 +89,16 @@ char	**load_lst(struct dirent *dr, DIR *dir, bool hidden)
 	closedir(dir);
 	return (files);
 }
+
+void	tilde_handler(char **args, int *i, char **envp)
+{
+	char	*tmp;
+
+	if (!i[3] && !i[4] && args[i[2]][0] == '~' && (args[i[2]][1] == '/'
+			|| !args[i[2]][1]))
+	{
+		tmp = ft_strjoin(ft_getenv("HOME", envp), args[i[2]] + 1);
+		free(args[i[2]]);
+		args[i[2]] = tmp;
+	}
+}

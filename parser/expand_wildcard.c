@@ -66,9 +66,11 @@ static void	wildcard_handler(char **args, char **newargs, int *i)
 	strarrfree(files);
 }
 
-static void	expand_wildcard_loop(int *i, char **args, char **newargs)
+static void	expand_wildcard_loop(int *i, char **args, char **newargs,
+	char **envp)
 {
 	i[0] = -1;
+	tilde_handler(args, i, envp);
 	while (args[i[2]][++i[0]])
 	{
 		quote_check(args[i[2]], i);
@@ -90,7 +92,7 @@ static void	expand_wildcard_loop(int *i, char **args, char **newargs)
 	}
 }
 
-char	**expand_wildcard(char **args)
+char	**expand_wildcard(char **args, char **envp)
 {
 	int		i[6];
 	char	**newargs;
@@ -104,7 +106,7 @@ char	**expand_wildcard(char **args)
 	i[2] = -1;
 	i[5] = 0;
 	while (args[++i[2]])
-		expand_wildcard_loop(i, args, newargs);
+		expand_wildcard_loop(i, args, newargs, envp);
 	strarrfree(args);
 	newargs[i[5]] = 0;
 	return (newargs);
