@@ -119,5 +119,6 @@ char	**repeat(char **args, char **envp, t_node *node);
 void	print_from_fd(int fd);
 int		pipe_syntax_check(char **args);
 int		redir_syntax_check(char **args);
+void	pipe_work(int pid, char **args, char **envp, t_node *node);
 
 #endif
