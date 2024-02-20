@@ -95,6 +95,7 @@ void	right_double_redir(char **args, char **envp, int i, t_node *node)
 {
 	int	fd;
 
+	args[i] = NULL;
 	if (exec_check(args, envp))
 	{
 		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0744);
