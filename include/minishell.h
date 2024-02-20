@@ -47,6 +47,7 @@ typedef struct s_node
 	int		redir_idx;
 	int		redir_stop;
 	int		parent_die;
+	int		right_flag;
 }	t_node;
 
 int		g_exit_status;
@@ -95,20 +96,20 @@ int		exec_redir(char **args, char **envp, t_node *node);
 void	exec_redir_cmd(char **args, char **envp);
 int		left_redir(char **args, int i, t_node *node);
 int		left_double_redir(char **args, int i);
-void	right_redir(char **args, char **envp, int i);
-void	right_double_redir(char **args, char **envp, int i);
+void	right_redir(char **args, char **envp, int i, t_node *node);
+void	right_double_redir(char **args, char **envp, int i, t_node *node);
 void	argu_left_change(char **args);
-int		redir_excute(char **args, char **envp, t_node *node);
 int		repeat_check(char **args, t_node *node);
 void	original_store(char **args, t_node *node);
 void	args_left_move(char **args, int i);
 int		print_err(char **args, int i, t_node *node);
 bool	is_redir(char **args, int i, int j);
-int		redir_excute(char **args, char **envp, t_node *node);
+int		redir_excute(char **args, char **envp, t_node *node, int flag);
 bool	is_redir_check(char *str);
 void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag);
 void	exec_redir_child(char **args, char **envp, t_node *node, int *flag);
 int		two_redir(char **args, t_node *node);
+void	args_left_move_i(char **args, t_node *node);
 // pipe
 void	exec_child(char **args, char **envp, t_node *node);
 void	exec_parents(int pid, char **args, char **envp, t_node *node);

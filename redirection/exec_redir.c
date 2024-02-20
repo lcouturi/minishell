@@ -43,9 +43,9 @@ int	exec_redir(char **args, char **envp, t_node *node)
 				return (1);
 		}
 		else if (ft_strncmp(args[i], ">", 2) == 0)
-			right_redir(args, envp, i);
+			right_redir(args, envp, i, node);
 		else if (ft_strncmp(args[i], ">>", 3) == 0)
-			right_double_redir(args, envp, i);
+			right_double_redir(args, envp, i, node);
 		else if (ft_strncmp(args[i], "<<", 3) == 0)
 			if (left_double_redir(args, i))
 				return (1);
@@ -68,4 +68,13 @@ void	original_store(char **args, t_node *node)
 		node->ori_args[i] = ft_strdup(args[i]);
 	}
 	node->ori_args[i] = NULL;
+}
+
+void	args_left_move_i(char **args, t_node *node)
+{
+	int	i;
+
+	i = 0;
+	while (++i < node->redir_idx)
+		args_left_move(args, 1);
 }

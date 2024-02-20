@@ -75,13 +75,11 @@ int	ft_setenv(const char *name, const char *value, char **envp)
 
 void	cmd_cd(char **args, char **envp)
 {
-	int		i;
 	char	*cwd;
 
 	if (error_check(args))
 		return ;
 	g_exit_status = EXIT_SUCCESS;
-	i = 0;
 	if (!ft_strncmp(args[1], "-", 2))
 	{
 		chdir(ft_getenv("OLDPWD", envp));
