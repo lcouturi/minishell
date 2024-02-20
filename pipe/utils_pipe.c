@@ -86,4 +86,7 @@ void	init_node(t_node *node)
 	node->echo_skip = 0;
 	node->child_die = 0;
 	node->exit_flag = 1;
+	node->redir_idx = 0;
+	node->redir_stop = 0;
+	node->parent_die = 0;
 }
