@@ -26,6 +26,43 @@ static int	failure(char **args, int i)
 	return (0);
 }
 
+static void	printenv(char *str)
+{
+	int	i;
+
+	i = -1;
+	ft_putstr_fd("declare -x ", STDOUT_FILENO);
+	while (str[++i - 1] != '=')
+		ft_putchar_fd(str[i], STDOUT_FILENO);
+	ft_putchar_fd('\"', STDOUT_FILENO);
+	ft_putstr_fd(str + i, STDOUT_FILENO);
+	ft_putstr_fd("\"\n", STDOUT_FILENO);
+}
+
+static char	**export_print(char **envp)
+{
+	int		i;
+	size_t	i2;
+	char	*lowest;
+	char	*lowest_old;
+
+	i2 = -1;
+	while (++i2 < strarrlen(envp))
+	{
+		lowest = 0;
+		i = -1;
+		while (envp[++i])
+			if ((!lowest || ft_strncmp(envp[i], lowest, ft_strlen(envp[i])) < 0)
+				&& (!i2 || ft_strncmp(envp[i], lowest_old,
+						ft_strlen(envp[i])) > 0))
+				lowest = envp[i];
+		if (ft_strncmp(lowest, "_=", 2))
+			printenv(lowest);
+		lowest_old = lowest;
+	}
+	return (envp);
+}
+
 char	**cmd_export(char **args, char **envp)
 {
 	int	i;
@@ -34,14 +71,10 @@ char	**cmd_export(char **args, char **envp)
 	i2 = 0;
 	i = -1;
 	if (!args[1])
-		return (envp);
+		return (export_print(envp));
 	while (args[1][0] == '=' || ft_isdigit(args[1][0]) || args[1][++i] != '=')
-	{
-		if (i > 0 && !args[1][i])
+		if ((i > 0 && !args[1][i]) || failure(args, i))
 			return (envp);
-		else if (failure(args, i))
-			return (envp);
-	}
 	while (ft_strncmp(envp[i2], args[1], i + 1))
 		i2++;
 	if (!envp[i2])

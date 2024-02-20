@@ -17,6 +17,7 @@
 # include <fcntl.h>
 # include "../libs/get_next_line/get_next_line_bonus.h"
 # include "../libs/Libft/libft.h"
+# include <limits.h>
 # include <signal.h>
 # include <stdio.h>
 # include <readline/readline.h>
