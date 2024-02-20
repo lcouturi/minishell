@@ -12,18 +12,40 @@
 
 #include "../include/minishell.h"
 
-static int	failure(char **args, int i)
+static int	failure(char *arg, int i)
 {
-	if (!args[1][0] || args[1][0] == '=' || ft_isdigit(args[1][0])
-		|| (!ft_isalnum(args[1][i]) && args[1][i] != '_'))
+	if (!arg[0] || arg[0] == '=' || ft_isdigit(arg[0])
+		|| (!ft_isalnum(arg[i]) && arg[i] != '_'))
 	{
 		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
 		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		g_exit_status = EXIT_FAILURE;
 		return (1);
 	}
 	return (0);
+}
+
+static char	**cmd_export_loop(char *arg, char **envp)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = 0;
+	while (arg[0] == '=' || ft_isdigit(arg[0]) || arg[++i] != '=')
+		if ((i > 0 && !arg[i]) || failure(arg, i))
+			return (envp);
+	while (ft_strncmp(envp[j], arg, i + 1))
+		j++;
+	if (!envp[j])
+		envp = strarradd(envp, arg);
+	else
+	{
+		free(envp[j]);
+		envp[j] = ft_strdup(arg);
+	}
+	return (envp);
 }
 
 static void	printenv(char *str)
@@ -66,24 +88,12 @@ static char	**export_print(char **envp)
 char	**cmd_export(char **args, char **envp)
 {
 	int	i;
-	int	i2;
 
-	i2 = 0;
+	g_exit_status = EXIT_SUCCESS;
 	i = -1;
 	if (!args[1])
 		return (export_print(envp));
-	while (args[1][0] == '=' || ft_isdigit(args[1][0]) || args[1][++i] != '=')
-		if ((i > 0 && !args[1][i]) || failure(args, i))
-			return (envp);
-	while (ft_strncmp(envp[i2], args[1], i + 1))
-		i2++;
-	if (!envp[i2])
-		envp = strarradd(envp, args[1]);
-	else
-	{
-		free(envp[i2]);
-		envp[i2] = ft_strdup(args[1]);
-	}
-	g_exit_status = EXIT_SUCCESS;
+	while (args[++i] && !g_exit_status)
+		envp = cmd_export_loop(args[i], envp);
 	return (envp);
 }

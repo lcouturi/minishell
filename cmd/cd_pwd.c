@@ -50,5 +50,10 @@ char	*newpwd(char *pwd, char *cmd)
 	while (mod[++i])
 		pwd = newpwd_loop(mod, pwd, i);
 	strarrfree(mod);
+	if (!pwd[0])
+	{
+		free(pwd);
+		pwd = ft_strdup("/");
+	}
 	return (pwd);
 }

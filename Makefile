@@ -38,11 +38,11 @@ bonus : $(OBJS)
 
 clean :
 	@make clean -s -C libs/Libft
-	@rm -rf $(OBJS) "|" "<" ">" ">>" .temp asd grep lol minishell_test.log tmp_*
+	@rm -rf $(OBJS) "|" "<" ">" ">>" .temp asd grep lol minishell.dSYM minishell_test.log tmp_*
 
-debug : fclean $(OBJS)
+debug : fclean
 	@make debug -s -C libs/Libft
-	$(CC) $(CFLAGS) -g -fsanitize=address $(LDFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -g -fsanitize=address $(LDFLAGS) $(SRCS) -o $(NAME)
 
 
 fclean : clean
