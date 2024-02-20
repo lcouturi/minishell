@@ -97,7 +97,11 @@ int	redir_excute(char **args, char **envp, t_node *node)
 			exec_redir_child(args, envp, node, &flag);
 		}
 		else
+		{
 			exec_redir_parents(args + node->redir_idx, envp, node, &flag);
+			for (int i = 1; i < node->redir_idx; i++)
+				args_left_move(args, 1);
+		}
 	}
 	return (flag);
 }
