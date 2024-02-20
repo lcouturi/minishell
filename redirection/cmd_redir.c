@@ -77,7 +77,7 @@ void	right_redir(char **args, char **envp, int i, t_node *node)
 			exit(EXIT_FAILURE);
 		node->right_flag = 1;
 		if (ft_strncmp(args[0], "echo", 5) == 0
-		|| ft_strncmp(args[0], "cat", 4) == 0)
+			|| ft_strncmp(args[0], "cat", 4) == 0)
 		{
 			args_left_move(args, i);
 			if (is_redir(args, i + 1, 0) == false
@@ -103,7 +103,7 @@ void	right_double_redir(char **args, char **envp, int i, t_node *node)
 			exit(EXIT_FAILURE);
 		node->right_flag = 1;
 		if (ft_strncmp(args[0], "echo", 5) == 0
-		|| ft_strncmp(args[0], "cat", 4) == 0)
+			|| ft_strncmp(args[0], "cat", 4) == 0)
 		{
 			args_left_move(args, i);
 			if (is_redir(args, i, 0) == false

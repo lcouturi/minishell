@@ -74,13 +74,11 @@ void	argu_left_change(char **args)
 	}
 }
 
-int	redir_excute(char **args, char **envp, t_node *node)
+int	redir_excute(char **args, char **envp, t_node *node, int flag)
 {
 	int	pid;
-	int	flag;
 
 	pid = 0;
-	flag = 0;
 	if (two_redir(args, node))
 	{
 		pipe(node->redir_fds);
@@ -99,8 +97,7 @@ int	redir_excute(char **args, char **envp, t_node *node)
 		else
 		{
 			exec_redir_parents(args + node->redir_idx, envp, node, &flag);
-			for (int i = 1; i < node->redir_idx; i++)
-				args_left_move(args, 1);
+			args_left_move_i(args, node);
 		}
 	}
 	return (flag);

@@ -69,3 +69,12 @@ void	original_store(char **args, t_node *node)
 	}
 	node->ori_args[i] = NULL;
 }
+
+void	args_left_move_i(char **args, t_node *node)
+{
+	int	i;
+
+	i = 0;
+	while (++i < node->redir_idx)
+		args_left_move(args, 1);
+}
