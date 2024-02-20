@@ -17,11 +17,11 @@
 # include <fcntl.h>
 # include "../libs/get_next_line/get_next_line_bonus.h"
 # include "../libs/Libft/libft.h"
-# include <limits.h>
 # include <signal.h>
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
 # include <stdbool.h>
 # include <stdlib.h>
 # include <string.h>
@@ -54,7 +54,7 @@ typedef struct s_node
 int		g_exit_status;
 
 char	**escape_split(char *s, char *charset);
-void	cmd_cd(char **args, char **envp);
+void	cmd_cd(char **args, char **envp, char *str);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, t_node *node);
@@ -65,6 +65,7 @@ void	cmd_pwd(char **envp);
 void	cmd_unset(char **args, char **envp);
 bool	exec_check(char **args, char **envp);
 void	exec_proc(char **args, char **envp, t_node *node);
+char	**execute(char **args, char **envp, t_node *node);
 char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args, char **envp);
 char	**find_command(char **args, char **envp, t_node *node);
@@ -77,7 +78,7 @@ void	get_length(char *str, char **envp, int *i);
 int		isop(char c);
 char	**load_lst(struct dirent *dr, DIR *dir, bool hidden);
 void	match(char *str, char **split, char **files, int i);
-char	**execute(char **args, char **envp, t_node *node);
+char	*newpwd(char *pwd, char *cmd);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args, t_node *node);
 char	**rm_quotes_wildcards(char **args);

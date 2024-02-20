@@ -67,10 +67,8 @@ int	ft_setenv(const char *name, const char *value, char **envp)
 	return (0);
 }
 
-void	cmd_cd(char **args, char **envp)
+void	cmd_cd(char **args, char **envp, char *str)
 {
-	char	*cwd;
-
 	g_exit_status = EXIT_SUCCESS;
 	if (strarrlen(args) > 2)
 	{
@@ -88,7 +86,12 @@ void	cmd_cd(char **args, char **envp)
 	else if (error_check(args))
 		return ;
 	ft_setenv("OLDPWD", ft_getenv("PWD", envp), envp);
-	cwd = getcwd(NULL, 0);
-	ft_setenv("PWD", cwd, envp);
-	free(cwd);
+	if (!args[1])
+	{
+		ft_setenv("PWD", ft_getenv("HOME", envp), envp);
+		return ;
+	}
+	str = newpwd(ft_strdup(ft_getenv("OLDPWD", envp)), args[1]);
+	ft_setenv("PWD", str, envp);
+	free(str);
 }

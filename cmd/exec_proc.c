@@ -12,11 +12,13 @@
 
 #include "../include/minishell.h"
 
-static void	chkdir(char **args, char **envp, int err)
+static void	chkdir(char **args, char **envp, int err, int status)
 {
-	DIR	*check;
+	DIR			*check;
+	struct stat	stats;
 
 	check = opendir(args[0]);
+	stat(args[0], &stats);
 	if (check)
 	{
 		closedir(check);
@@ -26,13 +28,17 @@ static void	chkdir(char **args, char **envp, int err)
 		errno = EACCES;
 	else
 		return ;
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(args[0], STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	perror(0);
+	if (errno != EACCES || stats.st_size)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		perror(0);
+		status = 126;
+	}
 	strarrfree(envp);
 	strarrfree(args);
-	exit(126);
+	exit(status);
 }
 
 static void	exec_error(char **args, char **envp, char **paths)
@@ -72,7 +78,7 @@ static void	exec_proc_loop2(char **paths, char **args, char **envp,
 		else
 			execve(node->path, args, envp);
 	}
-	chkdir(&node->path, envp, errno);
+	chkdir(&node->path, envp, errno, 0);
 	free(node->path);
 }
 
@@ -102,7 +108,7 @@ void	exec_proc(char **args, char **envp, t_node *node)
 	{
 		if (!access(args[0], X_OK))
 			execve(args[0], args, envp);
-		chkdir(args, envp, errno);
+		chkdir(args, envp, errno, 0);
 	}
 	node->i = 0;
 	while (ft_strncmp(envp[node->i], "PATH=", 5))
