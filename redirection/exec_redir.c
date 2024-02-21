@@ -43,9 +43,15 @@ int	exec_redir(char **args, char **envp, t_node *node)
 				return (1);
 		}
 		else if (ft_strncmp(args[i], ">", 2) == 0)
-			right_redir(args, envp, i, node);
+		{
+			if (right_redir(args, envp, i, node))
+				return (1);
+		}
 		else if (ft_strncmp(args[i], ">>", 3) == 0)
-			right_double_redir(args, envp, i, node);
+		{
+			if (right_double_redir(args, envp, i, node))
+				return (1);
+		}
 		else if (ft_strncmp(args[i], "<<", 3) == 0)
 			if (left_double_redir(args, i))
 				return (1);
