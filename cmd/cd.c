@@ -80,18 +80,17 @@ void	cmd_cd(char **args, char **envp, char *str)
 		chdir(ft_getenv("HOME", envp));
 	else if (!ft_strncmp(args[1], "-", 2))
 	{
-		chdir(ft_getenv("OLDPWD", envp));
+		str = ft_strdup(ft_getenv("OLDPWD", envp));
+		chdir(str);
 		printf("%s\n", ft_getenv("OLDPWD", envp));
 	}
 	else if (error_check(args))
 		return ;
 	ft_setenv("OLDPWD", ft_getenv("PWD", envp), envp);
 	if (!args[1])
-	{
-		ft_setenv("PWD", ft_getenv("HOME", envp), envp);
-		return ;
-	}
-	str = newpwd(ft_strdup(ft_getenv("OLDPWD", envp)), args[1]);
+		str = ft_strdup(ft_getenv("HOME", envp));
+	else if (ft_strncmp(args[1], "-", 2))
+		str = newpwd(ft_strdup(ft_getenv("OLDPWD", envp)), args[1]);
 	ft_setenv("PWD", str, envp);
 	free(str);
 }
