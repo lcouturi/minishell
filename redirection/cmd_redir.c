@@ -66,6 +66,20 @@ int	left_double_redir(char **args, int i)
 	return (0);
 }
 
+void	args_cha(char **args, int i)
+{
+	if (ft_strncmp(args[0], "echo", 5) == 0
+			|| ft_strncmp(args[0], "cat", 4) == 0)
+	{
+		args_left_move(args, i);
+		if (is_redir(args, i, 0) == false
+			&& ft_strncmp(args[i], "|", 2) != 0)
+			args_left_move(args, i);
+	}
+	else
+		args[i] = NULL;
+}
+
 int	right_redir(char **args, char **envp, int i, t_node *node)
 {
 	int	fd;
@@ -80,16 +94,7 @@ int	right_redir(char **args, char **envp, int i, t_node *node)
 			exit(EXIT_FAILURE);
 		}
 		node->right_flag = 1;
-		if (ft_strncmp(args[0], "echo", 5) == 0
-			|| ft_strncmp(args[0], "cat", 4) == 0)
-		{
-			args_left_move(args, i);
-			if (is_redir(args, i + 1, 0) == false
-				&& ft_strncmp(args[i + 1], "|", 2) != 0)
-				args_left_move(args, i);
-		}
-		else
-			args[i] = NULL;
+		args_cha(args, i);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
@@ -111,16 +116,7 @@ int	right_double_redir(char **args, char **envp, int i, t_node *node)
 			exit(EXIT_FAILURE);
 		}
 		node->right_flag = 1;
-		if (ft_strncmp(args[0], "echo", 5) == 0
-			|| ft_strncmp(args[0], "cat", 4) == 0)
-		{
-			args_left_move(args, i);
-			if (is_redir(args, i, 0) == false
-				&& ft_strncmp(args[i], "|", 2) != 0)
-				args_left_move(args, i);
-		}
-		else
-			args[i] = NULL;
+		args_cha(args, i);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}

@@ -38,23 +38,13 @@ int	exec_redir(char **args, char **envp, t_node *node)
 		&& node->redir_stop == 0)
 	{
 		if (ft_strncmp(args[i], "<", 2) == 0)
-		{
-			if (left_redir(args, i, node))
-				return (1);
-		}
+			return (left_redir(args, i, node));
 		else if (ft_strncmp(args[i], ">", 2) == 0)
-		{
-			if (right_redir(args, envp, i, node))
-				return (1);
-		}
+			return (right_redir(args, envp, i, node));
 		else if (ft_strncmp(args[i], ">>", 3) == 0)
-		{
-			if (right_double_redir(args, envp, i, node))
-				return (1);
-		}
+			return (right_double_redir(args, envp, i, node));
 		else if (ft_strncmp(args[i], "<<", 3) == 0)
-			if (left_double_redir(args, i))
-				return (1);
+			return (left_double_redir(args, i));
 		i++;
 	}
 	return (0);
