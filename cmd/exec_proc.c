@@ -54,7 +54,8 @@ static void	exec_error(char **args, char **envp, char **paths)
 	else
 		ft_putstr_fd("command not found\n", STDERR_FILENO);
 	strarrfree(envp);
-	strarrfree(paths);
+	if (paths)
+		strarrfree(paths);
 	strarrfree(args);
 	exit(127);
 }
@@ -104,6 +105,8 @@ void	exec_proc(char **args, char **envp, t_node *node)
 {
 	char	**paths;
 
+	if (!args[0][0])
+		exec_error(args, envp, 0);
 	if (ft_strchr(args[0], '/'))
 	{
 		if (!access(args[0], X_OK))
