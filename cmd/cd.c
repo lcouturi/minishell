@@ -12,14 +12,14 @@
 
 #include "../include/minishell.h"
 
-static bool	error_check(char **args)
+static bool	error_check(char *arg)
 {
-	if (chdir(args[1]) == -1)
+	if (chdir(arg) == -1)
 	{
 		g_exit_status = EXIT_FAILURE;
 		errno = ENOENT;
 		ft_putstr_fd("minshell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(0);
 		return (true);
@@ -67,30 +67,44 @@ char	**ft_setenv(const char *name, const char *value, char **envp)
 	return (envp);
 }
 
-void	cmd_cd(char **args, char **envp, char *str)
+static int	checks(char **args, char **envp, char *str, bool offset)
 {
-	g_exit_status = EXIT_SUCCESS;
-	if (strarrlen(args) > 2)
+	if (strarrlen(args) > 2 + offset)
 	{
 		g_exit_status = EXIT_FAILURE;
 		ft_putstr_fd("minishell: cd: too many arguments\n", STDERR_FILENO);
-		return ;
+		return (1);
 	}
-	else if (!args[1])
+	else if (!args[1 + offset])
 		chdir(ft_getenv("HOME", envp));
-	else if (!ft_strncmp(args[1], "-", 2))
+	else if (!ft_strncmp(args[1 + offset], "-", 2))
 	{
 		str = ft_strdup(ft_getenv("OLDPWD", envp));
 		chdir(str);
 		printf("%s\n", ft_getenv("OLDPWD", envp));
 	}
-	else if (error_check(args))
-		return ;
+	else if (error_check(args[1 + offset]))
+		return (1);
+	return (0);
+}
+
+void	cmd_cd(char **args, char **envp)
+{
+	bool	offset;
+	char	*str;
+
+	offset = 0;
+	str = 0;
+	if (args[1] && !ft_strncmp(args[1], "--", 3))
+		offset++;
+	g_exit_status = EXIT_SUCCESS;
 	ft_setenv("OLDPWD", ft_getenv("PWD", envp), envp);
-	if (!args[1])
+	if (checks(args, envp, str, offset))
+		return ;
+	if (!args[1 + offset])
 		str = ft_strdup(ft_getenv("HOME", envp));
-	else if (ft_strncmp(args[1], "-", 2))
-		str = newpwd(ft_strdup(ft_getenv("OLDPWD", envp)), args[1]);
+	else if (ft_strncmp(args[1 + offset], "-", 2))
+		str = newpwd(ft_strdup(ft_getenv("OLDPWD", envp)), args[1 + offset]);
 	ft_setenv("PWD", str, envp);
 	free(str);
 }

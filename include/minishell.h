@@ -54,7 +54,7 @@ typedef struct s_node
 int		g_exit_status;
 
 char	**escape_split(char *s, char *charset);
-void	cmd_cd(char **args, char **envp, char *str);
+void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, t_node *node);

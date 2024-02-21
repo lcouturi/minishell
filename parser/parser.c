@@ -15,7 +15,7 @@
 char	**find_command(char **args, char **envp, t_node *node)
 {
 	if (!ft_strncmp(args[0], "cd", 3))
-		cmd_cd(args, envp, 0);
+		cmd_cd(args, envp);
 	else if (!ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp, node);
 	else if (!ft_strncmp(args[0], "env", 4))
