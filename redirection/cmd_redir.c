@@ -68,8 +68,7 @@ int	left_double_redir(char **args, int i)
 
 void	args_cha(char **args, int i)
 {
-	if (ft_strncmp(args[0], "echo", 5) == 0
-			|| ft_strncmp(args[0], "cat", 4) == 0)
+	if (!ft_strncmp(args[0], "echo", 5) || !ft_strncmp(args[0], "cat", 4))
 	{
 		args_left_move(args, i);
 		if (is_redir(args, i, 0) == false
