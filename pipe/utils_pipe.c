@@ -29,7 +29,9 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 	int	status;
 
 	node->exit_flag = 0;
-	waitpid(pid, &status, 0);
+	status = 0;
+	if (ft_strncmp(args[0], "cat", 4))
+		waitpid(pid, &status, 0);
 	g_exit_status = status >> 8;
 	close(node->fds[1]);
 	dup2(node->fds[0], STDIN_FILENO);
