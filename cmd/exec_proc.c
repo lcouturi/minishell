@@ -45,7 +45,10 @@ static void	chkdir(char **args, char **envp, bool end)
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(0);
-		status = 126 + end;
+		if (end && errno != EISDIR)
+			status = 127;
+		else
+			status = 126;
 	}
 	strarrfree(envp);
 	strarrfree(args);
