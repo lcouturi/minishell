@@ -64,6 +64,7 @@ char	**cmd_export(char **args, char **envp);
 void	cmd_pwd(char **envp);
 void	cmd_unset(char **args, char **envp);
 bool	exec_check(char **args, char **envp);
+void	exec_error(char **args, char **envp, char **paths);
 void	exec_proc(char **args, char **envp, t_node *node);
 char	**execute(char **args, char **envp, t_node *node);
 char	*expand_envvar(char *str, char **envp);

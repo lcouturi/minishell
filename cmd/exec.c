@@ -12,6 +12,18 @@
 
 #include "../include/minishell.h"
 
+void	cmd_exec(char **args, char **envp, t_node *node)
+{
+	int	pid;
+	int	status;
+
+	pid = fork();
+	if (!pid)
+		exec_proc(args, envp, node);
+	waitpid(pid, &status, 0);
+	g_exit_status = status / 256;
+}
+
 static bool	exec_check_loop(char **paths, char **args)
 {
 	int		i;
@@ -56,14 +68,21 @@ bool	exec_check(char **args, char **envp)
 	return (ret);
 }
 
-void	cmd_exec(char **args, char **envp, t_node *node)
+void	exec_error(char **args, char **envp, char **paths)
 {
-	int	pid;
-	int	status;
-
-	pid = fork();
-	if (!pid)
-		exec_proc(args, envp, node);
-	waitpid(pid, &status, 0);
-	g_exit_status = status / 256;
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(args[0], STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	if (ft_strchr(args[0], '/'))
+	{
+		errno = ENOENT;
+		perror(0);
+	}
+	else
+		ft_putstr_fd("command not found\n", STDERR_FILENO);
+	strarrfree(envp);
+	if (paths)
+		strarrfree(paths);
+	strarrfree(args);
+	exit(127);
 }

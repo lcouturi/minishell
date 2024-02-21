@@ -12,13 +12,8 @@
 
 #include "../include/minishell.h"
 
-static void	chkdir(char **args, char **envp, int err, int status)
+static int	chkdir_check(DIR *check, int err, bool end)
 {
-	DIR			*check;
-	struct stat	stats;
-
-	check = opendir(args[0]);
-	stat(args[0], &stats);
 	if (check)
 	{
 		closedir(check);
@@ -26,7 +21,23 @@ static void	chkdir(char **args, char **envp, int err, int status)
 	}
 	else if (err == EACCES)
 		errno = EACCES;
-	else
+	else if (!end)
+		return (1);
+	return (0);
+}
+
+static void	chkdir(char **args, char **envp, bool end)
+{
+	DIR			*check;
+	int			err;
+	struct stat	stats;
+	int			status;
+
+	err = errno;
+	check = opendir(args[0]);
+	status = 0;
+	stat(args[0], &stats);
+	if (chkdir_check(check, err, end))
 		return ;
 	if (errno != EACCES || stats.st_size)
 	{
@@ -34,30 +45,11 @@ static void	chkdir(char **args, char **envp, int err, int status)
 		ft_putstr_fd(args[0], STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 		perror(0);
-		status = 126;
+		status = 126 + end;
 	}
 	strarrfree(envp);
 	strarrfree(args);
 	exit(status);
-}
-
-static void	exec_error(char **args, char **envp, char **paths)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(args[0], STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	if (ft_strchr(args[0], '/'))
-	{
-		errno = ENOENT;
-		perror(0);
-	}
-	else
-		ft_putstr_fd("command not found\n", STDERR_FILENO);
-	strarrfree(envp);
-	if (paths)
-		strarrfree(paths);
-	strarrfree(args);
-	exit(127);
 }
 
 static void	exec_proc_loop2(char **paths, char **args, char **envp,
@@ -79,7 +71,7 @@ static void	exec_proc_loop2(char **paths, char **args, char **envp,
 		else
 			execve(node->path, args, envp);
 	}
-	chkdir(&node->path, envp, errno, 0);
+	chkdir(&node->path, envp, 0);
 	free(node->path);
 }
 
@@ -111,7 +103,7 @@ void	exec_proc(char **args, char **envp, t_node *node)
 	{
 		if (!access(args[0], X_OK))
 			execve(args[0], args, envp);
-		chkdir(args, envp, errno, 0);
+		chkdir(args, envp, 1);
 	}
 	node->i = 0;
 	while (ft_strncmp(envp[node->i], "PATH=", 5))
