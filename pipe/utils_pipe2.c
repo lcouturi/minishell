@@ -82,9 +82,25 @@ char	**repeat(char **args, char **envp, t_node *node)
 
 char	**execute(char **args, char **envp, t_node *node)
 {
+	char	*line;
+	t_node	node2;
+
 	backup(node);
 	if (pipe_syntax_check(node->ori_args) && redir_syntax_check(node->ori_args))
 		envp = repeat(args, envp, node);
 	backup_restor(node);
+	if (ft_strncmp(args[0], "cat", 4) == 0 && ft_strncmp(args[1], "|", 2) == 0)
+	{
+		if (args[2])
+			line = readline("");
+		else
+		{
+			line = readline("> ");
+			init_node(&node2);
+			if (ft_strncmp(line, "\0", 1))
+				semicolon_handler(line, envp, &node2);
+			line = readline("");
+		}
+	}
 	return (cloturn(node->backup_stdout, node->backup_stdin, envp));
 }
