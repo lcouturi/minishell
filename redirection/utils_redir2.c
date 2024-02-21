@@ -75,8 +75,7 @@ int	redir_syntax_check(char **args)
 	while (args[++i])
 	{
 		if (args[i][0] != '\'' && args[i][0] != '\"'
-		&& args[i + 1] == NULL && (is_redir(args, i, 0)
-			|| args[i][0] == '|'))
+		&& args[i + 1] == NULL && is_redir(args, i, 0))
 			return (print_re_syntax_error());
 	}
 	return (1);
