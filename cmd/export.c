@@ -15,7 +15,7 @@
 static int	failure(char *arg, int i)
 {
 	if (!arg[0] || arg[0] == '=' || ft_isdigit(arg[0]) || (!ft_isalnum(arg[i])
-			&& arg[i] != '_'))
+			&& arg[i] != '_' && !(arg[i] == '+' && arg[i + 1] == '=')))
 	{
 		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 		ft_putstr_fd(arg, STDERR_FILENO);
@@ -28,23 +28,28 @@ static int	failure(char *arg, int i)
 
 static char	**cmd_export_loop(char *arg, char **envp)
 {
-	int	i;
-	int	j;
+	int		i;
+	char	*name;
+	char	*tmp;
 
 	i = -1;
-	j = 0;
 	while (arg[0] == '=' || ft_isdigit(arg[0]) || arg[++i] != '=')
 		if ((i > 0 && !arg[i]) || failure(arg, i))
 			return (envp);
-	while (ft_strncmp(envp[j], arg, i + 1))
-		j++;
-	if (!envp[j])
-		envp = strarradd(envp, arg);
-	else
+	tmp = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
+	name = ft_strtrim(tmp, "+");
+	free(tmp);
+	if (!ft_getenv(name, envp))
+		envp = ft_setenv(name, arg + i + 1, envp);
+	else if (arg[i - 1] == '+')
 	{
-		free(envp[j]);
-		envp[j] = ft_strdup(arg);
+		tmp = ft_strjoin(ft_getenv(name, envp), arg + i + 1);
+		envp = ft_setenv(name, tmp, envp);
+		free(tmp);
 	}
+	else
+		envp = ft_setenv(name, arg + i + 1, envp);
+	free(name);
 	return (envp);
 }
 

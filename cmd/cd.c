@@ -40,7 +40,7 @@ char	*ft_getenv(const char *name, char **envp)
 	return (envp[i] + ft_strlen(name) + 1);
 }
 
-int	ft_setenv(const char *name, const char *value, char **envp)
+char	**ft_setenv(const char *name, const char *value, char **envp)
 {
 	int		i;
 	int		n;
@@ -63,8 +63,8 @@ int	ft_setenv(const char *name, const char *value, char **envp)
 		envp[i] = str;
 	}
 	else
-		strarradd(envp, str);
-	return (0);
+		envp = strarradd(envp, str);
+	return (envp);
 }
 
 void	cmd_cd(char **args, char **envp, char *str)

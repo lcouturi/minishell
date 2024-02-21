@@ -71,7 +71,7 @@ char	**expand_wildcard(char **args, char **envp);
 char	**find_command(char **args, char **envp, t_node *node);
 char	*ft_getenv(const char *name, char **envp);
 int		ft_isenv(char c);
-int		ft_setenv(const char *name, const char *value, char **envp);
+char	**ft_setenv(const char *name, const char *value, char **envp);
 int		get_arg_num(char **args);
 char	**get_file_list(bool hidden);
 void	get_length(char *str, char **envp, int *i);
