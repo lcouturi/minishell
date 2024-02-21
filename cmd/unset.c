@@ -12,23 +12,6 @@
 
 #include "../include/minishell.h"
 
-int	valid_key(char *key)
-{
-	int	i;
-
-	i = -1;
-	if (ft_strlen(key) == 0)
-		return (0);
-	if (ft_isdigit(key[0]))
-		return (0);
-	while (key[++i])
-	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
-			return (0);
-	}
-	return (1);
-}
-
 int	find_envkey(char *str, char *envp)
 {
 	int	i;
@@ -73,23 +56,19 @@ void	cmd_unset(char **args, char **envp)
 
 	i = 0;
 	flag = 1;
+	if (args[1] && args[1][0] == '-')
+	{
+		ft_putstr_fd("minishell: unset: ", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putstr_fd(": invalid option\nunset: usage: unset [-", STDERR_FILENO);
+		ft_putstr_fd("f] [-v] [-n] [name ...]\n", STDERR_FILENO);
+		g_exit_status = 2;
+		return ;
+	}
 	while (args[++i])
-	{
-		if (valid_key(args[i]) == 0)
-		{
-			printf("minishell: unset : `%s\'", args[i]);
-			printf(": not a valid identifier\n");
-			flag = 0;
-		}
-	}
-	if (flag)
-	{
-		i = 0;
-		while (args[++i])
-			flag = delete_env(args[i], envp);
-		if (flag != 1)
-			g_exit_status = EXIT_FAILURE;
-		else
-			g_exit_status = EXIT_SUCCESS;
-	}
+		flag = delete_env(args[i], envp);
+	if (flag != 1)
+		g_exit_status = EXIT_FAILURE;
+	else
+		g_exit_status = EXIT_SUCCESS;
 }
