@@ -14,8 +14,8 @@
 
 static int	failure(char *arg, int i)
 {
-	if (!arg[0] || arg[0] == '=' || ft_isdigit(arg[0])
-		|| (!ft_isalnum(arg[i]) && arg[i] != '_'))
+	if (!arg[0] || arg[0] == '=' || ft_isdigit(arg[0]) || (!ft_isalnum(arg[i])
+			&& arg[i] != '_'))
 	{
 		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
 		ft_putstr_fd(arg, STDERR_FILENO);

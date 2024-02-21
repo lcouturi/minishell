@@ -83,7 +83,6 @@ void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args, t_node *node);
 char	**rm_quotes_wildcards(char **args);
 char	**semicolon_handler(char *str, char **envp, t_node *node);
-char	**split_operators(char **args);
 char	**strarradd(char **strs, char *str);
 char	**strarrdup(char **strs);
 void	strarrfree(char **strs);
