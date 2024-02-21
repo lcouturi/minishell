@@ -93,6 +93,15 @@ char	**cmd_export(char **args, char **envp)
 	i = -1;
 	if (!args[1])
 		return (export_print(envp));
+	else if (args[1][0] == '-')
+	{
+		ft_putstr_fd("minishell: export: ", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putstr_fd(": invalid option\nexport: usage: export ", STDERR_FILENO);
+		ft_putstr_fd("[-fn] [name[=value] ...] or export -p\n", STDERR_FILENO);
+		g_exit_status = 2;
+		return (envp);
+	}
 	while (args[++i] && !g_exit_status)
 		envp = cmd_export_loop(args[i], envp);
 	return (envp);
