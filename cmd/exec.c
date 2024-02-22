@@ -86,3 +86,15 @@ void	exec_error(char **args, char **envp, char **paths)
 	strarrfree(args);
 	exit(127);
 }
+
+void	checkdot(char **args, char **envp)
+{
+	if (!ft_strncmp(args[0], ".", 2))
+	{
+		ft_putstr_fd("minishell: .: filename argument required", STDERR_FILENO);
+		ft_putstr_fd("\n.: usage: . filename [arguments]\n", STDERR_FILENO);
+		strarrfree(envp);
+		strarrfree(args);
+		exit(127);
+	}
+}

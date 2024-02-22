@@ -70,10 +70,8 @@ void	exec_redir_child(char **args, char **envp, t_node *node, int *flag)
 			exit(g_exit_status);
 		}
 		else
-		{
 			if (exec_redir(args, envp, node))
 				*flag = 1;
-		}
 	}
 }
 

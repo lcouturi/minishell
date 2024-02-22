@@ -53,7 +53,7 @@ typedef struct s_node
 
 int		g_exit_status;
 
-char	**escape_split(char *s, char *charset);
+void	checkdot(char **args, char **envp);
 void	cmd_cd(char **args, char **envp);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
@@ -63,6 +63,7 @@ void	cmd_exit_no_arg(void);
 char	**cmd_export(char **args, char **envp);
 void	cmd_pwd(char **envp);
 void	cmd_unset(char **args, char **envp);
+char	**escape_split(char *s, char *charset);
 bool	exec_check(char **args, char **envp);
 void	exec_error(char **args, char **envp, char **paths);
 void	exec_proc(char **args, char **envp, t_node *node);

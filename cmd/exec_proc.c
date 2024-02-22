@@ -102,6 +102,7 @@ void	exec_proc(char **args, char **envp, t_node *node)
 
 	if (!args[0][0])
 		exec_error(args, envp, 0);
+	checkdot(args, envp);
 	if (ft_strchr(args[0], '/'))
 	{
 		if (!access(args[0], X_OK))

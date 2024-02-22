@@ -26,6 +26,8 @@ OBJS = $(SRCS:.c=.o)
 all : $(NAME)
 
 $(NAME) : $(SRCS)
+	brew install readline
+	brew link --force readline
 	@make bonus -s -C libs/Libft
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(SRCS) -o $(NAME)
 
@@ -42,7 +44,7 @@ clean :
 
 debug : fclean
 	@make debug -s -C libs/Libft
-	$(CC) $(CFLAGS) $(CPPFLAGS) -g -fsanitize=address $(LDFLAGS) $(SRCS) -o $(NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -g $(LDFLAGS) $(SRCS) -o $(NAME)
 
 
 fclean : clean
