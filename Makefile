@@ -33,6 +33,7 @@ $(NAME) : $(SRCS)
 	fi
 	@if [ ! -d /Users/$(USER)/.brew/opt/readline ]; then \
 		echo "\033[1;32mInstalling readline:\033[0m"; \
+		source ~/.zshrc \
 		brew install readline; \
 		brew link --force readline; \
 		echo "\033[1;32mReadline installed\033[0m"; \
