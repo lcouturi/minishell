@@ -16,6 +16,7 @@ static void	insert_int(char *str, int *i)
 {
 	int	j;
 
+	i[0]++;
 	j = 1000000000;
 	while (j)
 	{
@@ -49,6 +50,7 @@ static void	no_env(int *i, char *str, char *str2)
 
 static void	handle_envvar(int *i, char *str, char *str2, char **envp)
 {
+	i[0]++;
 	i[5] = i[0];
 	while (ft_isenv(str[i[5]]))
 		i[5]++;
@@ -78,13 +80,10 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp)
 					&& str[i[0] + 1] == '\"') || (!i[4] && str[i[0]
 						+ 1] == '\'')))
 		{
-			if (str[++i[0]] == '?')
-			{
-				insert_int(str2, i);
-				continue ;
-			}
 			handle_envvar(i, str, str2, envp);
 		}
+		else if (!i[4] && !ft_strncmp(str + i[0], "$?", 2))
+			insert_int(str2, i);
 		else
 			no_env(i, str, str2);
 	}

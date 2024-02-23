@@ -51,6 +51,9 @@ void	get_length(char *str, char **envp, int *i)
 				&& str[i[0] + 1] == '\"') || (!i[4] && str[i[0] + 1] == '\''))
 		&& handle_envvar(str, envp, i))
 		return ;
+	else if (!i[4] && !ft_strncmp(str + i[0], "$?", 2) && handle_envvar(str,
+			envp, i))
+		return ;
 	else if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
 	{
 		i[5] += 2;

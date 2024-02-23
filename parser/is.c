@@ -19,5 +19,5 @@ int	isop(char c)
 
 int	ft_isenv(char c)
 {
-	return (ft_isalnum(c) || c == '_' || c == '?');
+	return (ft_isalnum(c) || c == '_');
 }
