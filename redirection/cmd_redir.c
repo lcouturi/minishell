@@ -21,19 +21,16 @@ int	left_redir(char **args, int i, t_node *node)
 	fd = open(args[i + 1], O_RDONLY, 0744);
 	if (fd <= 0)
 		return (1);
-	if (ft_strncmp(args[0], "echo", 5) == 0
-		|| ft_strncmp(args[0], "cat", 4) == 0)
+	if (!ft_strncmp(args[0], "echo", 5))
 	{
 		args_left_move(args, i);
-		if (ft_strncmp(args[i + 1], "<", 2) != 0
-			&& ft_strncmp(args[i + 1], "|", 2) != 0)
+		if (ft_strncmp(args[i + 1], "<", 2) && ft_strncmp(args[i + 1], "|", 2))
 			args_left_move(args, i);
 	}
 	else
 		args[i] = NULL;
-	if (ft_strncmp(args[0], "echo", 5) == 0
-		&& ft_strncmp(args[1], "./", 2) == 0
-		&& args[2] == NULL)
+	if (!ft_strncmp(args[0], "echo", 5) && !ft_strncmp(args[1], "./", 2)
+		&& !args[2])
 		node->echo_skip = 1;
 	dup2(fd, STDIN_FILENO);
 	close(fd);
@@ -46,8 +43,7 @@ int	left_double_redir(char **args, int i)
 	int		fd;
 
 	fd = open(".temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (args[i + 1] == NULL || ft_strncmp(args[i + 1], " ", ft_strlen(args[i
-					+ 1]) == 0))
+	if (!args[i + 1] || !ft_strncmp(args[i + 1], " ", ft_strlen(args[i + 1])))
 	{
 		printf("minishell: syntax error near unexpected token `newline'\n");
 		return (1);
@@ -61,18 +57,17 @@ int	left_double_redir(char **args, int i)
 	lseek(fd, 0, SEEK_SET);
 	dup2(fd, STDIN_FILENO);
 	close(fd);
-	if (unlink(".temp") != 0)
+	if (unlink(".temp"))
 		return (1);
 	return (0);
 }
 
 void	args_cha(char **args, int i)
 {
-	if (!ft_strncmp(args[0], "echo", 5) || !ft_strncmp(args[0], "cat", 4))
+	if (!ft_strncmp(args[0], "echo", 5) || ft_strncmp(args[0], "cat", 4))
 	{
 		args_left_move(args, i);
-		if (is_redir(args, i, 0) == false
-			&& ft_strncmp(args[i], "|", 2) != 0)
+		if (!is_redir(args, i, 0) && ft_strncmp(args[i], "|", 2))
 			args_left_move(args, i);
 	}
 	else
@@ -83,12 +78,12 @@ int	right_redir(char **args, char **envp, int i, t_node *node)
 {
 	int	fd;
 
-	if (exec_check(args, envp) || node->redir_idx != 0)
+	if (exec_check(args, envp) || node->redir_idx)
 	{
 		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd <= 0)
 		{
-			if (node->pipe_idx == 0)
+			if (!node->pipe_idx)
 				return (print_err(args, i, node));
 			exit(EXIT_FAILURE);
 		}
@@ -110,7 +105,7 @@ int	right_double_redir(char **args, char **envp, int i, t_node *node)
 		fd = open(args[i + 1], O_WRONLY | O_CREAT | O_APPEND, 0744);
 		if (fd <= 0)
 		{
-			if (node->pipe_idx == 0)
+			if (!node->pipe_idx)
 				return (print_err(args, i, node));
 			exit(EXIT_FAILURE);
 		}

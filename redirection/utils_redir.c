@@ -18,11 +18,9 @@ int	redir_chk(char **args)
 
 	i = -1;
 	while (args[++i])
-	{
 		if (!ft_strncmp("<<", args[i], 3) || !ft_strncmp(">>", args[i], 3)
 			|| !ft_strncmp("<", args[i], 2) || !ft_strncmp(">", args[i], 2))
 			return (1);
-	}
 	return (0);
 }
 
@@ -35,8 +33,7 @@ void	argu_long(char **args, int k, int len)
 	{
 		args[k] = ft_strdup(args[k + 2]);
 		free(args[k + 2]);
-		args[k + 2] = NULL;
-		k++;
+		args[k++ + 2] = NULL;
 	}
 }
 
@@ -58,7 +55,7 @@ void	argu_left_change(char **args)
 	len = strarrlen(args);
 	while (args[++i])
 	{
-		if (ft_strncmp(args[i], "<<", 3) == 0)
+		if (!ft_strncmp(args[i], "<<", 3))
 		{
 			k = i;
 			if (k + 1 == len)
@@ -88,9 +85,9 @@ int	redir_excute(char **args, char **envp, t_node *node, int flag)
 	}
 	if (node->redir_flag)
 	{
-		if (pid == 0)
+		if (!pid)
 		{
-			if (node->redir_idx != 0)
+			if (node->redir_idx)
 				args[node->redir_idx] = 0;
 			exec_redir_child(args, envp, node, &flag);
 		}

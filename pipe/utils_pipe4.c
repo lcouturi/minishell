@@ -14,19 +14,12 @@
 
 bool	is_operator(char **args, int i, int j)
 {
-	if (args[i][j] == '|' || args[i][j] == '&')
-		return (true);
-	return (false);
+	return (args[i][j] == '|');
 }
 
 bool	is_operator2(char **args, int i)
 {
-	if (ft_strncmp(args[i], "|", 2) == 0
-		|| ft_strncmp(args[i], "&", 2) == 0
-		|| ft_strncmp(args[i], "||", 3) == 0
-		|| ft_strncmp(args[i], "&&", 2) == 0)
-		return (true);
-	return (false);
+	return (!ft_strncmp(args[i], "|", 2) || !ft_strncmp(args[i], "||", 3));
 }
 
 int	print_syntax_error(char **args, int i, int j)
@@ -34,14 +27,13 @@ int	print_syntax_error(char **args, int i, int j)
 	g_exit_status = 2;
 	ft_putstr_fd("minishell: syntax error ", STDERR_FILENO);
 	ft_putstr_fd("near unexpected token `", STDERR_FILENO);
-	if (args[i][j] == '|' && (args[i][j + 1] == 0 || args[i][j + 1] != '|'))
+	if (args[i][j] == '|' && (!args[i][j + 1] || args[i][j + 1] != '|'))
 		ft_putstr_fd("|", STDERR_FILENO);
-	else if (args[i][j] == '&' && (args[i][j + 1] == 0
-		|| args[i][j + 1] != '&'))
+	else if (args[i][j] == '&' && (!args[i][j + 1] || args[i][j + 1] != '&'))
 		ft_putstr_fd("&", STDERR_FILENO);
-	else if (args[i][j] == '|' && args[i][j + 1] != 0 && args[i][j + 1] == '|')
+	else if (args[i][j] == '|' && args[i][j + 1] && args[i][j + 1] == '|')
 		ft_putstr_fd("||", STDERR_FILENO);
-	else if (args[i][j] == '&' && args[i][j + 1] != 0 && args[i][j + 1] == '&')
+	else if (args[i][j] == '&' && args[i][j + 1] && args[i][j + 1] == '&')
 		ft_putstr_fd("&&", STDERR_FILENO);
 	ft_putstr_fd("\'\n", STDERR_FILENO);
 	return (0);
@@ -58,12 +50,10 @@ int	pipe_syntax_check(char **args)
 	{
 		if (args[i + 1] && is_operator2(args, i) && is_operator2(args, i + 1))
 			return (print_syntax_error(args, i, 0));
-		if (args[i][1] && is_operator(args, i, 0)
-			&& is_operator(args, i, 1)
+		if (args[i][1] && is_operator(args, i, 0) && is_operator(args, i, 1)
 			&& args[i][0] != args[i][1])
 			return (print_syntax_error(args, i, 1));
-		if (args[i][1] && args[i][2]
-			&& is_operator(args, i, 1)
+		if (args[i][1] && args[i][2] && is_operator(args, i, 1)
 			&& is_operator(args, i, 2))
 			return (print_syntax_error(args, i, 2));
 	}

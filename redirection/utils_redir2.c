@@ -21,13 +21,13 @@ int	print_err(char **args, int i, t_node *node)
 	node->parent_die = 1;
 	if (pipe_check(args, node))
 	{
-		if (ft_strncmp(args[i + 1], "|", 2) == 0)
+		if (!ft_strncmp(args[i + 1], "|", 2))
 			node->redir_stop = 1;
 		args_left_move(args, 1);
-		if (ft_strncmp(args[i + 1], "|", 2) == 0)
+		if (!ft_strncmp(args[i + 1], "|", 2))
 			node->redir_stop = 1;
 		args_left_move(args, 0);
-		if (ft_strncmp(args[i + 1], "|", 2) == 0)
+		if (!ft_strncmp(args[i + 1], "|", 2))
 			node->redir_stop = 1;
 		node->child_die = 1;
 		return (0);
@@ -43,7 +43,7 @@ void	args_left_move(char **args, int i)
 		args[i] = ft_strdup(args[i + 1]);
 		i++;
 	}
-	if (args[i + 1] == NULL)
+	if (!args[i + 1])
 	{
 		args[i] = NULL;
 		free(args[i + 1]);
@@ -70,13 +70,11 @@ int	redir_syntax_check(char **args)
 	int	i;
 
 	i = -1;
-	if (args && args[0] && is_redir(args, 0, 0) && args[i + 1] == NULL)
+	if (args && args[0] && is_redir(args, 0, 0) && !args[i + 1])
 		return (print_re_syntax_error());
 	while (args[++i])
-	{
-		if (args[i][0] != '\'' && args[i][0] != '\"'
-		&& args[i + 1] == NULL && is_redir(args, i, 0))
+		if (args[i][0] != '\'' && args[i][0] != '\"' && !args[i + 1]
+			&& is_redir(args, i, 0))
 			return (print_re_syntax_error());
-	}
 	return (1);
 }

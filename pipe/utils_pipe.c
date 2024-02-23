@@ -16,10 +16,10 @@ void	exec_child(char **args, char **envp, t_node *node)
 {
 	node->exit_flag = 0;
 	close(node->fds[0]);
-	if (node->right_flag == 0)
+	if (!node->right_flag)
 		dup2(node->fds[1], STDOUT_FILENO);
 	close(node->fds[1]);
-	if (node->child_die == 0)
+	if (!node->child_die)
 		envp = find_command(args, envp, node);
 	exit(g_exit_status);
 }
@@ -29,9 +29,7 @@ void	exec_parents(int pid, char **args, char **envp, t_node *node)
 	int	status;
 
 	node->exit_flag = 0;
-	status = 0;
-	if (ft_strncmp(args[0], "cat", 4))
-		waitpid(pid, &status, 0);
+	waitpid(pid, &status, 0);
 	g_exit_status = status >> 8;
 	close(node->fds[1]);
 	dup2(node->fds[0], STDIN_FILENO);
@@ -63,10 +61,10 @@ int	pipe_check(char **args, t_node *node)
 {
 	int	i;
 
-	i = 0;
-	while (args[i])
+	i = -1;
+	while (args[++i])
 	{
-		if (ft_strncmp(args[i], "|", 2) == 0)
+		if (!ft_strncmp(args[i], "|", 2))
 		{
 			if (node->quota_idx_j < node->quota_pipe_cnt
 				&& node->quota_pipe_idx_arr[node->quota_idx_j] == i)
@@ -78,7 +76,6 @@ int	pipe_check(char **args, t_node *node)
 				return (1);
 			}
 		}
-		i++;
 	}
 	node->pipe_flag = 0;
 	return (0);

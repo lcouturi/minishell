@@ -18,7 +18,7 @@ void	exec_redir_cmd(char **args, char **envp)
 	int		status;
 
 	pid = fork();
-	if (pid == 0)
+	if (!pid)
 	{
 		execve(args[0], args, envp);
 		exit(EXIT_FAILURE);
@@ -33,19 +33,17 @@ int	exec_redir(char **args, char **envp, t_node *node)
 {
 	int	i;
 
-	i = 0;
-	while (args[i] != NULL && ft_strncmp(args[i], "|", 2)
-		&& node->redir_stop == 0)
+	i = -1;
+	while (args[++i] && ft_strncmp(args[i], "|", 2) && !node->redir_stop)
 	{
-		if (ft_strncmp(args[i], "<", 2) == 0)
+		if (!ft_strncmp(args[i], "<", 2))
 			return (left_redir(args, i, node));
-		else if (ft_strncmp(args[i], ">", 2) == 0)
+		else if (!ft_strncmp(args[i], ">", 2))
 			return (right_redir(args, envp, i, node));
-		else if (ft_strncmp(args[i], ">>", 3) == 0)
+		else if (!ft_strncmp(args[i], ">>", 3))
 			return (right_double_redir(args, envp, i, node));
-		else if (ft_strncmp(args[i], "<<", 3) == 0)
+		else if (!ft_strncmp(args[i], "<<", 3))
 			return (left_double_redir(args, i));
-		i++;
 	}
 	return (0);
 }
@@ -60,9 +58,7 @@ void	original_store(char **args, t_node *node)
 	node->ori_args = malloc(sizeof(char *) * (i + 1));
 	i = -1;
 	while (args[++i])
-	{
 		node->ori_args[i] = ft_strdup(args[i]);
-	}
 	node->ori_args[i] = NULL;
 }
 

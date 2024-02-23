@@ -16,7 +16,6 @@ static void	insert_int(char *str, int *i)
 {
 	int	j;
 
-	i[0]++;
 	j = 1000000000;
 	while (j)
 	{
@@ -26,7 +25,7 @@ static void	insert_int(char *str, int *i)
 	}
 	if (!g_exit_status)
 		str[i[1]++] = '0';
-	i[0]++;
+	i[0] += 2;
 }
 
 static void	no_env(int *i, char *str, char *str2)
@@ -50,8 +49,7 @@ static void	no_env(int *i, char *str, char *str2)
 
 static void	handle_envvar(int *i, char *str, char *str2, char **envp)
 {
-	i[0]++;
-	i[5] = i[0];
+	i[5] = ++i[0];
 	while (ft_isenv(str[i[5]]))
 		i[5]++;
 	i[2] = 0;

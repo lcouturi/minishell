@@ -19,14 +19,11 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 
 	if (!s || !f)
 		return (0);
-	i = 0;
+	i = -1;
 	r = ft_strdup(s);
 	if (!r)
 		return (r);
-	while (s[i])
-	{
+	while (s[++i])
 		r[i] = f(i, s[i]);
-		i++;
-	}
 	return (r);
 }
