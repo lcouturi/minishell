@@ -2,8 +2,8 @@ NAME = minishell
 CC = gcc
 CFLAGS = -Werror -Wall -Wextra
 
-LDFLAGS = -lreadline -L/opt/homebrew/opt/readline/lib -L${HOME}/.brew/opt/readline/lib -Llibs/Libft -lft
-CPPFLAGS = -I${HOME}/.brew/opt/readline/include -I/opt/homebrew/opt/readline/include
+LDFLAGS = -lreadline -L${HOME}/.brew/opt/readline/lib -Llibs/Libft -lft
+CPPFLAGS = -I${HOME}/.brew/opt/readline/include
 
 INCLUDE_DIR = ./include
 
@@ -23,11 +23,24 @@ SRCS =	$(addsuffix .c, $(MAIN)) \
 
 OBJS = $(SRCS:.c=.o)
 
-all : $(NAME)
+all : readlib $(NAME)
+
+readlib:
+	echo "\033[1;32mHello there:\033[0m"; \
+	if [ ! -d /Users/$(USER)/.brew ]; then \
+		echo "\033[1;32mInstalling brew:\033[0m"; \
+		curl -fsSL https://rawgit.com/kube/42homebrew/master/install.sh | zsh; \
+		echo "\033[1;32mBrew installed\033[0m"; \
+	fi
+	if [ ! -d /Users/$(USER)/.brew/opt/readline ]; then \
+		echo "\033[1;32mInstalling readline:\033[0m"; \
+		brew install readline; \
+		brew link --force readline; \
+		echo "\033[1;32mReadline installed\033[0m"; \
+	fi
+
 
 $(NAME) : $(SRCS)
-	brew install readline
-	brew link --force readline
 	@make bonus -s -C libs/Libft
 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(SRCS) -o $(NAME)
 
@@ -44,7 +57,7 @@ clean :
 
 debug : fclean
 	@make debug -s -C libs/Libft
-	$(CC) $(CFLAGS) $(CPPFLAGS) -g $(LDFLAGS) $(SRCS) -o $(NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -g -fsanitize=address $(LDFLAGS) $(SRCS) -o $(NAME)
 
 
 fclean : clean
@@ -53,4 +66,4 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all, bonus, clean, debug, fclean, re, $(NAME),
+.PHONY : all, bonus, clean, debug, fclean, re, $(NAME)
