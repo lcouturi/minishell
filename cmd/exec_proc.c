@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-static int	chkdir_check(DIR *check, int err, bool end)
+static int	chkdir_check(DIR *check, int err, int end)
 {
 	if (check)
 	{
@@ -26,7 +26,7 @@ static int	chkdir_check(DIR *check, int err, bool end)
 	return (0);
 }
 
-static void	chkdir(char **args, char **envp, bool end)
+static void	chkdir(char **args, char **envp, int end)
 {
 	DIR			*check;
 	int			err;
@@ -111,7 +111,7 @@ void	exec_proc(char **args, char **envp, t_node *node)
 	}
 	paths = ft_split(ft_getenv("PATH", envp), ':');
 	if (!paths)
-		chkdir(args, envp, 1);
+		exec_error(args, envp, paths);
 	node->i = -1;
 	while (paths[++(node->i)])
 		exec_proc_loop(paths, args, envp, node);
