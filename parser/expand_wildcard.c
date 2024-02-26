@@ -74,7 +74,7 @@ static void	expand_wildcard_loop(int *i, char **args, char **newargs,
 	while (args[i[2]][++i[0]])
 	{
 		quote_check(args[i[2]], i);
-		if (!i[3] && !i[4] && args[i[2]][i[0]] == '*')
+		if (!i[3] && args[i[2]][i[0]] == '*')
 		{
 			wildcard_handler(args, newargs, i);
 			break ;

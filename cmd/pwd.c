@@ -12,8 +12,8 @@
 
 #include "../include/minishell.h"
 
-void	cmd_pwd(char **envp)
+void	cmd_pwd(t_node *node)
 {
-	printf("%s\n", ft_getenv("PWD", envp));
+	printf("%s\n", node->pwd);
 	g_exit_status = EXIT_SUCCESS;
 }

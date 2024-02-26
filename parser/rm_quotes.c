@@ -12,10 +12,21 @@
 
 #include "../include/minishell.h"
 
-static char	*alloc_str(char *str, int l)
+static char	*alloc_str(char *str, int *i)
 {
+	int		l;
 	char	*newstr;
 
+	i[0] = -1;
+	l = 0;
+	while (str[++i[0]])
+	{
+		quote_check(str, i);
+		if (!(i[3] != 2 && i[3] != 3 && str[i[0]] == '\"') && !(i[3] != 1
+				&& i[3] != 3 && str[i[0]] == '\'') && !(!i[3]
+				&& str[i[0]] == '\\'))
+			l++;
+	}
 	newstr = malloc((l + 1) * sizeof(char));
 	if (!newstr)
 	{
@@ -29,24 +40,17 @@ static char	*rm_quotes_loop(char *str)
 {
 	int		i[5];
 	int		j;
-	int		l;
 	char	*newstr;
 
-	i[0] = -1;
 	j = 0;
-	l = 0;
-	while (str[++i[0]])
-	{
-		quote_check(str, i);
-		if (!(!i[4] && str[i[0]] == '\"') && !(!i[3] && str[i[0]] == '\''))
-			l++;
-	}
-	newstr = alloc_str(str, l);
+	newstr = alloc_str(str, i);
 	i[0] = -1;
 	while (str[++i[0]])
 	{
 		quote_check(str, i);
-		if (!(!i[4] && str[i[0]] == '\"') && !(!i[3] && str[i[0]] == '\''))
+		if (!(i[3] != 2 && i[3] != 3 && str[i[0]] == '\"') && !(i[3] != 1
+				&& i[3] != 3 && str[i[0]] == '\'') && !(!i[3]
+				&& str[i[0]] == '\\'))
 			newstr[j++] = str[i[0]];
 	}
 	newstr[j] = '\0';
@@ -67,11 +71,11 @@ void	quote_pipe_check(char **args, t_node *node)
 		j = 0;
 		while (args[i][j] && args[i][j + 1] && args[i][j + 2])
 		{
-			if (args[i][j] == '\'' && args[i][j + 1] == '|'
-				&& args[i][j + 2] == '\'')
+			if (args[i][j] == '\'' && args[i][j + 1] == '|' && args[i][j
+				+ 2] == '\'')
 				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = i;
-			else if (args[i][j] == '\"' && args[i][j + 1] == '|'
-				&& args[i][j + 2] == '\"')
+			else if (args[i][j] == '\"' && args[i][j + 1] == '|' && args[i][j
+				+ 2] == '\"')
 				node->quota_pipe_idx_arr[node->quota_pipe_cnt++] = i;
 			j++;
 		}

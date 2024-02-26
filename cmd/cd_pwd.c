@@ -12,30 +12,30 @@
 
 #include "../include/minishell.h"
 
-static char	*newpwd_loop(char **mod, char *pwd, int i)
+static char	*newpwd_loop(char **mod, t_node *node, int i)
 {
 	char	*tmp;
 
 	if (!ft_strncmp(mod[i], ".", 2))
-		return (pwd);
+		return (node->pwd);
 	else if (!ft_strncmp(mod[i], "..", 3))
-		tmp = ft_substr(pwd, 0, ft_strrchr(pwd, '/') - pwd);
+		tmp = ft_substr(node->pwd, 0, ft_strrchr(node->pwd, '/') - node->pwd);
 	else
 	{
-		if (ft_strncmp(pwd, "/", 2))
+		if (ft_strncmp(node->pwd, "/", 2))
 		{
-			tmp = ft_strjoin(pwd, "/");
-			free(pwd);
-			pwd = tmp;
+			tmp = ft_strjoin(node->pwd, "/");
+			free(node->pwd);
+			node->pwd = tmp;
 		}
-		tmp = ft_strjoin(pwd, mod[i]);
+		tmp = ft_strjoin(node->pwd, mod[i]);
 	}
-	free(pwd);
-	pwd = tmp;
-	return (pwd);
+	free(node->pwd);
+	node->pwd = tmp;
+	return (node->pwd);
 }
 
-char	*newpwd(char *pwd, char *cmd)
+char	*newpwd(t_node *node, char *cmd)
 {
 	int		i;
 	char	**mod;
@@ -44,16 +44,16 @@ char	*newpwd(char *pwd, char *cmd)
 	mod = ft_split(cmd, '/');
 	if (cmd[0] == '/')
 	{
-		free(pwd);
-		pwd = ft_strdup("/");
+		free(node->pwd);
+		node->pwd = ft_strdup("/");
 	}
 	while (mod[++i])
-		pwd = newpwd_loop(mod, pwd, i);
+		node->pwd = newpwd_loop(mod, node, i);
 	strarrfree(mod);
-	if (!pwd[0])
+	if (!node->pwd[0])
 	{
-		free(pwd);
-		pwd = ft_strdup("/");
+		free(node->pwd);
+		node->pwd = ft_strdup("/");
 	}
-	return (pwd);
+	return (node->pwd);
 }

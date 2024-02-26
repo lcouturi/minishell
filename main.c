@@ -69,6 +69,7 @@ int	main(int argc, char **argv, char **envp)
 
 	g_exit_status = 0;
 	envp_copy = strarrdup(envp);
+	node.pwd = ft_strdup(ft_getenv("PWD", envp));
 	shlvl_plus_plus(envp_copy);
 	if (!envp_copy)
 		exit(EXIT_FAILURE);

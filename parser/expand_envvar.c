@@ -30,15 +30,14 @@ static void	insert_int(char *str, int *i)
 
 static void	no_env(int *i, char *str, char *str2)
 {
-	if (i[0] && !i[3] && !i[4] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
+	if (i[0] && !i[3] && isop(str[i[0]]) && !isop(str[i[0] - 1]))
 	{
 		str2[i[1]++] = ' ';
 		str2[i[1]++] = str[i[0]++];
 		if (str[i[0]] && !isop(str[i[0]]))
 			str2[i[1]++] = ' ';
 	}
-	else if (!i[3] && !i[4] && isop(str[i[0]]) && str[i[0] + 1]
-		&& !isop(str[i[0] + 1]))
+	else if (!i[3] && isop(str[i[0]]) && str[i[0] + 1] && !isop(str[i[0] + 1]))
 	{
 		str2[i[1]++] = str[i[0]++];
 		str2[i[1]++] = ' ';
@@ -74,13 +73,11 @@ static void	expand_envvar_loop(char *str, char *str2, char **envp)
 	while (str[i[0]])
 	{
 		quote_check(str, i);
-		if (!i[4] && str[i[0]] == '$' && (ft_isenv(str[i[0] + 1]) || (!i[3]
-					&& str[i[0] + 1] == '\"') || (!i[4] && str[i[0]
+		if (i[3] < 2 && str[i[0]] == '$' && (ft_isenv(str[i[0] + 1])
+				|| (i[3] != 1 && str[i[0] + 1] == '\"') || (i[3] < 2 && str[i[0]
 						+ 1] == '\'')))
-		{
 			handle_envvar(i, str, str2, envp);
-		}
-		else if (!i[4] && !ft_strncmp(str + i[0], "$?", 2))
+		else if (i[3] < 2 && !ft_strncmp(str + i[0], "$?", 2))
 			insert_int(str2, i);
 		else
 			no_env(i, str, str2);

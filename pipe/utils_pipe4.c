@@ -12,17 +12,12 @@
 
 #include "../include/minishell.h"
 
-bool	is_operator(char **args, int i, int j)
-{
-	return (args[i][j] == '|');
-}
-
-bool	is_operator2(char **args, int i)
+static bool	is_operator(char **args, int i)
 {
 	return (!ft_strncmp(args[i], "|", 2) || !ft_strncmp(args[i], "||", 3));
 }
 
-int	print_syntax_error(char **args, int i, int j)
+static int	print_syntax_error(char **args, int i, int j)
 {
 	g_exit_status = 2;
 	ft_putstr_fd("minishell: syntax error ", STDERR_FILENO);
@@ -44,17 +39,16 @@ int	pipe_syntax_check(char **args)
 	int	i;
 
 	i = -1;
-	if (args && args[0] && is_operator(args, 0, 0))
+	if (args && args[0] && args[0][0] == '|')
 		return (print_syntax_error(args, 0, 0));
 	while (args[++i])
 	{
-		if (args[i + 1] && is_operator2(args, i) && is_operator2(args, i + 1))
+		if (args[i + 1] && is_operator(args, i) && is_operator(args, i + 1))
 			return (print_syntax_error(args, i, 0));
-		if (args[i][1] && is_operator(args, i, 0) && is_operator(args, i, 1)
+		if (args[i][1] && args[i][0] == '|' && args[i][1] == '|'
 			&& args[i][0] != args[i][1])
 			return (print_syntax_error(args, i, 1));
-		if (args[i][1] && args[i][2] && is_operator(args, i, 1)
-			&& is_operator(args, i, 2))
+		if (args[i][1] && args[i][2] && args[i][1] == '|' && args[i][2] == '|')
 			return (print_syntax_error(args, i, 2));
 	}
 	return (1);

@@ -50,7 +50,7 @@ int	get_arg_num(char **args)
 		while (args[i[2]][++i[0]])
 		{
 			quote_check(args[i[2]], i);
-			if (!i[3] && !i[4] && args[i[2]][i[0]] == '*')
+			if (!i[3] && args[i[2]][i[0]] == '*')
 			{
 				get_arg_num_loop(args, i, &n);
 				break ;

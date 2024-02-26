@@ -54,16 +54,12 @@ clean :
 
 debug : fclean
 	@make debug -s -C libs/Libft
-	$(CC) $(CFLAGS) $(CPPFLAGS) -g $(LDFLAGS) $(SRCS) -o $(NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -g -fsanitize=address $(LDFLAGS) $(SRCS) -o $(NAME)
 
 
 fclean : clean
 	@make fclean -s -C libs/Libft
 	@rm -rf $(NAME) $(NAME)_bonus
-
-install :
-	brew install readline
-	brew link --force readline
 
 re : fclean all
 

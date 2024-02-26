@@ -83,13 +83,13 @@ int	pipe_check(char **args, t_node *node)
 
 void	init_node(t_node *node)
 {
+	node->child_die = 0;
+	node->echo_skip = 0;
+	node->exit_flag = 1;
+	node->parent_die = 0;
 	node->pipe_idx = 0;
 	node->quota_pipe_cnt = 0;
-	node->echo_skip = 0;
-	node->child_die = 0;
-	node->exit_flag = 1;
 	node->redir_idx = 0;
 	node->redir_stop = 0;
-	node->parent_die = 0;
 	node->right_flag = 0;
 }

@@ -29,102 +29,108 @@
 
 typedef struct s_node
 {
-	int		redir_flag;
-	int		pipe_flag;
-	int		backup_stdout;
 	int		backup_stdin;
-	int		pipe_idx;
+	int		backup_stdout;
+	int		child_die;
+	int		echo_skip;
+	int		exit_flag;
 	int		fds[2];
 	int		i;
-	char	*path;
-	int		quota_pipe_idx_arr[10];
-	int		quota_pipe_cnt;
-	int		quota_idx_j;
-	int		echo_skip;
 	char	**ori_args;
-	int		child_die;
-	int		exit_flag;
+	int		parent_die;
+	char	*path;
+	int		pipe_flag;
+	int		pipe_idx;
+	char	*pwd;
+	int		quota_idx_j;
+	int		quota_pipe_cnt;
+	int		quota_pipe_idx_arr[10];
 	int		redir_fds[2];
+	int		redir_flag;
 	int		redir_idx;
 	int		redir_stop;
-	int		parent_die;
 	int		right_flag;
 }	t_node;
 
 int		g_exit_status;
 
+// cmd
 void	checkdot(char **args, char **envp);
-void	cmd_cd(char **args, char **envp);
+char	**cmd_cd(char **args, char **envp, t_node *node);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, t_node *node);
 void	cmd_exit(char **args, char **envp, t_node *node);
 void	cmd_exit_no_arg(void);
 char	**cmd_export(char **args, char **envp);
-void	cmd_pwd(char **envp);
+void	cmd_pwd(t_node *node);
 void	cmd_unset(char **args, char **envp);
-char	**escape_split(char *s, char *charset);
 bool	exec_check(char **args, char **envp);
 void	exec_error(char **args, char **envp, char **paths);
 void	exec_proc(char **args, char **envp, t_node *node);
-char	**execute(char **args, char **envp, t_node *node);
+char	*ft_getenv(const char *name, char **envp);
+char	**ft_setenv(const char *name, const char *value, char **envp);
+char	*newpwd(t_node *node, char *cmd);
+
+// main
+void	set_signal(void);
+char	**strarradd(char **strs, char *str);
+char	**strarrdup(char **strs);
+void	strarrfree(char **strs);
+size_t	strarrlen(char **strs);
+
+// parser
+char	**escape_split(char *s, char *charset);
 char	*expand_envvar(char *str, char **envp);
 char	**expand_wildcard(char **args, char **envp);
 char	**find_command(char **args, char **envp, t_node *node);
-char	*ft_getenv(const char *name, char **envp);
 int		ft_isenv(char c);
-char	**ft_setenv(const char *name, const char *value, char **envp);
 int		get_arg_num(char **args);
 char	**get_file_list(bool hidden);
 void	get_length(char *str, char **envp, int *i);
 int		isop(char c);
 char	**load_lst(struct dirent *dr, DIR *dir, bool hidden);
 void	match(char *str, char **split, char **files, int i);
-char	*newpwd(char *pwd, char *cmd);
 void	quote_check(char const *s, int *i);
 char	**rm_quotes(char **args, t_node *node);
 char	**rm_quotes_wildcards(char **args);
 char	**semicolon_handler(char *str, char **envp, t_node *node);
-char	**strarradd(char **strs, char *str);
-char	**strarrdup(char **strs);
-void	strarrfree(char **strs);
-size_t	strarrlen(char **strs);
-void	strarrprint(char **strs);
 void	tilde_handler(char **args, int *i, char **envp);
-// signal
-void	set_signal(void);
-// redirection
-int		redir_chk(char **args);
-int		exec_redir(char **args, char **envp, t_node *node);
-void	exec_redir_cmd(char **args, char **envp);
-int		left_redir(char **args, int i, t_node *node);
-int		left_double_redir(char **args, int i);
-int		right_redir(char **args, char **envp, int i, t_node *node);
-int		right_double_redir(char **args, char **envp, int i, t_node *node);
-void	argu_left_change(char **args);
-int		repeat_check(char **args, t_node *node);
-void	original_store(char **args, t_node *node);
-void	args_left_move(char **args, int i);
-int		print_err(char **args, int i, t_node *node);
-bool	is_redir(char **args, int i, int j);
-int		redir_excute(char **args, char **envp, t_node *node, int flag);
-bool	is_redir_check(char *str);
-void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag);
-void	exec_redir_child(char **args, char **envp, t_node *node, int *flag);
-int		two_redir(char **args, t_node *node);
-void	args_left_move_i(char **args, t_node *node);
+
 // pipe
+void	backup_restor(t_node *node);
+char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
 void	exec_child(char **args, char **envp, t_node *node);
 void	exec_parents(int pid, char **args, char **envp, t_node *node);
-char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
-int		pipe_check(char **args, t_node *node);
+char	**execute(char **args, char **envp, t_node *node);
 void	init_node(t_node *node);
-void	backup_restor(t_node *node);
-char	**split_before_pipe_args(char **args, t_node *node);
-char	**repeat(char **args, char **envp, t_node *node);
+int		pipe_check(char **args, t_node *node);
+void	pipe_work(int pid, char **args, char **envp, t_node *node);
 void	print_from_fd(int fd);
 int		pipe_syntax_check(char **args);
 int		redir_syntax_check(char **args);
-void	pipe_work(int pid, char **args, char **envp, t_node *node);
+char	**repeat(char **args, char **envp, t_node *node);
+int		repeat_check(char **args, t_node *node);
+char	**split_before_pipe_args(char **args, t_node *node);
+
+// redirection
+void	args_left_move(char **args, int i);
+void	args_left_move_i(char **args, t_node *node);
+void	argu_left_change(char **args);
+int		exec_redir(char **args, char **envp, t_node *node);
+void	exec_redir_child(char **args, char **envp, t_node *node, int *flag);
+void	exec_redir_cmd(char **args, char **envp);
+void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag);
+bool	is_redir(char **args, int i, int j);
+bool	is_redir_check(char *str);
+int		left_redir(char **args, int i, t_node *node);
+int		left_double_redir(char **args, int i);
+void	original_store(char **args, t_node *node);
+int		print_err(char **args, int i, t_node *node);
+int		redir_chk(char **args);
+int		redir_excute(char **args, char **envp, t_node *node, int flag);
+int		right_double_redir(char **args, char **envp, int i, t_node *node);
+int		right_redir(char **args, char **envp, int i, t_node *node);
+int		two_redir(char **args, t_node *node);
 
 #endif

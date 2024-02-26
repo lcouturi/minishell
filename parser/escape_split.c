@@ -14,9 +14,7 @@
 
 static bool	sep(char s, int *i, char *c)
 {
-	if (!s || (!i[3] && !i[4] && ft_strchr(c, s)))
-		return (1);
-	return (0);
+	return (!s || (!i[3] && ft_strchr(c, s)));
 }
 
 static void	loop(char *s, char **returned, int *i, char *c)

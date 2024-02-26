@@ -42,7 +42,7 @@ char	**split_before_pipe_args(char **args, t_node *node)
 	return (temp);
 }
 
-void	backup(t_node *node)
+static void	backup(t_node *node)
 {
 	node->backup_stdout = dup(STDOUT_FILENO);
 	node->backup_stdin = dup(STDIN_FILENO);

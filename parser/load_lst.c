@@ -94,7 +94,7 @@ void	tilde_handler(char **args, int *i, char **envp)
 {
 	char	*tmp;
 
-	if (!i[3] && !i[4] && args[i[2]][0] == '~' && (args[i[2]][1] == '/'
+	if (!i[3] && args[i[2]][0] == '~' && (args[i[2]][1] == '/'
 			|| !args[i[2]][1]))
 	{
 		tmp = ft_strjoin(ft_getenv("HOME", envp), args[i[2]] + 1);

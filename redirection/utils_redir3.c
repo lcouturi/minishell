@@ -17,17 +17,12 @@ int	two_left_redir(char **args)
 	int	i;
 	int	num;
 
-	i = 0;
+	i = -1;
 	num = 0;
-	while (args && args[i] && ft_strncmp(args[i], "|", 2))
-	{
-		if (ft_strncmp(args[i], "<", 2) == 0)
+	while (args && args[++i] && ft_strncmp(args[i], "|", 2))
+		if (!ft_strncmp(args[i], "<", 2))
 			num += 10;
-		i++;
-	}
-	if (num == 20)
-		return (1);
-	return (0);
+	return (num == 20);
 }
 
 int	two_redir(char **args, t_node *node)
@@ -35,24 +30,15 @@ int	two_redir(char **args, t_node *node)
 	int	i;
 	int	num;
 
-	i = 0;
-	num = 0;
+	i = -1;
+	num = -1;
 	if (two_left_redir(args))
 		return (0);
-	while (args && args[i] && ft_strncmp(args[i], "|", 2))
-	{
+	while (args && args[++i] && ft_strncmp(args[i], "|", 2))
 		if (is_redir_check(args[i]))
-		{
-			if (num == 1)
+			if (++num == 1)
 				node->redir_idx = i;
-			num++;
-		}
-		i++;
-	}
-	if (num >= 2)
-		return (1);
-	else
-		return (0);
+	return (num >= 2);
 }
 
 void	exec_redir_child(char **args, char **envp, t_node *node, int *flag)
@@ -69,9 +55,8 @@ void	exec_redir_child(char **args, char **envp, t_node *node, int *flag)
 				*flag = 1;
 			exit(g_exit_status);
 		}
-		else
-			if (exec_redir(args, envp, node))
-				*flag = 1;
+		else if (exec_redir(args, envp, node))
+			*flag = 1;
 	}
 }
 
@@ -89,10 +74,6 @@ void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag)
 
 bool	is_redir_check(char *str)
 {
-	if (ft_strncmp(str, "<", 2) == 0
-		|| ft_strncmp(str, ">", 2) == 0
-		|| ft_strncmp(str, ">>", 3) == 0
-		|| ft_strncmp(str, "<<", 3) == 0)
-		return (true);
-	return (false);
+	return (!ft_strncmp(str, "<", 2) || !ft_strncmp(str, ">", 2)
+		|| !ft_strncmp(str, ">>", 3) || !ft_strncmp(str, "<<", 3));
 }

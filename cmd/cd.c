@@ -67,7 +67,7 @@ char	**ft_setenv(const char *name, const char *value, char **envp)
 	return (envp);
 }
 
-static int	checks(char **args, char **envp, char *str, bool offset)
+static int	checks(char **args, char **envp, t_node *node, bool offset)
 {
 	if (strarrlen(args) > 2 + offset)
 	{
@@ -79,8 +79,8 @@ static int	checks(char **args, char **envp, char *str, bool offset)
 		chdir(ft_getenv("HOME", envp));
 	else if (!ft_strncmp(args[1 + offset], "-", 2))
 	{
-		str = ft_strdup(ft_getenv("OLDPWD", envp));
-		chdir(str);
+		node->pwd = ft_strdup(ft_getenv("OLDPWD", envp));
+		chdir(node->pwd);
 		printf("%s\n", ft_getenv("OLDPWD", envp));
 	}
 	else if (error_check(args[1 + offset]))
@@ -88,23 +88,21 @@ static int	checks(char **args, char **envp, char *str, bool offset)
 	return (0);
 }
 
-void	cmd_cd(char **args, char **envp)
+char	**cmd_cd(char **args, char **envp, t_node *node)
 {
 	bool	offset;
-	char	*str;
 
 	offset = 0;
-	str = 0;
 	if (args[1] && !ft_strncmp(args[1], "--", 3))
 		offset++;
 	g_exit_status = EXIT_SUCCESS;
-	ft_setenv("OLDPWD", ft_getenv("PWD", envp), envp);
-	if (checks(args, envp, str, offset))
-		return ;
+	if (checks(args, envp, node, offset))
+		return (envp);
 	if (!args[1 + offset])
-		str = ft_strdup(ft_getenv("HOME", envp));
+		node->pwd = ft_strdup(ft_getenv("HOME", envp));
 	else if (ft_strncmp(args[1 + offset], "-", 2))
-		str = newpwd(ft_strdup(ft_getenv("OLDPWD", envp)), args[1 + offset]);
-	ft_setenv("PWD", str, envp);
-	free(str);
+		node->pwd = newpwd(node, args[1 + offset]);
+	envp = ft_setenv("OLDPWD", ft_getenv("PWD", envp), envp);
+	envp = ft_setenv("PWD", node->pwd, envp);
+	return (envp);
 }
