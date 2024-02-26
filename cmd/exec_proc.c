@@ -109,15 +109,9 @@ void	exec_proc(char **args, char **envp, t_node *node)
 			execve(args[0], args, envp);
 		chkdir(args, envp, 1);
 	}
-	node->i = 0;
-	while (ft_strncmp(envp[node->i], "PATH=", 5))
-		node->i++;
-	paths = ft_split(envp[node->i] + 5, ':');
+	paths = ft_split(ft_getenv("PATH", envp), ':');
 	if (!paths)
-	{
-		strarrfree(envp);
-		exit(EXIT_FAILURE);
-	}
+		chkdir(args, envp, 1);
 	node->i = -1;
 	while (paths[++(node->i)])
 		exec_proc_loop(paths, args, envp, node);
