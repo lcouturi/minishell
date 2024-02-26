@@ -3,56 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   exec_proc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lcouturi <lcouturi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kyung-ki <kyung-ki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 1970/01/01 00:00:00 by lcouturi          #+#    #+#             */
-/*   Updated: 2024/01/16 22:21:53 by lcouturi         ###   ########.fr       */
+/*   Created: 1970/01/01 00:00:00 by kyung-ki          #+#    #+#             */
+/*   Updated: 2024/01/16 22:21:53 by kyung-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	chkdir_check(DIR *check, int err, int end)
+static void	exec_edgecase(t_node *node, char **args, char **envp, char **paths)
 {
-	if (check)
-	{
-		closedir(check);
-		errno = EISDIR;
-	}
-	else if (err == EACCES)
-		errno = EACCES;
-	else if (!end)
-		return (1);
-	return (0);
-}
+	char	*test;
+	char	*test2;
 
-static void	chkdir(char **args, char **envp, int end)
-{
-	DIR			*check;
-	int			err;
-	struct stat	stats;
-	int			status;
-
-	err = errno;
-	check = opendir(args[0]);
-	status = 0;
-	stat(args[0], &stats);
-	if (chkdir_check(check, err, end))
-		return ;
-	if (errno != EACCES || stats.st_size)
+	test = ft_strjoin(node->pwd, "/");
+	test2 = ft_strjoin(test, args[0]);
+	free(test);
+	if (!access(test2, X_OK))
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror(0);
-		if (end && errno != EISDIR)
-			status = 127;
-		else
-			status = 126;
+		free(test2);
+		execve(args[0], args, envp);
 	}
-	strarrfree(envp);
-	strarrfree(args);
-	exit(status);
+	free(test2);
+	exec_error(args, envp, paths);
 }
 
 static void	exec_proc_loop2(char **paths, char **args, char **envp,
@@ -111,7 +85,7 @@ void	exec_proc(char **args, char **envp, t_node *node)
 	}
 	paths = ft_split(ft_getenv("PATH", envp), ':');
 	if (!paths)
-		exec_error(args, envp, paths);
+		exec_edgecase(node, args, envp, paths);
 	node->i = -1;
 	while (paths[++(node->i)])
 		exec_proc_loop(paths, args, envp, node);

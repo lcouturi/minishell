@@ -67,34 +67,3 @@ bool	exec_check(char **args, char **envp)
 	strarrfree(paths);
 	return (ret);
 }
-
-void	exec_error(char **args, char **envp, char **paths)
-{
-	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(args[0], STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
-	if (ft_strchr(args[0], '/') || !paths)
-	{
-		errno = ENOENT;
-		perror(0);
-	}
-	else
-		ft_putstr_fd("command not found\n", STDERR_FILENO);
-	strarrfree(envp);
-	if (paths)
-		strarrfree(paths);
-	strarrfree(args);
-	exit(127);
-}
-
-void	checkdot(char **args, char **envp)
-{
-	if (!ft_strncmp(args[0], ".", 2))
-	{
-		ft_putstr_fd("minishell: .: filename argument required", STDERR_FILENO);
-		ft_putstr_fd("\n.: usage: . filename [arguments]\n", STDERR_FILENO);
-		strarrfree(envp);
-		strarrfree(args);
-		exit(127);
-	}
-}

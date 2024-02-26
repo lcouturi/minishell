@@ -56,6 +56,7 @@ int		g_exit_status;
 
 // cmd
 void	checkdot(char **args, char **envp);
+void	chkdir(char **args, char **envp, bool end);
 char	**cmd_cd(char **args, char **envp, t_node *node);
 void	cmd_echo(char **args, t_node *node);
 void	cmd_env(char **envs);
