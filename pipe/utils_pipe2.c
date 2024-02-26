@@ -30,7 +30,7 @@ char	**split_before_pipe_args(char **args, t_node *node)
 		exit(EXIT_FAILURE);
 	while (++i < node->pipe_idx - 1)
 	{
-		temp[i] = malloc(ft_strlen(args[i]));
+		temp[i] = malloc(ft_strlen(args[i]) + 1);
 		if (!temp[i])
 			exit(EXIT_FAILURE);
 		j = -1;
