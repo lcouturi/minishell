@@ -48,7 +48,10 @@ static void	exec_proc_loop2(char **paths, char **args, char **envp,
 		else
 			execve(node->path, args, envp);
 	}
-	chkdir(&node->path, envp, 0);
+	temp = malloc(2 * sizeof(char *));
+	temp[0] = node->path;
+	temp[1] = 0;
+	chkdir(temp, envp, 0);
 	free(node->path);
 }
 

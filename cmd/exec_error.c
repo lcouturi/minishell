@@ -84,4 +84,12 @@ void	checkdot(char **args, char **envp)
 		strarrfree(args);
 		exit(127);
 	}
+	if (!ft_strncmp(args[0], "..", 3))
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd("command not found\n", STDERR_FILENO);
+		exit(127);
+	}
 }
