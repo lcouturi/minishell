@@ -42,9 +42,7 @@ void	chkdir(char **args, char **envp, bool end)
 	if (errno != EACCES || stats.st_size)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror(0);
+		perror(args[0]);
 		if (end && errno != EISDIR)
 			status = 127;
 		else
@@ -58,15 +56,16 @@ void	chkdir(char **args, char **envp, bool end)
 void	exec_error(char **args, char **envp, char **paths)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(args[0], STDERR_FILENO);
-	ft_putstr_fd(": ", STDERR_FILENO);
 	if (ft_strchr(args[0], '/') || !paths)
 	{
 		errno = ENOENT;
-		perror(0);
+		perror(args[0]);
 	}
 	else
-		ft_putstr_fd("command not found\n", STDERR_FILENO);
+	{
+		ft_putstr_fd(args[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+	}
 	strarrfree(envp);
 	if (paths)
 		strarrfree(paths);
@@ -88,8 +87,7 @@ void	checkdot(char **args, char **envp)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(args[0], STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd("command not found\n", STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		exit(127);
 	}
 }

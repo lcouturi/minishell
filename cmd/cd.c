@@ -19,9 +19,7 @@ static bool	error_check(char *arg)
 		g_exit_status = EXIT_FAILURE;
 		errno = ENOENT;
 		ft_putstr_fd("minshell: cd: ", STDERR_FILENO);
-		ft_putstr_fd(arg, STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		perror(0);
+		perror(arg);
 		return (true);
 	}
 	return (false);
