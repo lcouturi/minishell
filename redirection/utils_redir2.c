@@ -14,9 +14,9 @@
 
 int	print_err(char **args, int i, t_node *node)
 {
+	errno = ENOENT;
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
-	ft_putstr_fd(args[i + 1], STDERR_FILENO);
-	ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+	perror(args[i + 1]);
 	g_exit_status = 1;
 	node->parent_die = 1;
 	if (pipe_check(args, node))
@@ -52,9 +52,7 @@ void	args_left_move(char **args, int i)
 
 bool	is_redir(char **args, int i, int j)
 {
-	if (args && args[i] && (args[i][j] == '<' || args[i][j] == '>'))
-		return (true);
-	return (false);
+	return (args && args[i] && (args[i][j] == '<' || args[i][j] == '>'));
 }
 
 int	print_re_syntax_error(void)

@@ -34,7 +34,7 @@ static char	*get_line(void)
 	char	*line;
 	char	*line2;
 
-	if (1)
+	if (isatty(STDIN_FILENO))
 		line = readline("minishell$ ");
 	else
 	{

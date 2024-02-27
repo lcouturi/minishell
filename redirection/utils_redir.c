@@ -14,7 +14,7 @@
 
 int	redir_chk(char **args)
 {
-	int		i;
+	int	i;
 
 	i = -1;
 	while (args[++i])

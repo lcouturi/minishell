@@ -45,7 +45,8 @@ int	left_double_redir(char **args, int i)
 	fd = open(".temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (!args[i + 1] || !ft_strncmp(args[i + 1], " ", ft_strlen(args[i + 1])))
 	{
-		printf("minishell: syntax error near unexpected token `newline'\n");
+		ft_putstr_fd("minishell: syntax error near unexpected ", STDERR_FILENO);
+		ft_putstr_fd("token `newline'\n", STDERR_FILENO);
 		return (1);
 	}
 	line = readline("> ");
@@ -64,7 +65,7 @@ int	left_double_redir(char **args, int i)
 
 static void	args_cha(char **args, int i)
 {
-	if (!ft_strncmp(args[0], "echo", 5) || ft_strncmp(args[0], "cat", 4))
+	if (!ft_strncmp(args[0], "echo", 5))
 	{
 		args_left_move(args, i);
 		if (!is_redir(args, i, 0) && ft_strncmp(args[i], "|", 2))
