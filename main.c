@@ -34,7 +34,7 @@ char	*get_line(char *str)
 	char	*line;
 	char	*line2;
 
-	if (isatty(STDIN_FILENO))
+	if (1)
 		line = readline(str);
 	else
 	{
