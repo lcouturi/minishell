@@ -50,7 +50,7 @@ bonus : $(OBJS)
 
 clean :
 	@make clean -s -C libs/Libft
-	@rm -rf $(OBJS) "|" "<" ">" ">>" .temp asd grep lol minishell.dSYM minishell_test.log tmp_*
+	@rm -rf $(OBJS) "|" "<" ">" ">>" .temp asd grep lol minishell.dSYM minishell_test.log o out1 tmp_*
 
 debug : fclean
 	@make debug -s -C libs/Libft

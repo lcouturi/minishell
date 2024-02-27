@@ -14,21 +14,21 @@
 
 char	**find_command(char **args, char **envp, t_node *node)
 {
-	if (!ft_strncmp(args[0], "cd", 3))
+	if (args[0] && !ft_strncmp(args[0], "cd", 3))
 		envp = cmd_cd(args, envp, node);
-	else if (!ft_strncmp(args[0], "exit", 5))
+	else if (args[0] && !ft_strncmp(args[0], "exit", 5))
 		cmd_exit(args, envp, node);
-	else if (!ft_strncmp(args[0], "env", 4))
+	else if (args[0] && !ft_strncmp(args[0], "env", 4))
 		cmd_env(envp);
-	else if (!ft_strncmp(args[0], "export", 7))
+	else if (args[0] && !ft_strncmp(args[0], "export", 7))
 		envp = cmd_export(args, envp);
-	else if (!ft_strncmp(args[0], "pwd", 4))
+	else if (args[0] && !ft_strncmp(args[0], "pwd", 4))
 		cmd_pwd(node);
-	else if (!ft_strncmp(args[0], "echo", 5))
+	else if (args[0] && !ft_strncmp(args[0], "echo", 5))
 		cmd_echo(args, node);
-	else if (!ft_strncmp(args[0], "unset", 6))
+	else if (args[0] && !ft_strncmp(args[0], "unset", 6))
 		cmd_unset(args, envp);
-	else
+	else if (args[0])
 		cmd_exec(args, envp, node);
 	return (envp);
 }

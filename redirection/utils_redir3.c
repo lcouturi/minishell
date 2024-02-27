@@ -46,14 +46,14 @@ void	exec_redir_child(char **args, char **envp, t_node *node, int *flag)
 	node->redir_stop = 0;
 	if (node->redir_flag)
 	{
-		if (node->redir_idx != 0)
+		if (node->redir_idx)
 		{
 			close(node->redir_fds[0]);
 			dup2(node->redir_fds[1], STDOUT_FILENO);
 			close(node->redir_fds[1]);
 			if (exec_redir(args, envp, node))
 				*flag = 1;
-			exit(g_exit_status);
+			return ;
 		}
 		else if (exec_redir(args, envp, node))
 			*flag = 1;
