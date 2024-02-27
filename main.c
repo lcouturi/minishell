@@ -34,7 +34,7 @@ static char	*get_line(void)
 	char	*line;
 	char	*line2;
 
-	if (isatty(STDIN_FILENO))
+	if (1)
 		line = readline("minishell$ ");
 	else
 	{
@@ -61,6 +61,35 @@ static void	shlvl_plus_plus(char **envp)
 	free(str);
 }
 
+static void	setpwd(t_node *node, char **envp)
+{
+	char	*curdir[2];
+	int		n;
+
+	curdir[0] = getcwd(0, 0);
+	node->pwd = ft_strdup(ft_getenv("PWD", envp));
+	if (chdir(node->pwd) == -1)
+	{
+		free(node->pwd);
+		node->pwd = curdir[0];
+		return ;
+	}
+	curdir[1] = getcwd(0, 0);
+	if (ft_strlen(curdir[0]) < ft_strlen(curdir[1]))
+		n = ft_strlen(curdir[0]) + 1;
+	else
+		n = ft_strlen(curdir[1]) + 1;
+	if (ft_strncmp(curdir[0], curdir[1], n))
+	{
+		free(node->pwd);
+		node->pwd = curdir[0];
+		chdir(node->pwd);
+	}
+	else
+		free(curdir[0]);
+	free(curdir[1]);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char	**envp_copy;
@@ -69,7 +98,7 @@ int	main(int argc, char **argv, char **envp)
 
 	g_exit_status = 0;
 	envp_copy = strarrdup(envp);
-	node.pwd = ft_strdup(ft_getenv("PWD", envp));
+	setpwd(&node, envp);
 	shlvl_plus_plus(envp_copy);
 	if (!envp_copy)
 		exit(EXIT_FAILURE);

@@ -40,25 +40,21 @@ static bool	error_check(char **args, bool num, int i)
 	return (0);
 }
 
-int	ft_isalldigit(char *str)
+static int	ft_isalldigit(char *str)
 {
 	int	i;
 
-	i = 0;
-	if (str[0] == '+' || str[0] == '-')
-		i++;
-	while (str && str[i])
-	{
-		if (ft_isdigit(str[i]) == 0)
+	i = -1;
+	i += (str[0] == '+' || str[0] == '-');
+	while (str && str[++i])
+		if (!ft_isdigit(str[i]))
 			return (0);
-		i++;
-	}
 	return (1);
 }
 
 void	cmd_exit(char **args, char **envp, t_node *node)
 {
-	if (node->exit_flag == 0)
+	if (!node->exit_flag)
 		return ;
 	if (isatty(STDIN_FILENO))
 		printf("exit\n");
@@ -68,6 +64,7 @@ void	cmd_exit(char **args, char **envp, t_node *node)
 			g_exit_status = ft_atoi(args[1]);
 	if (error_check(args, 0, -1))
 		return ;
+	free(node->pwd);
 	strarrfree(args);
 	strarrfree(envp);
 	rl_clear_history();
