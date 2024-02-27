@@ -37,7 +37,7 @@ int	left_redir(char **args, int i, t_node *node)
 	return (0);
 }
 
-int	left_double_redir(char **args, int i)
+int	left_double_redir(char **args, char **envp, int i)
 {
 	char	*line;
 	int		fd;
@@ -49,11 +49,13 @@ int	left_double_redir(char **args, int i)
 		ft_putstr_fd("token `newline'\n", STDERR_FILENO);
 		return (1);
 	}
-	line = readline("> ");
+	line = get_line("> ");
 	while (ft_strncmp((line), args[i + 1], ft_strlen(args[i + 1]) + 1))
 	{
 		ft_putendl_fd(line, fd);
-		line = readline("> ");
+		free(line);
+		line = get_line("> ");
+		line = expand_envvar(line, envp);
 	}
 	lseek(fd, 0, SEEK_SET);
 	dup2(fd, STDIN_FILENO);

@@ -74,6 +74,7 @@ char	**ft_setenv(const char *name, const char *value, char **envp);
 char	*newpwd(t_node *node, char *cmd);
 
 // main
+char	*get_line(char *str);
 void	set_signal(void);
 char	**strarradd(char **strs, char *str);
 char	**strarrdup(char **strs);
@@ -125,7 +126,7 @@ void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag);
 bool	is_redir(char **args, int i, int j);
 bool	is_redir_check(char *str);
 int		left_redir(char **args, int i, t_node *node);
-int		left_double_redir(char **args, int i);
+int		left_double_redir(char **args, char **envp, int i);
 void	original_store(char **args, t_node *node);
 int		print_err(char **args, int i, t_node *node);
 int		redir_chk(char **args);

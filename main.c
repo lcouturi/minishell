@@ -29,13 +29,13 @@ static void	argmode(char *arg, char **envp, t_node *node)
 	exit(g_exit_status);
 }
 
-static char	*get_line(void)
+char	*get_line(char *str)
 {
 	char	*line;
 	char	*line2;
 
 	if (isatty(STDIN_FILENO))
-		line = readline("minishell$ ");
+		line = readline(str);
 	else
 	{
 		line2 = get_next_line(STDIN_FILENO);
@@ -107,7 +107,7 @@ int	main(int argc, char **argv, char **envp)
 		argmode(argv[2], envp_copy, &node);
 	while (1)
 	{
-		line = get_line();
+		line = get_line("minishell$ ");
 		if (!line)
 		{
 			strarrfree(envp_copy);
