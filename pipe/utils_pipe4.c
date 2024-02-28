@@ -53,3 +53,11 @@ int	pipe_syntax_check(char **args)
 	}
 	return (1);
 }
+
+char	**one_commnad(char **args, char **envp, t_node *node)
+{
+	envp = find_command(args, envp, node);
+	if (node->redir_flag)
+		backup_restor(node);
+	return (envp);
+}
