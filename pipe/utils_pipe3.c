@@ -52,5 +52,5 @@ void	pipe_work(int pid, char **args, char **envp, t_node *node)
 	if (!pid)
 		exec_child(args, envp, node);
 	else
-		exec_parents(pid, args, strarrdup(envp), node);
+		exec_parents(args, strarrdup(envp), node);
 }

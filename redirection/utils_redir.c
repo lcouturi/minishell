@@ -94,10 +94,7 @@ int	redir_excute(char **args, char **envp, t_node *node, int flag)
 				exit(g_exit_status);
 		}
 		else
-		{
 			exec_redir_parents(args + node->redir_idx, envp, node, &flag);
-			args_left_move_i(args, node);
-		}
 	}
 	return (flag);
 }

@@ -70,6 +70,7 @@ void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag)
 	close(node->redir_fds[0]);
 	if (exec_redir(args, envp, node))
 		*flag = 1;
+	args_left_move_i(args, node);
 }
 
 bool	is_redir_check(char *str)

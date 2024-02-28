@@ -103,7 +103,7 @@ void	tilde_handler(char **args, int *i, char **envp);
 void	backup_restor(t_node *node);
 char	**cloturn(int backup_stdout, int backup_stdin, char **envp);
 void	exec_child(char **args, char **envp, t_node *node);
-void	exec_parents(int pid, char **args, char **envp, t_node *node);
+void	exec_parents(char **args, char **envp, t_node *node);
 char	**execute(char **args, char **envp, t_node *node);
 void	init_node(t_node *node);
 int		pipe_check(char **args, t_node *node);
@@ -114,6 +114,7 @@ int		redir_syntax_check(char **args);
 char	**repeat(char **args, char **envp, t_node *node);
 int		repeat_check(char **args, t_node *node);
 char	**split_before_pipe_args(char **args, t_node *node);
+char	**one_commnad(char **args, char **envp, t_node *node);
 
 // redirection
 void	args_left_move(char **args, int i);
