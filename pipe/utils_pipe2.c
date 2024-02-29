@@ -69,10 +69,8 @@ char	**repeat(char **args, char **envp, t_node *node)
 	if (!pid)
 		exec_child(args, envp, node);
 	else
-	{
 		exec_parents(args, strarrdup(envp), node);
-		waitpid(pid, 0, 0);
-	}
+	waitpid(pid, 0, 0);
 	return (envp);
 }
 

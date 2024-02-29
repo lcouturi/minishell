@@ -27,7 +27,6 @@ void	exec_child(char **args, char **envp, t_node *node)
 void	exec_parents(char **args, char **envp, t_node *node)
 {
 	node->exit_flag = 0;
-	usleep(10);
 	close(node->fds[1]);
 	dup2(node->fds[0], STDIN_FILENO);
 	close(node->fds[0]);
