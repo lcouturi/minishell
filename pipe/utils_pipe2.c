@@ -51,13 +51,11 @@ static void	backup(t_node *node)
 char	**repeat(char **args, char **envp, t_node *node)
 {
 	int	pid;
-	int	status;
 
 	pid = 0;
-	status = 0;
 	node->redir_flag = redir_chk(node->ori_args);
-	if ((redir_excute(args, envp, node, 0)
-			|| is_redir(args, 0, 0)) && !node->pipe_flag)
+	if ((redir_excute(args, envp, node, 0) || is_redir(args, 0, 0))
+		&& !node->pipe_flag)
 		return (envp);
 	if (pipe_check(args, node))
 	{
@@ -71,9 +69,10 @@ char	**repeat(char **args, char **envp, t_node *node)
 	if (!pid)
 		exec_child(args, envp, node);
 	else
+	{
 		exec_parents(args, strarrdup(envp), node);
-	waitpid(pid, &status, 0);
-	g_exit_status = status >> 8;
+		waitpid(pid, 0, 0);
+	}
 	return (envp);
 }
 
