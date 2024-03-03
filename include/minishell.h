@@ -50,6 +50,7 @@ typedef struct s_node
 	int		redir_idx;
 	int		redir_stop;
 	int		right_flag;
+	char	*cmd;
 }	t_node;
 
 int		g_exit_status;
@@ -126,14 +127,14 @@ void	exec_redir_cmd(char **args, char **envp);
 void	exec_redir_parents(char **args, char **envp, t_node *node, int *flag);
 bool	is_redir(char **args, int i, int j);
 bool	is_redir_check(char *str);
-int		left_redir(char **args, int i, t_node *node);
-int		left_double_redir(char **args, char **envp, int i);
+int		left_redir(char **args, char **envp, int *i, t_node *node);
+int		left_double_redir(char **args, char **envp, int *i, t_node *node);
 void	original_store(char **args, t_node *node);
 int		print_err(char **args, int i, t_node *node);
 int		redir_chk(char **args);
 int		redir_excute(char **args, char **envp, t_node *node, int flag);
-int		right_double_redir(char **args, char **envp, int i, t_node *node);
-int		right_redir(char **args, char **envp, int i, t_node *node);
+int		right_double_redir(char **args, char **envp, int *i, t_node *node);
+int		right_redir(char **args, char **envp, int *i, t_node *node);
 int		two_redir(char **args, t_node *node);
 
 #endif

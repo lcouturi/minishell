@@ -32,20 +32,24 @@ void	exec_redir_cmd(char **args, char **envp)
 int	exec_redir(char **args, char **envp, t_node *node)
 {
 	int	i;
+	int	ret;
 
 	i = -1;
-	while (args[++i] && ft_strncmp(args[i], "|", 2) && !node->redir_stop)
+	ret = 0;
+	if (exec_check(args, envp))
+		node->cmd = ft_strdup(args[0]);
+	while (args[++i] && ft_strncmp(args[i], "|", 2) && !node->redir_stop && ret == 0)
 	{
 		if (!ft_strncmp(args[i], "<", 2))
-			return (left_redir(args, i, node));
+			ret = left_redir(args, envp, &i, node);
 		else if (!ft_strncmp(args[i], ">", 2))
-			return (right_redir(args, envp, i, node));
+			ret = right_redir(args, envp, &i, node);
 		else if (!ft_strncmp(args[i], ">>", 3))
-			return (right_double_redir(args, envp, i, node));
+			ret = right_double_redir(args, envp, &i, node);
 		else if (!ft_strncmp(args[i], "<<", 3))
-			return (left_double_redir(args, envp, i));
+			ret = left_double_redir(args, envp, &i, node);
 	}
-	return (0);
+	return (ret);
 }
 
 void	original_store(char **args, t_node *node)

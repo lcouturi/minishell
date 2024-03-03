@@ -15,6 +15,7 @@
 void	exec_child(char **args, char **envp, t_node *node)
 {
 	node->exit_flag = 0;
+	// dup2(node->fds[0], STDIN_FILENO); -> need for cat | cat | ls ?
 	close(node->fds[0]);
 	if (!node->right_flag)
 		dup2(node->fds[1], STDOUT_FILENO);
@@ -88,4 +89,5 @@ void	init_node(t_node *node)
 	node->redir_idx = 0;
 	node->redir_stop = 0;
 	node->right_flag = 0;
+	node->cmd = NULL;
 }

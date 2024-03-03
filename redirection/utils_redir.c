@@ -76,7 +76,7 @@ int	redir_excute(char **args, char **envp, t_node *node, int flag)
 	int	pid;
 
 	pid = -1;
-	if (two_redir(args, node))
+	if (0)
 	{
 		pipe(node->redir_fds);
 		pid = fork();
@@ -87,13 +87,11 @@ int	redir_excute(char **args, char **envp, t_node *node, int flag)
 	{
 		if (pid <= 0)
 		{
-			if (node->redir_idx)
-				args[node->redir_idx] = 0;
 			exec_redir_child(args, envp, node, &flag);
 			if (!pid)
 				exit(g_exit_status);
 		}
-		else
+		else 
 			exec_redir_parents(args + node->redir_idx, envp, node, &flag);
 	}
 	return (flag);
