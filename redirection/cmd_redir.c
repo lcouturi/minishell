@@ -58,7 +58,9 @@ int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 	args_left_move(args, *i);
 	args_left_move(args, *i);
 	*i -= 1;
-	return (unlink(".temp"));
+	if (unlink(".temp"))
+		return (1);
+	return (0);
 }
 
 int	left_double_redir(char **args, char **envp, int *i, t_node *node)
