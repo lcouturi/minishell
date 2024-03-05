@@ -25,15 +25,12 @@ int	left_redir(char **args, char **envp, int *i, t_node *node)
 		&& !args[2])
 		node->echo_skip = 1;
 	dup2(fd, STDIN_FILENO);
-	if (node->cmd == NULL && args[*i + 2])
-	{
-		if (is_redir_check(args[*i + 2]) == 0 && exec_check(args + 2,
-				envp) == 0)
-			return (print_err2(args, *i));
-	}
+	if (!node->cmd && args[*i + 2] && !is_redir_check(args[*i + 2])
+		&& !exec_check(args + 2, envp))
+		return (print_err2(args, *i));
 	args_left_move(args, *i);
 	args_left_move(args, *i);
-	*i = *i - 1;
+	*i -= 1;
 	close(fd);
 	return (0);
 }
@@ -55,9 +52,9 @@ int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 	lseek(node->redir_fd, 0, SEEK_SET);
 	dup2(node->redir_fd, STDIN_FILENO);
 	close(node->redir_fd);
-	if (!node->cmd && args[*i + 2])
-		if (!is_redir_check(args[*i + 2]) && !exec_check(args + 2, envp))
-			return (print_err2(args, *i));
+	if (!node->cmd && args[*i + 2] && !is_redir_check(args[*i + 2])
+		&& !exec_check(args + 2, envp))
+		return (print_err2(args, *i));
 	args_left_move(args, *i);
 	args_left_move(args, *i);
 	*i -= 1;
@@ -68,7 +65,7 @@ int	left_double_redir(char **args, char **envp, int *i, t_node *node)
 {
 	node->redir_fd = open(".temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (!args[*i + 1] || !ft_strncmp(args[*i + 1], " ", ft_strlen(args[*i
-				+ 1])))
+					+ 1])))
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected ", STDERR_FILENO);
 		ft_putstr_fd("token `newline'\n", STDERR_FILENO);
@@ -91,12 +88,9 @@ int	right_redir(char **args, char **envp, int *i, t_node *node)
 	node->right_flag = 1;
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	if (node->cmd == NULL && args[*i + 2])
-	{
-		if (is_redir_check(args[*i + 2]) == 0 && exec_check(args + 2,
-				envp) == 0)
-			return (print_err2(args, *i));
-	}
+	if (!node->cmd && args[*i + 2] && !is_redir_check(args[*i + 2])
+		&& !exec_check(args + 2, envp))
+		return (print_err2(args, *i));
 	args_left_move(args, *i);
 	args_left_move(args, *i);
 	*i = *i - 1;
@@ -117,11 +111,9 @@ int	right_double_redir(char **args, char **envp, int *i, t_node *node)
 	node->right_flag = 1;
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
-	if (node->cmd == NULL && args[*i + 2])
-	{
-		if (!is_redir_check(args[*i + 2]) && !exec_check(args + 2, envp))
-			return (print_err2(args, *i));
-	}
+	if (!node->cmd && args[*i + 2] && !is_redir_check(args[*i + 2])
+		&& !exec_check(args + 2, envp))
+		return (print_err2(args, *i));
 	args_left_move(args, *i);
 	args_left_move(args, *i);
 	*i = *i - 1;
