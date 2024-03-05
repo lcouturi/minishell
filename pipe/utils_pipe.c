@@ -14,9 +14,25 @@
 
 void	exec_child(char **args, char **envp, t_node *node)
 {
+	int	idx;
+
+	idx = 0;
 	node->exit_flag = 0;
+	if (args[1] && ft_strncmp(args[0], "cat", 4) == 0
+		&& ft_strncmp(args[1], "|", 2) == 0)
+	{
+		if (!(args[2] && ft_strncmp(args[2], "cat", 4) == 0 && args[3] == NULL))
+			node->child_die = 1;
+	}
+	while (node->child_die && args[idx] && args[idx + 1]
+		&& ft_strncmp(args[idx], "cat", 4) == 0
+		&& ft_strncmp(args[idx + 1], "|", 2) == 0)
+	{
+		idx += 2;
+		get_line("");
+	}
 	close(node->fds[0]);
-	if (!node->right_flag)
+	if (!node->right_flag && !node->child_die)
 		dup2(node->fds[1], STDOUT_FILENO);
 	close(node->fds[1]);
 	if (!node->child_die)
@@ -88,4 +104,5 @@ void	init_node(t_node *node)
 	node->redir_idx = 0;
 	node->redir_stop = 0;
 	node->right_flag = 0;
+	node->cmd = NULL;
 }
