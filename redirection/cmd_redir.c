@@ -27,8 +27,8 @@ int	left_redir(char **args, char **envp, int *i, t_node *node)
 	dup2(fd, STDIN_FILENO);
 	if (node->cmd == NULL && args[*i + 2])
 	{
-		if (is_redir_check(args[*i + 2]) == 0
-			&& exec_check(args + 2, envp) == 0)
+		if (is_redir_check(args[*i + 2]) == 0 && exec_check(args + 2,
+				envp) == 0)
 			return (print_err2(args, *i));
 	}
 	args_left_move(args, *i);
@@ -43,6 +43,7 @@ int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 	char	*line;
 
 	line = get_line("> ");
+	line = expand_envvar(line, envp);
 	while (ft_strncmp((line), args[*i + 1], ft_strlen(args[*i + 1]) + 1))
 	{
 		ft_putendl_fd(line, node->redir_fd);
@@ -50,28 +51,24 @@ int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 		line = get_line("> ");
 		line = expand_envvar(line, envp);
 	}
+	free(line);
 	lseek(node->redir_fd, 0, SEEK_SET);
 	dup2(node->redir_fd, STDIN_FILENO);
 	close(node->redir_fd);
-	if (node->cmd == NULL && args[*i + 2])
-	{
-		if (is_redir_check(args[*i + 2]) == 0
-			&& exec_check(args + 2, envp) == 0)
+	if (!node->cmd && args[*i + 2])
+		if (!is_redir_check(args[*i + 2]) && !exec_check(args + 2, envp))
 			return (print_err2(args, *i));
-	}
 	args_left_move(args, *i);
 	args_left_move(args, *i);
-	*i = *i - 1;
-	if (unlink(".temp"))
-		return (1);
-	return (0);
+	*i -= 1;
+	return (unlink(".temp"));
 }
 
 int	left_double_redir(char **args, char **envp, int *i, t_node *node)
 {
 	node->redir_fd = open(".temp", O_CREAT | O_RDWR | O_TRUNC, 0644);
-	if (!args[*i + 1]
-		|| !ft_strncmp(args[*i + 1], " ", ft_strlen(args[*i + 1])))
+	if (!args[*i + 1] || !ft_strncmp(args[*i + 1], " ", ft_strlen(args[*i
+				+ 1])))
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected ", STDERR_FILENO);
 		ft_putstr_fd("token `newline'\n", STDERR_FILENO);
@@ -96,8 +93,8 @@ int	right_redir(char **args, char **envp, int *i, t_node *node)
 	close(fd);
 	if (node->cmd == NULL && args[*i + 2])
 	{
-		if (is_redir_check(args[*i + 2]) == 0
-			&& exec_check(args + 2, envp) == 0)
+		if (is_redir_check(args[*i + 2]) == 0 && exec_check(args + 2,
+				envp) == 0)
 			return (print_err2(args, *i));
 	}
 	args_left_move(args, *i);
@@ -122,8 +119,7 @@ int	right_double_redir(char **args, char **envp, int *i, t_node *node)
 	close(fd);
 	if (node->cmd == NULL && args[*i + 2])
 	{
-		if (is_redir_check(args[*i + 2]) == 0
-			&& exec_check(args + 2, envp) == 0)
+		if (!is_redir_check(args[*i + 2]) && !exec_check(args + 2, envp))
 			return (print_err2(args, *i));
 	}
 	args_left_move(args, *i);
