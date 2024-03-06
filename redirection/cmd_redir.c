@@ -38,17 +38,20 @@ int	left_redir(char **args, char **envp, int *i, t_node *node)
 int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 {
 	char	*line;
+	char	*line2;
 
 	line = get_line("> ");
-	line = expand_envvar(line, envp);
-	while (ft_strncmp((line), args[*i + 1], ft_strlen(args[*i + 1]) + 1))
+	line2 = expand_envvar(line, envp);
+	free(line);
+	while (ft_strncmp((line2), args[*i + 1], ft_strlen(args[*i + 1]) + 1))
 	{
 		ft_putendl_fd(line, node->redir_fd);
-		free(line);
+		free(line2);
 		line = get_line("> ");
-		line = expand_envvar(line, envp);
+		line2 = expand_envvar(line, envp);
+		free(line);
 	}
-	free(line);
+	free(line2);
 	lseek(node->redir_fd, 0, SEEK_SET);
 	dup2(node->redir_fd, STDIN_FILENO);
 	close(node->redir_fd);
@@ -58,9 +61,7 @@ int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 	args_left_move(args, *i);
 	args_left_move(args, *i);
 	*i -= 1;
-	if (unlink(".temp"))
-		return (1);
-	return (0);
+	return (unlink(".temp") == -1);
 }
 
 int	left_double_redir(char **args, char **envp, int *i, t_node *node)
@@ -95,7 +96,7 @@ int	right_redir(char **args, char **envp, int *i, t_node *node)
 		return (print_err2(args, *i));
 	args_left_move(args, *i);
 	args_left_move(args, *i);
-	*i = *i - 1;
+	*i -= 1;
 	return (0);
 }
 
@@ -118,6 +119,6 @@ int	right_double_redir(char **args, char **envp, int *i, t_node *node)
 		return (print_err2(args, *i));
 	args_left_move(args, *i);
 	args_left_move(args, *i);
-	*i = *i - 1;
+	*i -= 1;
 	return (0);
 }

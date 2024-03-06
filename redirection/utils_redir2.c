@@ -45,8 +45,8 @@ void	args_left_move(char **args, int i)
 	}
 	if (!args[i + 1])
 	{
+		free(args[i]);
 		args[i] = NULL;
-		free(args[i + 1]);
 	}
 }
 
