@@ -44,7 +44,7 @@ static char	**parser(char *str, char **envp, t_node *node)
 		strarrfree(args);
 		return (envp);
 	}
-	original_store(args, node);
+	node->ori_args = strarrdup(args);
 	args = rm_quotes(args, node);
 	if (!args)
 	{

@@ -45,7 +45,7 @@ int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 	free(line);
 	while (ft_strncmp((line2), args[*i + 1], ft_strlen(args[*i + 1]) + 1))
 	{
-		ft_putendl_fd(line, node->redir_fd);
+		ft_putendl_fd(line2, node->redir_fd);
 		free(line2);
 		line = get_line("> ");
 		line2 = expand_envvar(line, envp);

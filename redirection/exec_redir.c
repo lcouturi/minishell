@@ -53,20 +53,6 @@ int	exec_redir(char **args, char **envp, t_node *node)
 	return (ret);
 }
 
-void	original_store(char **args, t_node *node)
-{
-	int	i;
-
-	i = 0;
-	while (args[i])
-		i++;
-	node->ori_args = malloc(sizeof(char *) * (i + 1));
-	i = -1;
-	while (args[++i])
-		node->ori_args[i] = ft_strdup(args[i]);
-	node->ori_args[i] = NULL;
-}
-
 void	args_left_move_i(char **args, t_node *node)
 {
 	int	i;

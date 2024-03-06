@@ -108,6 +108,7 @@ void	exec_child(char **args, char **envp, t_node *node);
 void	exec_parents(char **args, char **envp, t_node *node);
 char	**execute(char **args, char **envp, t_node *node);
 void	init_node(t_node *node);
+char	**one_commnad(char **args, char **envp, t_node *node);
 int		pipe_check(char **args, t_node *node);
 void	pipe_work(int pid, char **args, char **envp, t_node *node);
 void	print_from_fd(int fd);
@@ -116,7 +117,6 @@ int		redir_syntax_check(char **args);
 char	**repeat(char **args, char **envp, t_node *node);
 int		repeat_check(char **args, t_node *node);
 char	**split_before_pipe_args(char **args, t_node *node);
-char	**one_commnad(char **args, char **envp, t_node *node);
 
 // redirection
 void	args_left_move(char **args, int i);
@@ -130,13 +130,12 @@ bool	is_redir(char **args, int i, int j);
 bool	is_redir_check(char *str);
 int		left_redir(char **args, char **envp, int *i, t_node *node);
 int		left_double_redir(char **args, char **envp, int *i, t_node *node);
-void	original_store(char **args, t_node *node);
 int		print_err(char **args, int i, t_node *node);
+int		print_err2(char **args, int i);
 int		redir_chk(char **args);
 int		redir_excute(char **args, char **envp, t_node *node, int flag);
 int		right_double_redir(char **args, char **envp, int *i, t_node *node);
 int		right_redir(char **args, char **envp, int *i, t_node *node);
 int		two_redir(char **args, t_node *node);
-int		print_err2(char **args, int i);
 
 #endif
