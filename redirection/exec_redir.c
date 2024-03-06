@@ -38,8 +38,8 @@ int	exec_redir(char **args, char **envp, t_node *node)
 	ret = 0;
 	if (exec_check(args, envp))
 		node->cmd = ft_strdup(args[0]);
-	while (args[++i] && ft_strncmp(args[i], "|", 2)
-		&& !node->redir_stop && ret == 0)
+	while (args[++i] && ft_strncmp(args[i], "|", 2) && !node->redir_stop
+		&& !ret)
 	{
 		if (!ft_strncmp(args[i], "<", 2))
 			ret = left_redir(args, envp, &i, node);
@@ -49,6 +49,11 @@ int	exec_redir(char **args, char **envp, t_node *node)
 			ret = right_double_redir(args, envp, &i, node);
 		else if (!ft_strncmp(args[i], "<<", 3))
 			ret = left_double_redir(args, envp, &i, node);
+	}
+	if (node->cmd)
+	{
+		free(node->cmd);
+		node->cmd = NULL;
 	}
 	return (ret);
 }

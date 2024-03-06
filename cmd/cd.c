@@ -58,10 +58,11 @@ char	**ft_setenv(const char *name, const char *value, char **envp)
 	if (envp[i])
 	{
 		free(envp[i]);
-		envp[i] = str;
+		envp[i] = ft_strdup(str);
 	}
 	else
 		envp = strarradd(envp, str);
+	free(str);
 	return (envp);
 }
 
@@ -77,6 +78,7 @@ static int	checks(char **args, char **envp, t_node *node, bool offset)
 		chdir(ft_getenv("HOME", envp));
 	else if (!ft_strncmp(args[1 + offset], "-", 2))
 	{
+		free(node->pwd);
 		node->pwd = ft_strdup(ft_getenv("OLDPWD", envp));
 		chdir(node->pwd);
 		printf("%s\n", ft_getenv("OLDPWD", envp));
@@ -97,7 +99,10 @@ char	**cmd_cd(char **args, char **envp, t_node *node)
 	if (checks(args, envp, node, offset))
 		return (envp);
 	if (!args[1 + offset])
+	{
+		free(node->pwd);
 		node->pwd = ft_strdup(ft_getenv("HOME", envp));
+	}
 	else if (ft_strncmp(args[1 + offset], "-", 2))
 		node->pwd = newpwd(node, args[1 + offset]);
 	envp = ft_setenv("OLDPWD", ft_getenv("PWD", envp), envp);
