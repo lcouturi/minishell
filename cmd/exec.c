@@ -44,7 +44,10 @@ static bool	exec_check_loop(char **paths, char **args)
 		ft_strlcat(path, "/", n);
 		ft_strlcat(path, args[0], n);
 		if (!access(path, X_OK))
+		{
+			free(path);
 			return (1);
+		}
 		free(path);
 	}
 	return (0);
