@@ -74,3 +74,10 @@ int	print_err2(char **args, int i)
 	ft_putstr_fd(": No such file or directory", STDERR_FILENO);
 	return (1);
 }
+
+void	double_lmove_idx_change(char **args, int *i)
+{
+	args_left_move(args, *i);
+	args_left_move(args, *i);
+	*i -= 1;
+}
