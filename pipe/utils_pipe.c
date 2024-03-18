@@ -14,25 +14,9 @@
 
 void	exec_child(char **args, char **envp, t_node *node)
 {
-	int	idx;
-
-	idx = 0;
 	node->exit_flag = 0;
-	if (args[1] && ft_strncmp(args[0], "cat", 4) == 0
-		&& ft_strncmp(args[1], "|", 2) == 0)
-	{
-		if (!(args[2] && ft_strncmp(args[2], "cat", 4) == 0 && args[3] == NULL))
-			node->child_die = 1;
-	}
-	while (node->child_die && args[idx] && args[idx + 1]
-		&& ft_strncmp(args[idx], "cat", 4) == 0
-		&& ft_strncmp(args[idx + 1], "|", 2) == 0)
-	{
-		idx += 2;
-		get_line("");
-	}
 	close(node->fds[0]);
-	if (!node->right_flag && !node->child_die)
+	if (!node->right_flag)
 		dup2(node->fds[1], STDOUT_FILENO);
 	close(node->fds[1]);
 	if (!node->child_die)
@@ -47,16 +31,7 @@ void	exec_parents(char **args, char **envp, t_node *node)
 	dup2(node->fds[0], STDIN_FILENO);
 	close(node->fds[0]);
 	node->pipe_flag = 0;
-	if (repeat_check(args + node->pipe_idx, node))
-		envp = repeat(args + node->pipe_idx, envp, node);
-	else
-	{
-		if (node->right_flag)
-			backup_restor(node);
-		node->redir_flag = redir_chk(node->ori_args + node->pipe_idx);
-		redir_excute(args + node->pipe_idx, envp, node, 0);
-		envp = find_command(args + node->pipe_idx, envp, node);
-	}
+	envp = repeat(args, envp, node);
 	dup2(STDIN_FILENO, 0);
 	dup2(STDOUT_FILENO, 1);
 	strarrfree(envp);
