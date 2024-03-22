@@ -117,6 +117,7 @@ int		redir_syntax_check(char **args);
 char	**repeat(char **args, char **envp, t_node *node);
 int		repeat_check(char **args, t_node *node);
 char	**split_before_pipe_args(char **args, t_node *node);
+void	double_lmove_idx_change(char **args, int *i);
 
 // redirection
 void	args_left_move(char **args, int i);

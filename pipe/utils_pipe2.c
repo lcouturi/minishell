@@ -69,7 +69,8 @@ char	**repeat(char **args, char **envp, t_node *node)
 	if (!pid)
 		exec_child(args, envp, node);
 	else
-		exec_parents(args, strarrdup(envp), node);
+		exec_parents(args + node->pipe_idx, strarrdup(envp), node);
+	backup_restor(node);
 	waitpid(pid, 0, 0);
 	return (envp);
 }

@@ -60,9 +60,7 @@ int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 	if (!node->cmd && args[*i + 2] && !is_redir_check(args[*i + 2])
 		&& !exec_check(args + 2, envp))
 		return (print_err2(args, *i));
-	args_left_move(args, *i);
-	args_left_move(args, *i);
-	*i -= 1;
+	double_lmove_idx_change(args, i);
 	return (unlink(".temp") == -1);
 }
 
