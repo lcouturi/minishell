@@ -37,23 +37,23 @@ int	left_redir(char **args, char **envp, int *i, t_node *node)
 
 int	left_double_redir2(char **args, char **envp, int *i, t_node *node)
 {
-	char	*line;
-	char	*line2;
+	char	*line[2];
 
-	line = get_line("> ");
-	line2 = expand_envvar(line, envp);
-	free(line);
-	while (ft_strncmp((line2), args[*i + 1], ft_strlen(args[*i + 1]) + 1))
+	while (1)
 	{
-		ft_putendl_fd(line2, node->redir_fd);
-		line = get_line("> ");
-		if (!line)
+		line[0] = get_line("> ");
+		if (!line[0])
 			break ;
-		free(line2);
-		line2 = expand_envvar(line, envp);
-		free(line);
+		line[1] = expand_envvar(line[0], envp);
+		free(line[0]);
+		ft_putendl_fd(line[1], node->redir_fd);
+		if (!ft_strncmp(line[1], args[*i + 1], ft_strlen(args[*i + 1]) + 1))
+		{
+			free(line[1]);
+			break ;
+		}
+		free(line[1]);
 	}
-	free(line2);
 	lseek(node->redir_fd, 0, SEEK_SET);
 	dup2(node->redir_fd, STDIN_FILENO);
 	close(node->redir_fd);

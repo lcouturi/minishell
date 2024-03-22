@@ -90,8 +90,6 @@ char	*expand_envvar(char *str, char **envp)
 	int		i[6];
 	char	*str2;
 
-	if (!str)
-		return (0);
 	i[0] = -1;
 	i[5] = 0;
 	while (str[++i[0]])
