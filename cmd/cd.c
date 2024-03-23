@@ -78,6 +78,12 @@ static int	checks(char **args, char **envp, t_node *node, bool offset)
 		chdir(ft_getenv("HOME", envp));
 	else if (!ft_strncmp(args[1 + offset], "-", 2))
 	{
+		if (!ft_getenv("OLDPWD", envp))
+		{
+			g_exit_status = EXIT_FAILURE;
+			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+			return (1);
+		}
 		free(node->pwd);
 		node->pwd = ft_strdup(ft_getenv("OLDPWD", envp));
 		chdir(node->pwd);
