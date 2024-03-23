@@ -69,7 +69,10 @@ void	exec_error(char **args, char **envp, char **paths, t_node *node)
 	strarrfree(envp);
 	if (paths)
 		strarrfree(paths);
-	strarrfree(args - node->pipe_idx);
+	if (node->pipe_flag)
+		strarrfree(args);
+	else
+		strarrfree(args - node->pipe_idx);
 	exit(127);
 }
 

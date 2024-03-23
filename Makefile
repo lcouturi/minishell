@@ -54,7 +54,7 @@ clean :
 
 debug : fclean
 	@make debug -s -C libs/Libft
-	$(CC) $(CFLAGS) $(CPPFLAGS) -g -fsanitize=address $(LDFLAGS) $(SRCS) -o $(NAME)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -g -fsanitize=undefined $(LDFLAGS) $(SRCS) -o $(NAME)
 
 
 fclean : clean
