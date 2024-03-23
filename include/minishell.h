@@ -65,7 +65,7 @@ void	cmd_env(char **envs);
 void	cmd_exec(char **args, char **envp, t_node *node);
 void	cmd_exit(char **args, char **envp, t_node *node);
 void	cmd_exit_no_arg(void);
-char	**cmd_export(char **args, char **envp);
+char	**cmd_export(char **args, char **envp, t_node *node);
 void	cmd_pwd(t_node *node);
 void	cmd_unset(char **args, char **envp);
 bool	exec_check(char **args, char **envp);

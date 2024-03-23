@@ -26,7 +26,7 @@ static int	failure(char *arg, int i)
 	return (0);
 }
 
-static char	**cmd_export_loop(char *arg, char **envp)
+static char	**cmd_export_loop(char *arg, char **envp, int j, t_node *node)
 {
 	int		i;
 	char	*name;
@@ -34,7 +34,8 @@ static char	**cmd_export_loop(char *arg, char **envp)
 
 	i = -1;
 	while (arg[0] == '=' || ft_isdigit(arg[0]) || arg[++i] != '=')
-		if ((i > 0 && !arg[i]) || failure(arg, i))
+		if ((i > 0 && !arg[i]) || (node->pipe_idx && j + 1 >= node->pipe_idx)
+			|| failure(arg, i))
 			return (envp);
 	tmp = ft_substr(arg, 0, ft_strchr(arg, '=') - arg);
 	name = ft_strtrim(tmp, "+");
@@ -90,7 +91,7 @@ static char	**export_print(char **envp)
 	return (envp);
 }
 
-char	**cmd_export(char **args, char **envp)
+char	**cmd_export(char **args, char **envp, t_node *node)
 {
 	int	i;
 
@@ -108,6 +109,6 @@ char	**cmd_export(char **args, char **envp)
 		return (envp);
 	}
 	while (args[++i] && !g_exit_status)
-		envp = cmd_export_loop(args[i], envp);
+		envp = cmd_export_loop(args[i], envp, i, node);
 	return (envp);
 }

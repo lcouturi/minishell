@@ -21,7 +21,7 @@ char	**find_command(char **args, char **envp, t_node *node)
 	else if (args[0] && !ft_strncmp(args[0], "env", 4))
 		cmd_env(envp);
 	else if (args[0] && !ft_strncmp(args[0], "export", 7))
-		envp = cmd_export(args, envp);
+		envp = cmd_export(args, envp, node);
 	else if (args[0] && !ft_strncmp(args[0], "pwd", 4))
 		cmd_pwd(node);
 	else if (args[0] && !ft_strncmp(args[0], "echo", 5))
