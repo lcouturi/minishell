@@ -21,11 +21,10 @@ void	sigint(void)
 {
 	rl_on_new_line();
 	rl_redisplay();
-	ft_putstr_fd("  \n", STDOUT_FILENO);
+	ft_putstr_fd("^C  \n", STDOUT_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_exit_status = 1;
 }
 
 void	sigquit(void)
@@ -33,7 +32,6 @@ void	sigquit(void)
 	rl_on_new_line();
 	rl_redisplay();
 	ft_putstr_fd("  \b\b", STDOUT_FILENO);
-	g_exit_status = 0;
 }
 
 void	handle_signal(int signo)
@@ -44,6 +42,7 @@ void	handle_signal(int signo)
 	pid = waitpid(-1, &status, WNOHANG);
 	if (signo == SIGINT)
 	{
+		g_exit_status = 130;
 		if (pid == -1)
 			sigint();
 		else
@@ -54,7 +53,7 @@ void	handle_signal(int signo)
 		if (pid == -1)
 			sigquit();
 		else
-			ft_putstr_fd("Quit: \n", STDOUT_FILENO);
+			ft_putstr_fd("Quit: 3\n", STDOUT_FILENO);
 	}
 }
 

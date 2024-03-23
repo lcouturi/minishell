@@ -21,7 +21,10 @@ void	cmd_exec(char **args, char **envp, t_node *node)
 	if (!pid)
 		exec_proc(args, envp, node);
 	waitpid(pid, &status, 0);
-	g_exit_status = status / 256;
+	if (status == 2 || status == 3)
+		g_exit_status = 128 + status;
+	else
+		g_exit_status = status / 256;
 }
 
 static bool	exec_check_loop(char **paths, char **args)
