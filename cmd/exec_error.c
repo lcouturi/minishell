@@ -53,7 +53,7 @@ void	chkdir(char **args, char **envp, bool end)
 	exit(status);
 }
 
-void	exec_error(char **args, char **envp, char **paths)
+void	exec_error(char **args, char **envp, char **paths, t_node *node)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (ft_strchr(args[0], '/') || !paths)
@@ -69,7 +69,7 @@ void	exec_error(char **args, char **envp, char **paths)
 	strarrfree(envp);
 	if (paths)
 		strarrfree(paths);
-	strarrfree(args);
+	strarrfree(args - node->pipe_idx);
 	exit(127);
 }
 

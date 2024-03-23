@@ -26,7 +26,7 @@ static void	exec_edgecase(t_node *node, char **args, char **envp, char **paths)
 		execve(args[0], args, envp);
 	}
 	free(test2);
-	exec_error(args, envp, paths);
+	exec_error(args, envp, paths, node);
 }
 
 static void	exec_proc_loop2(char **paths, char **args, char **envp,
@@ -78,7 +78,7 @@ void	exec_proc(char **args, char **envp, t_node *node)
 	char	**paths;
 
 	if (!args[0][0])
-		exec_error(args, envp, 0);
+		exec_error(args, envp, 0, node);
 	checkdot(args, envp);
 	if (ft_strchr(args[0], '/'))
 	{
@@ -92,5 +92,5 @@ void	exec_proc(char **args, char **envp, t_node *node)
 	node->i = -1;
 	while (paths[++(node->i)])
 		exec_proc_loop(paths, args, envp, node);
-	exec_error(args, envp, paths);
+	exec_error(args, envp, paths, node);
 }

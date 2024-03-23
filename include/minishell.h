@@ -69,7 +69,7 @@ char	**cmd_export(char **args, char **envp, t_node *node);
 void	cmd_pwd(t_node *node);
 void	cmd_unset(char **args, char **envp);
 bool	exec_check(char **args, char **envp);
-void	exec_error(char **args, char **envp, char **paths);
+void	exec_error(char **args, char **envp, char **paths, t_node *node);
 void	exec_proc(char **args, char **envp, t_node *node);
 char	*ft_getenv(const char *name, char **envp);
 char	**ft_setenv(const char *name, const char *value, char **envp);
