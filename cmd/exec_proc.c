@@ -29,6 +29,20 @@ static void	exec_edgecase(t_node *node, char **args, char **envp, char **paths)
 	exec_error(args, envp, paths, node);
 }
 
+static void	exec_pipe(char *path, char **args, char **envp, t_node *node)
+{
+	char	**temp;
+
+	if (node->pipe_flag)
+	{
+		temp = split_before_pipe_args(args, node);
+		execve(path, temp, envp);
+		free(temp);
+	}
+	else
+		execve(path, args, envp);
+}
+
 static void	exec_proc_loop2(char **paths, char **args, char **envp,
 		t_node *node)
 {
@@ -39,14 +53,7 @@ static void	exec_proc_loop2(char **paths, char **args, char **envp,
 	if (!access(node->path, X_OK))
 	{
 		strarrfree(paths);
-		if (node->pipe_flag)
-		{
-			temp = split_before_pipe_args(args, node);
-			execve(node->path, temp, envp);
-			free(temp);
-		}
-		else
-			execve(node->path, args, envp);
+		exec_pipe(node->path, args, envp, node);
 	}
 	temp = malloc(2 * sizeof(char *));
 	temp[0] = node->path;
@@ -83,7 +90,7 @@ void	exec_proc(char **args, char **envp, t_node *node)
 	if (ft_strchr(args[0], '/'))
 	{
 		if (!access(args[0], X_OK))
-			execve(args[0], args, envp);
+			exec_pipe(args[0], args, envp, node);
 		chkdir(args, envp, 1);
 	}
 	paths = ft_split(ft_getenv("PATH", envp), ':');
