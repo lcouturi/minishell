@@ -92,6 +92,8 @@ char	**cmd_cd(char **args, char **envp, t_node *node)
 {
 	bool	offset;
 
+	if (node->pipe_flag)
+		return (envp);
 	offset = 0;
 	if (args[1] && !ft_strncmp(args[1], "--", 3))
 		offset++;
